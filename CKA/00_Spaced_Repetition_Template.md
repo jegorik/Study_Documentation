@@ -111,7 +111,7 @@
 | Exam Domain | Topics Mastered | In Progress | Not Started |
 |-------------|----------------|-------------|-------------|
 | **Cluster Architecture (25%)** | ___ / ___ | ___ | ___ |
-| **Workloads & Scheduling (20%)** | ___ / ___ | ___ | ___ |
+| **Workloads & Scheduling (15%)** | ___ / ___ | ___ | ___ |
 | **Services & Networking (20%)** | ___ / ___ | ___ | ___ |
 | **Storage (10%)** | ___ / ___ | ___ | ___ |
 | **Troubleshooting (30%)** | ___ / ___ | ___ | ___ |
