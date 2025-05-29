@@ -36,7 +36,7 @@ Core Kubernetes components, cluster setup, and management
 - **File:** [01_KUBERNETES_ARCHITECTURE.md](1.%20Kubernetes%20Architecture/01_KUBERNETES_ARCHITECTURE.md)
 - **Focus:** Control plane, worker nodes, etcd, networking
 
-#### ⚙️ [2. Workloads & Scheduling](2.%20Workloads%20scheduling/) (20%)
+#### ⚙️ [2. Workloads & Scheduling](2.%20Workloads%20scheduling/) (15%)
 Pod management, deployments, and scheduling
 - **File:** [02_WORKLOADS_SCHEDULING.md](2.%20Workloads%20scheduling/02_WORKLOADS_SCHEDULING.md)
 - **Focus:** Pods, ReplicaSets, Deployments, Services, ConfigMaps
@@ -64,7 +64,7 @@ Debugging clusters, nodes, and applications
 - [ ] Cluster setup understanding
 
 ### Week 3-4: Workloads
-- [ ] Workloads & Scheduling (20% weight)
+- [ ] Workloads & Scheduling (15% weight)
 - [ ] Pod lifecycle management
 - [ ] Deployment strategies
 
