@@ -9,7 +9,7 @@
 |--------|--------|--------|------------|-------------|
 | 🔧 **Troubleshooting** | 30% | ⏳ In Progress | ⭐⭐⭐☆☆ | ___ |
 | 🏗️ **Cluster Architecture** | 25% | ⏳ In Progress | ⭐⭐⭐☆☆ | ___ |
-| ⚙️ **Workloads & Scheduling** | 20% | ⏳ In Progress | ⭐⭐⭐☆☆ | ___ |
+| ⚙️ **Workloads & Scheduling** | 15% | ⏳ In Progress | ⭐⭐⭐☆☆ | ___ |
 | 🌐 **Services & Networking** | 20% | ⏳ In Progress | ⭐⭐⭐☆☆ | ___ |
 | 💾 **Storage** | 10% | ⏳ In Progress | ⭐⭐⭐☆☆ | ___ |
 
@@ -190,7 +190,7 @@
 
 ---
 
-## ⚙️ Workloads & Scheduling (20%)
+## ⚙️ Workloads & Scheduling (15%)
 
 ### Pod Management
 #### Basic Pod Operations
