@@ -26,7 +26,7 @@
 - Practice Labs: Network configuration and troubleshooting
 
 ### Exam Weight
-**20%** of total exam score
+**15%** of total exam score
 
 ---
 
