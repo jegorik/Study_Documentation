@@ -4,7 +4,7 @@
 ## 🔧 Core CKA Topics
 
 ### 1. Cluster Architecture & Components (25%)
-- **File:** [01_KUBERNETES_ARCHITECTURE.md](01_KUBERNETES_ARCHITECTURE.md)
+- **File:** [01_KUBERNETES_ARCHITECTURE.md](1.%20Kubernetes%20Architecture/01_KUBERNETES_ARCHITECTURE.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
   - Control plane components (API Server, etcd, Controller Manager, Scheduler)
@@ -13,7 +13,7 @@
   - Component troubleshooting
 
 ### 2. Workloads & Scheduling (20%)  
-- **File:** [02_WORKLOADS_SCHEDULING.md](02_WORKLOADS_SCHEDULING.md)
+- **File:** [02_WORKLOADS_SCHEDULING.md](2.%20Workloads%20scheduling/02_WORKLOADS_SCHEDULING.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
   - Pods, ReplicaSets, Deployments
@@ -22,7 +22,7 @@
   - Resource management and scheduling
 
 ### 3. Services & Networking (20%)
-- **File:** [03_SERVICES_NETWORKING.md](03_SERVICES_NETWORKING.md)
+- **File:** [03_SERVICES_NETWORKING.md](3.%20Services%20networking/03_SERVICES_NETWORKING.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
   - Service types and endpoints
@@ -31,7 +31,7 @@
   - DNS and service discovery
 
 ### 4. Storage (10%)
-- **File:** [04_STORAGE.md](04_STORAGE.md)
+- **File:** [04_STORAGE.md](4.%20Storage/04_STORAGE.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
   - Persistent Volumes and Claims
@@ -40,7 +40,7 @@
   - Dynamic provisioning
 
 ### 5. Troubleshooting (30%)
-- **File:** [05_TROUBLESHOOTING.md](05_TROUBLESHOOTING.md)
+- **File:** [05_TROUBLESHOOTING.md](5.%20Troubleshooting/05_TROUBLESHOOTING.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
   - Cluster component failures
@@ -53,8 +53,8 @@
 ## 🚀 Quick Start Guide
 
 ### For First-Time Users
-1. Start with [Kubernetes Architecture](01_KUBERNETES_ARCHITECTURE.md) to understand the foundation
-2. Move to [Workloads & Scheduling](02_WORKLOADS_SCHEDULING.md) for practical application management
+1. Start with [Kubernetes Architecture](1.%20Kubernetes%20Architecture/01_KUBERNETES_ARCHITECTURE.md) to understand the foundation
+2. Move to [Workloads & Scheduling](2.%20Workloads%20scheduling/02_WORKLOADS_SCHEDULING.md) for practical application management
 3. Continue with remaining topics based on your exam preparation needs
 
 ### For Exam Review
