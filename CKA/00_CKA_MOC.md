@@ -72,7 +72,7 @@ CKA/
 └── 📖 STUDY CONTENT (by exam weight)
     ├── 5. Troubleshooting/ (30%) ⭐ PRIORITY #1
     ├── 1. Kubernetes Architecture/ (25%) ⭐ PRIORITY #2
-    ├── 2. Workloads scheduling/ (20%)
+    ├── 2. Workloads scheduling/ (15%)
     ├── 3. Services networking/ (20%)
     └── 4. Storage/ (10%)
 ```
