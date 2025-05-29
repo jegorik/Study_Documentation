@@ -17,7 +17,7 @@
 │   ├── ⚙️ WORKLOADS (Weeks 3-4)
 │   │   ├── Pod lifecycle management
 │   │   ├── Deployments & ReplicaSets
-│   │   ├── Services & Networking (20%)
+│   │   ├── Services & Networking (15%)
 │   │   └── ConfigMaps & Secrets
 │   │
 │   ├── 🔧 ADVANCED TOPICS (Weeks 5-6)
