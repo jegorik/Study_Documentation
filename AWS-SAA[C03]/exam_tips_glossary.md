@@ -1,6 +1,5 @@
----
-
 ## Table of Contents
+---
 
 - [General AWS Exam Technique](#general-aws-exam-technique)
 - [Question Analysis Technique](#question-analysis-technique)
