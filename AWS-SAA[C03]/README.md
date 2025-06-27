@@ -49,7 +49,7 @@ Jump directly to specific AWS service documentation:
 - [EC2](#amazon-ec2) - Elastic Compute Cloud
 - [Lambda](#aws-lambda-expanded) - Serverless Functions
 - [ECS/ECR/EKS](#container-services) - Container Services
-- [Fargate](#container-services) - Serverless Container Compute
+- [Fargate](#fargate) - Serverless Container Compute
 - [Auto Scaling](#auto-scaling-groups) - Dynamic Resource Scaling
 - [Elastic Beanstalk](#elastic-beanstalk) - Application Deployment Service
 
