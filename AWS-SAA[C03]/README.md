@@ -28,17 +28,17 @@
 
 13. [Analytics & Machine Learning](#12-analytics--machine-learning)
 
-14. [Exam Tips & Scenarios](#13-exam-tips--scenarios)
+14. [Exam Tips & Scenarios](#14-exam-tips--scenarios)
 
-15. [Practical Scenario Walkthroughs](#13-exam-tips--scenarios)
+15. [Practical Scenario Walkthroughs](#15-practical-scenario-walkthroughs)
 
-16. [Common Misconceptions](#13-exam-tips--scenarios)
+16. [Common Misconceptions](#16-common-misconceptions)
 
-17. [Service Comparison & Decision Trees](#13-exam-tips--scenarios)
+17. [Service Comparison & Decision Trees](#17-service-comparison--decision-trees)
 
-18. [Mnemonic Devices](#mnemonic-devices)
+18. [Mnemonic Devices](#18-mnemonic-devices)
 
-19. [Glossary](#14-glossary)
+19. [Glossary](#19-glossary)
 
 ## AWS Service Quick Index
 
@@ -67,12 +67,12 @@ Jump directly to specific AWS service documentation:
 - [Route 53](#route-53) - DNS Service
 - [CloudFront](#cloudfront) - CDN
 - [Direct Connect](#direct-connect) - Dedicated Network Connection
-- [API Gateway](#6-networking--content-delivery) - API Management
+- [API Gateway](#api-gateway) - API Management
 - [Global Accelerator](#global-accelerator) - Network Performance
 - [Elastic Load Balancing](#elastic-load-balancing-elb) - Load Distribution Service
-- [PrivateLink](#6-networking--content-delivery) - Private Endpoint Service
-- [Transit Gateway](#6-networking--content-delivery) - Network Transit Hub
-- [Gateway Load Balancer](#6-networking--content-delivery) - Appliance Load Balancer
+- [PrivateLink](#privatelink) - Private Endpoint Service
+- [Transit Gateway](#transit-gateway) - Network Transit Hub
+- [Gateway Load Balancer](#gateway-load-balancer) - Appliance Load Balancer
 
 ### Database
 
@@ -95,20 +95,20 @@ Jump directly to specific AWS service documentation:
 - [Cognito](#cognito) - User Identity & Data Sync
 - [KMS](#kms-key-management-service) - Key Management
 - [CloudHSM](#cloudhsm) - Hardware Security Module
-- [Secrets Manager](#8-security-identity--compliance) - Secrets Management
+- [Secrets Manager](#secrets-manager) - Secrets Management
 - [ACM](#acm-aws-certificate-manager) - Certificate Manager
-- [WAF](#8-security-identity--compliance) - Web Application Firewall
-- [Shield](#8-security-identity--compliance) - DDoS Protection
-- [GuardDuty](#8-security-identity--compliance) - Threat Detection
-- [Macie](#8-security-identity--compliance) - Data Security & Privacy
+- [WAF](#waf-web-application-firewall) - Web Application Firewall
+- [Shield](#shield) - DDoS Protection
+- [GuardDuty](#guardduty) - Threat Detection
+- [Macie](#macie) - Data Security & Privacy
 
 ### Management & Monitoring
 
 - [CloudWatch](#cloudwatch) - Monitoring & Observability
 - [CloudTrail](#cloudtrail) - API Activity Tracking
 - [AWS Config](#aws-config) - Resource Configuration
-- [Systems Manager](#9-monitoring--management) - Operations Management
-- [Trusted Advisor](#9-monitoring--management) - Optimization Recommendations
+- [Systems Manager](#systems-manager) - Operations Management
+- [Trusted Advisor](#trusted-advisor) - Optimization Recommendations
 - [Control Tower](#control-tower) - Account Management
 - [X-Ray](#x-ray) - Application Tracing
 - [Organizations](#aws-organizations--scps) - Multi-account Management
@@ -119,23 +119,23 @@ Jump directly to specific AWS service documentation:
 - [SNS](#amazon-sns-simple-notification-service) - Simple Notification Service
 - [EventBridge](#amazon-eventbridge-cloudwatch-events) - Event Bus
 - [Step Functions](#step-functions) - Workflow Orchestration
-- [MQ](#10-application-integration) - Managed Message Broker
-- [AppFlow](#10-application-integration) - SaaS Integration Service
+- [MQ](#amazon-mq) - Managed Message Broker
+- [AppFlow](#amazon-appflow) - SaaS Integration Service
 
 ### Migration
 
 - [DMS](#aws-dms-database-migration-service) - Database Migration Service
 - [Snowball](#aws-snowball) - Large-scale Data Transfer
 - [Transfer Family](#aws-transfer-family) - Managed File Transfer
-- [DataSync](#11-migration--transfer) - Data Transfer Service
+- [DataSync](#aws-datasync) - Data Transfer Service
 
 ### Analytics
 
 - [Athena](#amazon-athena) - Serverless Query Service
 - [Glue](#aws-glue) - ETL Service
 - [Kinesis](#amazon-kinesis) - Real-time Data Streaming
-- [Kinesis Data Firehose](#12-analytics--machine-learning) - Data Delivery Stream
-- [Kinesis Data Analytics](#12-analytics--machine-learning) - Real-time Analytics
+- [Kinesis Data Firehose](#kinesis-data-firehose) - Data Delivery Stream
+- [Kinesis Data Analytics](#amazon-kinesis) - Real-time Analytics
 - [EMR](#amazon-emr) - Managed Hadoop Framework
 - [QuickSight](#amazon-quicksight) - Business Intelligence
 - [SageMaker](#amazon-sagemaker) - Machine Learning Platform
@@ -351,20 +351,6 @@ Jump directly to specific AWS service documentation:
 
 ## 5. Storage Services
 
-### Amazon S3
-
-- **What:** Object storage for files, backups, static websites, and more.
-- **Key Concepts:**
-  - Buckets (globally unique names)
-  - Objects (key-value pairs, up to 5TB)
-  - Storage classes: Standard, IA, One Zone-IA, Glacier, Deep Archive, Intelligent-Tiering
-  - Versioning, lifecycle policies, replication
-  - Encryption: SSE-S3, SSE-KMS, SSE-C, client-side
-- **Exam Tips:**
-  - S3 is private by default; use bucket policies for access
-  - S3 cannot be mounted as a filesystem
-  - Versioning cannot be disabled (only suspended)
-
 ### Amazon S3 (Expanded)
 
 [Back to Service Index](#aws-service-quick-index)
@@ -448,20 +434,232 @@ Jump directly to specific AWS service documentation:
 
 [Back to Service Index](#aws-service-quick-index)
 
-- **What:** Block storage for EC2 instances.
-- **Key Concepts:**
-  - Persistent, can be detached/reattached
-  - Snapshots for backup
+- **What:** Elastic Block Store provides persistent, high-performance block storage for Amazon EC2 instances.
+
+- **Volume Types:**
+  - **General Purpose SSD (gp3)**:
+    - Baseline performance: 3,000 IOPS and 125 MB/s throughput
+    - Configurable performance: Up to 16,000 IOPS and 1,000 MB/s throughput
+    - Size range: 1 GB to 16 TB
+    - Use case: Boot volumes, low-latency interactive applications, development environments
+  
+  - **General Purpose SSD (gp2)**:
+    - Baseline performance: 3 IOPS per GB (minimum 100 IOPS)
+    - Burst performance: Up to 3,000 IOPS for volumes smaller than 1 TB
+    - Size range: 1 GB to 16 TB
+    - Use case: General workloads, boot volumes
+  
+  - **Provisioned IOPS SSD (io2)**:
+    - Performance: Up to 64,000 IOPS and 1,000 MB/s throughput
+    - 99.999% durability (compared to 99.999% for other types)
+    - Size range: 4 GB to 16 TB
+    - Use case: Critical business applications requiring sustained IOPS performance
+  
+  - **Provisioned IOPS SSD (io1)**:
+    - Performance: Up to 64,000 IOPS and 1,000 MB/s throughput
+    - Size range: 4 GB to 16 TB
+    - Use case: I/O-intensive applications, large database workloads
+  
+  - **Throughput Optimized HDD (st1)**:
+    - Performance: Up to 500 MB/s throughput
+    - Cannot be used as boot volume
+    - Size range: 125 GB to 16 TB
+    - Use case: Big data, data warehouses, log processing
+  
+  - **Cold HDD (sc1)**:
+    - Performance: Up to 250 MB/s throughput
+    - Cannot be used as boot volume
+    - Size range: 125 GB to 16 TB
+    - Use case: Infrequently accessed workloads, lowest cost storage
+
+- **Key Features:**
+  - **Persistence**: Data persists independently of EC2 instance lifecycle
+  - **Availability**: Automatically replicated within an Availability Zone
+  - **Scalability**: Dynamically increase capacity, tune performance without downtime
+  - **Encryption**: Data at rest and in transit encryption using AWS KMS
+  - **Backup**: Point-in-time snapshots stored in Amazon S3
+
+- **Snapshots:**
+  - **Incremental Backups**: Only changed blocks since last snapshot are saved
+  - **Cross-Region Copy**: Copy snapshots to other regions for disaster recovery
+  - **Fast Snapshot Restore (FSR)**: Eliminate latency of data retrieval from S3
+  - **Lifecycle Management**: Automate snapshot creation and deletion
+  - **Sharing**: Share snapshots across AWS accounts
+  - **Encryption**: Encrypted volumes create encrypted snapshots automatically
+
+- **Performance Characteristics:**
+  - **IOPS**: Input/Output Operations Per Second (16 KB I/O operations)
+  - **Throughput**: Amount of data transferred per second (MB/s)
+  - **Latency**: Time between request and response
+  - **Queue Depth**: Number of pending I/O requests
+  - **Multi-Attach**: Attach single volume to multiple EC2 instances (io1/io2 only)
+
+- **EBS-Optimized Instances:**
+  - **Dedicated Bandwidth**: Separate network pipe for EBS traffic
+  - **Consistent Performance**: Minimizes contention between EBS and network traffic
+  - **Support**: Most current generation instance types support EBS optimization
+  - **Additional Cost**: May incur additional charges for some instance types
+
+- **Monitoring and Metrics:**
+  - **CloudWatch Metrics**: Volume performance, queue depth, latency, throughput
+  - **Volume Status Checks**: Automated tests to determine volume impairment
+  - **IOPS Monitoring**: Track utilization vs. provisioned performance
+  - **Burst Balance**: Monitor burst credit balance for gp2 volumes
+
+- **Security:**
+  - **Encryption at Rest**: AES-256 encryption using AWS KMS
+  - **Encryption in Transit**: Data encrypted between EC2 and EBS
+  - **Access Control**: IAM policies control who can create and manage volumes
+  - **Isolation**: Volumes are isolated to single customer tenancy
+
+- **Use Cases:**
+  - **Boot Volumes**: Operating system and application files
+  - **Database Storage**: High-performance storage for databases
+  - **File Systems**: Shared storage accessible from multiple instances
+  - **Backup and Recovery**: Snapshot-based backup strategies
+  - **Big Data Analytics**: High-throughput storage for data processing
+
+- **Best Practices:**
+  - **Choose Right Volume Type**: Match performance requirements to workload
+  - **Use EBS-Optimized Instances**: For consistent performance
+  - **Monitor Performance**: Use CloudWatch to track volume metrics
+  - **Regular Snapshots**: Implement automated backup strategies
+  - **Encryption**: Enable encryption for sensitive workloads
+  - **Pre-warming**: Initialize volumes from snapshots to avoid performance penalties
+
+- **Pricing Model:**
+  - **Storage**: Pay for provisioned storage (GB-month)
+  - **IOPS**: Additional charges for provisioned IOPS (io1/io2)
+  - **Snapshots**: Pay for actual data stored in S3
+  - **Data Transfer**: No charges for data transfer within same AZ
+
+- **Limitations:**
+  - **Availability Zone Bound**: Volumes can only be attached to instances in same AZ
+  - **Single Attachment**: Most volumes can only attach to one instance (except Multi-Attach)
+  - **Size Limits**: Maximum volume size varies by type (16 TB for most)
+  - **Performance Limits**: Based on volume type and size
+
+- **EBS vs. Instance Store:**
+  - **EBS**: Persistent, network-attached, can detach/reattach, backup with snapshots
+  - **Instance Store**: Temporary, physically attached, high performance, data lost on stop/terminate
+
 - **Exam Tips:**
-  - Only EBS is billed when EC2 is stopped
+  - Only EBS volumes are billed when EC2 instance is stopped (not instance store)
+  - gp3 offers configurable performance independent of storage capacity
+  - io2 provides higher durability (99.999%) compared to other volume types
+  - Snapshots are incremental and stored in S3 across multiple AZs
+  - Use st1 for throughput-intensive workloads, sc1 for infrequent access
+  - EBS volumes must be in same AZ as EC2 instance
+  - Root volumes can be encrypted during launch or from snapshots
+  - Multi-Attach allows multiple instances to access same volume (io1/io2 only)
 
 ### Amazon EFS
 
 [Back to Service Index](#aws-service-quick-index)
 
-- **What:** Managed NFS file system for Linux EC2 instances.
-- **Key Concepts:**
-  - Shared, scalable, pay-per-use
+- **What:** Amazon Elastic File System (EFS) is a fully managed NFS file system for Linux EC2 instances that provides scalable, elastic storage.
+
+- **Key Features:**
+  - **Fully Managed**: No need to provision, patch, or maintain file system infrastructure
+  - **Elastic Scaling**: Automatically grows and shrinks as files are added/removed
+  - **Multi-AZ Access**: Can be accessed from multiple Availability Zones simultaneously
+  - **POSIX-compliant**: Standard file system interface with file locking
+  - **Concurrent Access**: Thousands of EC2 instances can access simultaneously
+
+- **Performance Modes:**
+  - **General Purpose**:
+    - Lower latency per operation
+    - Up to 7,000 file operations per second
+    - Default mode for most use cases
+  
+  - **Max I/O**:
+    - Higher levels of aggregate throughput and IOPS
+    - Slightly higher latencies for file operations
+    - Can scale to higher performance levels
+    - Use when you need more than 7,000 operations per second
+
+- **Throughput Modes:**
+  - **Bursting Throughput**:
+    - Baseline performance scales with file system size
+    - 50 KB/s per GB of storage (minimum 1 MB/s)
+    - Can burst to 100 MB/s for file systems ≤ 1 TB
+    - Can burst to 100 MB/s per TB for larger file systems
+  
+  - **Provisioned Throughput**:
+    - Fixed amount of throughput independent of storage amount
+    - Pay for provisioned throughput in addition to storage
+    - Use when you need consistent performance regardless of file system size
+
+- **Storage Classes:**
+  - **Standard**:
+    - For frequently accessed files
+    - Multi-AZ redundancy
+    - Highest durability and availability
+  
+  - **Standard-Infrequent Access (Standard-IA)**:
+    - Lower cost for files accessed less frequently
+    - Multi-AZ redundancy
+    - Retrieval costs apply
+  
+  - **One Zone**:
+    - Single AZ storage
+    - 47% lower cost than Standard
+    - Use for non-critical workloads
+  
+  - **One Zone-Infrequent Access (One Zone-IA)**:
+    - Lowest cost option
+    - Single AZ + infrequent access pricing
+    - Up to 92% cost savings compared to Standard
+
+- **Lifecycle Management:**
+  - Automatically moves files between storage classes based on access patterns
+  - Configurable lifecycle policies (30, 60, 90 days, or no transition)
+  - Files moved to IA storage classes when not accessed within the specified time
+  - Transparent to applications - no changes required
+
+- **Security Features:**
+  - **Encryption at Rest**: AES-256 encryption using AWS KMS
+  - **Encryption in Transit**: TLS 1.2 encryption for data in transit
+  - **Access Control**:
+    - POSIX permissions
+    - IAM policies for API access
+    - VPC security groups
+    - Network ACLs
+  - **Access Points**: Application-specific entry points with enforced user identity and path
+
+- **Backup:**
+  - **Automatic Backups**: Point-in-time recovery with AWS Backup
+  - **Manual Backups**: On-demand backup creation
+  - **Cross-Region Backup**: Backup to different regions for disaster recovery
+  - **Incremental Backups**: Only changed data is backed up after initial full backup
+
+- **Monitoring and Performance:**
+  - **CloudWatch Metrics**: Total size, I/O bytes, operations, throughput utilization
+  - **Performance Insights**: Detailed file system performance metrics
+  - **VPC Flow Logs**: Network traffic analysis for troubleshooting
+
+- **Use Cases:**
+  - Content repositories and web serving
+  - Data analytics and big data processing
+  - Media processing workflows
+  - Database backups
+  - Container storage
+  - Serverless applications (Lambda)
+
+- **Integration:**
+  - **EC2**: Mount on multiple instances across AZs
+  - **Lambda**: Serverless applications with persistent storage
+  - **ECS/EKS**: Container persistent volumes
+  - **AWS Backup**: Centralized backup management
+  - **DataSync**: Transfer data from on-premises to EFS
+
+- **Exam Tips:**
+  - Choose General Purpose performance mode unless you need >7,000 ops/sec
+  - Use lifecycle management to optimize costs automatically
+  - Standard-IA saves money for files accessed <1 time per month
+  - One Zone classes offer significant cost savings but less durability
+  - EFS is Linux-only; use FSx for Windows file systems
+  - Provisioned throughput is useful when file system is small but needs high performance
 
 ### Storage Gateway
 
@@ -639,21 +837,89 @@ Jump directly to specific AWS service documentation:
 
 [Back to Service Index](#aws-service-quick-index)
 
-- **What:** Fully managed service for creating, publishing, maintaining, monitoring, and securing APIs.
+- **What:** A fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale.
 
-- **Key Features:**
-  - RESTful and WebSocket API support
-  - Versioning, staging, and canary releases
-  - API keys and usage plans
-  - Request/response transformations
-  - Caching to improve performance
+- **API Types:**
+  - **REST APIs**: Request/response model, stateless, supports caching
+  - **HTTP APIs**: Lower latency and cost than REST APIs, simpler feature set
+  - **WebSocket APIs**: Real-time two-way communication (e.g., chat applications, streaming)
+
+- **Core Features:**
+  - **Request/Response Management**:
+    - Request validation and transformation
+    - Response transformation and mapping
+    - CORS (Cross-Origin Resource Sharing) support
+    - Request/response body size limits (10MB for REST, 6MB for HTTP)
+  
+  - **Security Features**:
+    - Authentication via IAM, Cognito, Lambda authorizers, API keys
+    - Resource policies for fine-grained access control
+    - AWS WAF integration for application-level protection
+    - SSL/TLS termination and certificate management
+  
+  - **Traffic Management**:
+    - Throttling and rate limiting
+    - Usage plans and API keys for access control
+    - Request/response caching (REST APIs only)
+    - Circuit breaker pattern with automatic retries
+
+- **Deployment Options:**
+  - **Edge-Optimized**: Global distribution via CloudFront edge locations
+  - **Regional**: Deploy in specific AWS region for reduced latency
+  - **Private**: Accessible only from within VPC via interface endpoints
+
+- **Integration Types:**
+  - **Lambda Integration**: Direct integration with Lambda functions
+  - **HTTP Integration**: Proxy requests to HTTP endpoints
+  - **AWS Service Integration**: Direct integration with AWS services (S3, DynamoDB, etc.)
+  - **Mock Integration**: Return static responses for testing
+
+- **Stages and Deployment:**
+  - **Stages**: Different environments (dev, test, prod) with separate configurations
+  - **Canary Deployments**: Gradual rollout of API changes
+  - **Versioning**: Multiple API versions can coexist
+  - **Stage Variables**: Environment-specific configuration values
+
+- **Monitoring and Logging:**
+  - CloudWatch metrics (requests, latency, errors, cache hits/misses)
+  - CloudWatch Logs for execution logs and access logs
+  - AWS X-Ray tracing for performance analysis
+  - Custom metrics and alarms
+
+- **Caching (REST APIs):**
+  - Endpoint-level caching with TTL configuration
+  - Cache key customization based on request parameters
+  - Cache invalidation and encryption
+  - Reduces backend load and improves response times
+
+- **Pricing Model:**
+  - **REST APIs**: Pay per million API calls plus data transfer
+  - **HTTP APIs**: ~70% cheaper than REST APIs
+  - **WebSocket APIs**: Pay for messages and connection minutes
+  - **Additional costs**: Caching, data transfer, CloudWatch logs
+
+- **Use Cases:**
+  - Serverless web applications and mobile backends
+  - Microservices architecture
+  - API monetization and partner integrations
+  - Legacy system modernization
+  - Real-time applications (WebSocket)
+
+- **Limitations:**
+  - 30-second timeout for integrations
+  - 10MB payload size limit (REST), 6MB (HTTP)
+  - 500 routes per REST API
+  - Regional service (not global like CloudFront)
 
 - **Exam Tips:**
-  - Integrates with Lambda, HTTP endpoints, and other AWS services
-  - Provides throttling, monitoring, and security features
-  - Edge-optimized endpoint for global distribution via CloudFront
-  - Regional endpoint for lower latency within the same region
-  - Private endpoint for APIs accessible only within VPCs
+  - Choose HTTP APIs for simple proxy use cases (cheaper, faster)
+  - Choose REST APIs when you need advanced features (caching, transformations)
+  - Use edge-optimized for global audiences, regional for same-region clients
+  - Private endpoints require VPC interface endpoints
+  - API Gateway can act as a single entry point for microservices
+  - Remember the timeout limits and payload size restrictions
+  - Throttling protects backend services from traffic spikes
+  - Stages allow for safe deployment and testing of API changes
 
 ### Global Accelerator
 
@@ -677,14 +943,57 @@ Jump directly to specific AWS service documentation:
 
 [Back to Service Index](#aws-service-quick-index)
 
-- **What:** Securely access services over the AWS network via private endpoints.
+- **What:** Service that provides private connectivity between VPCs, AWS services, and on-premises applications, securely on the AWS network.
+
 - **Key Concepts:**
-  - Interface VPC endpoints: Elastic network interfaces with private IPs
-  - Service providers: AWS services, AWS Marketplace, custom services
-  - Endpoint policies: Control access to services
+  - **VPC Endpoints**: Private network interfaces in your VPC that enable connections to services
+    - **Interface Endpoints (powered by PrivateLink)**: Elastic network interfaces with private IPs for AWS services, AWS Marketplace solutions, or custom applications
+    - **Gateway Endpoints**: Route table targets for S3 and DynamoDB (not PrivateLink-based)
+  - **Endpoint Services**: Services that you can access privately through PrivateLink
+  - **Service Providers**: Can be AWS, AWS Marketplace vendors, or custom applications
+  - **Service Consumers**: Your VPC that accesses the service through an endpoint
+
+- **Interface Endpoint Details:**
+  - Creates an ENI in specified subnet with private IP address
+  - DNS resolution points to private IP instead of public IP
+  - Security groups control access to the endpoint
+  - Endpoint policies provide additional access control
+  - Cross-AZ redundancy for high availability
+  - Supports most AWS services (EC2, S3, DynamoDB, Lambda, etc.)
+
+- **Custom PrivateLink Services:**
+  - Expose your own applications as PrivateLink services
+  - Backed by Network Load Balancer (NLB)
+  - Service consumers connect through interface endpoints
+  - Auto Accept or manual acceptance of endpoint connections
+  - Whitelisting by AWS account, IAM principal, or VPC
+
+- **Benefits:**
+  - Traffic never leaves AWS network (improved security)
+  - Simplified network architecture (no NAT gateways needed for private subnets)
+  - Better performance (lower latency than internet routing)
+  - Granular access control through endpoint policies and security groups
+  - No overlapping IP address conflicts
+
+- **Use Cases:**
+  - Accessing AWS services from private subnets without internet access
+  - Secure access to SaaS applications through AWS Marketplace
+  - Sharing applications across VPCs without VPC peering
+  - Hybrid connectivity for on-premises to AWS services
+
+- **Pricing:**
+  - Hourly charge per VPC endpoint
+  - Data processing charges per GB
+  - No data transfer charges for traffic between VPC and service
+
 - **Exam Tips:**
-  - Use PrivateLink to access services securely without exposing traffic to the public internet
-  - Integrates with IAM for fine-grained access control
+  - PrivateLink provides private connectivity without traversing the public internet
+  - Interface endpoints use DNS to redirect traffic to private IPs
+  - Gateway endpoints (S3, DynamoDB) use route tables, not PrivateLink technology
+  - Custom PrivateLink services require Network Load Balancer
+  - Endpoint policies work like IAM policies but for VPC endpoints
+  - Supports cross-region access to services
+  - Remember the difference between Interface and Gateway endpoints
 
 ### Transit Gateway
 
@@ -713,6 +1022,60 @@ Jump directly to specific AWS service documentation:
   - Use Gateway Load Balancer to deploy, scale, and manage virtual appliances
   - Ideal for third-party security appliances, such as firewalls and intrusion detection systems
 
+### Elastic Load Balancing (ELB)
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** A service that automatically distributes incoming application traffic across multiple targets, such as EC2 instances, containers, and IP addresses.
+
+- **Types of Load Balancers:**
+  - **Application Load Balancer (ALB)** - Layer 7 load balancer for HTTP/HTTPS traffic
+  - **Network Load Balancer (NLB)** - Layer 4 load balancer for TCP, TLS, UDP traffic
+  - **Gateway Load Balancer (GWLB)** - For deploying, scaling, and managing third-party virtual appliances
+  - **Classic Load Balancer (CLB)** - Legacy load balancer (not recommended for new implementations)
+
+- **Application Load Balancer (ALB):**
+  - Works at Layer 7 (application layer)
+  - Content-based routing with rules based on HTTP headers, paths, host headers
+  - Support for WebSockets
+  - HTTP/HTTPS traffic only (SSL termination)
+  - Can route to multiple target groups based on URL paths or host headers
+  - Integrates with AWS WAF for application-level protection
+  - Slower than NLB but more feature-rich for HTTP/HTTPS applications
+
+- **Network Load Balancer (NLB):**
+  - Works at Layer 4 (transport layer)
+  - Handles millions of requests per second with ultra-low latency
+  - Supports static IP addresses for each AZ and elastic IP addresses
+  - Preserves source IP address of clients
+  - Supports TCP, UDP, TLS protocols
+  - Ideal for non-HTTP protocols (SMTP, SSH, game servers, financial apps)
+  - Supports unbroken encryption (end-to-end TLS)
+
+- **Gateway Load Balancer (GWLB):**
+  - Helps deploy, scale, and manage third-party virtual appliances
+  - Examples: firewalls, intrusion detection/prevention systems, deep packet inspection
+  - Uses GENEVE protocol (port 6081)
+  - Combines functions of a transparent network gateway and load balancer
+  - Works with GWLB endpoints to route traffic to/from virtual appliances
+
+- **Common Features:**
+  - Health checks to ensure traffic is only sent to healthy targets
+  - Integration with Auto Scaling Groups
+  - Support for sticky sessions (session affinity)
+  - Cross-zone load balancing for even distribution across AZs
+  - Access logs to S3 for detailed connection information
+  - Connection draining (deregistration delay) for graceful target removal
+
+- **Exam Tips:**
+  - Choose ALB for HTTP/HTTPS applications and content-based routing
+  - Choose NLB for highest performance, static IPs, or non-HTTP protocols
+  - Choose GWLB for deploying security appliances and traffic inspection
+  - Load balancers operate in multiple AZs for high availability
+  - ALB terminates HTTPS connections; NLB allows end-to-end encryption
+  - Internal load balancers have only private IPs; internet-facing have public IPs
+  - Target groups can include EC2 instances, IP addresses, Lambda functions, or containers
+
 ---
 
 ## 7. Database Services
@@ -728,16 +1091,6 @@ Jump directly to specific AWS service documentation:
 - **Exam Tips:**
   - Multi-AZ for high availability, Read Replicas for scaling reads
   - Automated backups are enabled by default
-
-### DynamoDB
-
-- **What:** Managed NoSQL database (key-value and document store).
-- **Key Concepts:**
-  - Tables, items, attributes, primary key (partition/sort key)
-  - On-demand and provisioned capacity, DAX (caching), Streams
-- **Exam Tips:**
-  - Single-digit millisecond latency at any scale
-  - Use DAX for caching, Streams for event-driven architectures
 
 ### DynamoDB (Expanded)
 
@@ -959,6 +1312,502 @@ Jump directly to specific AWS service documentation:
   - Private certificates require a private CA (Certificate Authority)
   - Supports both wildcard and multi-domain certificates
 
+### Cognito
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** Authentication, authorization, and user management service for web and mobile applications.
+
+- **Key Concepts:**
+  - User Pools: User directory service with sign-up/sign-in functionality
+    - Provides JSON Web Tokens (JWT) upon authentication
+    - Supports MFA and customizable web UI
+    - Handles user profiles and directory management
+  - Identity Pools: Provides temporary AWS credentials
+    - Allows guest access (unauthenticated identities)
+    - Supports federated identities (Google, Facebook, SAML, etc.)
+    - Assumes IAM roles to access AWS resources
+  - Can use both User Pools and Identity Pools together
+
+- **Exam Tips:**
+  - Understand the difference between User Pools (authentication) and Identity Pools (authorization)
+  - User Pools authenticate users and return tokens; Identity Pools authorize access to AWS resources
+  - Identity pools can work with social identity providers and Cognito User Pools
+  - Cognito can handle guest users through unauthenticated identities
+  - Temporary credentials from Identity Pools use IAM roles
+
+### Detective
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** Security service that automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to help identify security issues or suspicious activities.
+
+- **Key Concepts:**
+  - Analyzes trillions of events from multiple data sources like VPC Flow Logs, CloudTrail, and GuardDuty
+  - Creates a unified, interactive view of resource behavior and interactions over time
+  - Provides visualizations to identify patterns and anomalies
+  - Helps with in-depth security investigations and root cause analysis
+  - Complements GuardDuty by providing deep analysis capabilities
+
+- **Exam Tips:**
+  - Unlike GuardDuty, which focuses on real-time threat detection, Detective focuses on investigation and analysis
+  - No need to set up or maintain complex data collection and analysis infrastructure
+  - Works best when used with other AWS security services (GuardDuty, Security Hub, etc.)
+  - Stores and analyzes up to a year of historical event data
+  - Helps answer questions like "who accessed this resource?" and "what actions did an IAM role take?"
+  - No agents required - uses existing AWS log sources
+
+### Secrets Manager
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** A service that helps you protect secrets needed to access your applications, services, and IT resources.
+
+- **Core Functionality:**
+  - **Centralized Secret Storage**: Store database credentials, API keys, OAuth tokens, and other secrets
+  - **Automatic Rotation**: Built-in rotation for supported services (RDS, Aurora, Redshift, DocumentDB)
+  - **Fine-grained Access Control**: IAM policies and resource-based policies for access control
+  - **Encryption**: Secrets encrypted at rest using AWS KMS and in transit using TLS
+  - **Cross-Region Replication**: Replicate secrets to multiple regions for disaster recovery
+
+- **Supported Secret Types:**
+  - **Database Credentials**: RDS, Aurora, Redshift, DocumentDB with automatic rotation
+  - **API Keys and Tokens**: OAuth tokens, third-party API keys
+  - **SSH Keys**: Private keys for secure shell access
+  - **Custom Secrets**: Any sensitive text data (JSON, key-value pairs, plain text)
+
+- **Automatic Rotation:**
+  - **Supported Services**: RDS (MySQL, PostgreSQL, SQL Server), Aurora, Redshift, DocumentDB
+  - **Rotation Lambda**: AWS provides Lambda functions for automatic credential rotation
+  - **Custom Rotation**: Create custom Lambda functions for other services
+  - **Rotation Strategy**: Creates new credentials before invalidating old ones (no downtime)
+  - **Configurable Schedule**: Rotate secrets on a defined schedule (30, 60, 90 days, etc.)
+
+- **Integration Features:**
+  - **Application Integration**: SDKs for retrieving secrets in applications
+  - **VPC Endpoints**: Private access without internet connectivity
+  - **CloudFormation**: Template-based secret creation and management
+  - **Parameter Store Comparison**: More expensive but includes rotation and fine-grained permissions
+
+- **Security Features:**
+  - **Encryption at Rest**: AES-256 encryption using AWS KMS
+  - **Encryption in Transit**: TLS 1.2 for all API communications
+  - **Access Logging**: CloudTrail logs all API calls for auditing
+  - **Resource Policies**: JSON policies attached directly to secrets
+  - **Cross-Account Access**: Share secrets across AWS accounts securely
+
+- **Pricing Model:**
+  - **Secret Storage**: $0.40 per secret per month
+  - **API Requests**: $0.05 per 10,000 requests
+  - **Cross-Region Replication**: Additional charges for replicated secrets
+  - **KMS Key Usage**: Additional KMS charges for encryption/decryption
+
+- **Use Cases:**
+  - Database credential management with automatic rotation
+  - Third-party API key storage and management
+  - Application configuration secrets
+  - CI/CD pipeline credential management
+  - Multi-environment secret management (dev, test, prod)
+
+- **Secrets Manager vs. Parameter Store:**
+  - **Secrets Manager**: More expensive, built-in rotation, fine-grained permissions, audit trail
+  - **Parameter Store**: Cheaper (free tier available), no built-in rotation, simpler access control
+  - **When to use Secrets Manager**: When you need automatic rotation or compliance requirements
+  - **When to use Parameter Store**: For configuration data and simple secrets without rotation needs
+
+- **Best Practices:**
+  - Use automatic rotation for database credentials
+  - Implement least privilege access with IAM policies
+  - Use VPC endpoints for private access
+  - Monitor access patterns with CloudTrail
+  - Use cross-region replication for critical secrets
+  - Tag secrets for cost allocation and organization
+
+- **Exam Tips:**
+  - Secrets Manager provides automatic rotation, Parameter Store does not
+  - Rotation works by creating new credentials before deleting old ones
+  - More expensive than Parameter Store but provides additional security features
+  - Integrates natively with RDS, Aurora, Redshift for automatic credential rotation
+  - Use when compliance requires audit trails and automatic credential rotation
+  - Cross-region replication helps with disaster recovery scenarios
+  - Remember the pricing difference between Secrets Manager and Parameter Store
+
+### WAF (Web Application Firewall)
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** A web application firewall that helps protect your web applications or APIs against common web exploits and bots.
+
+- **Core Functionality:**
+  - **Layer 7 Protection**: Inspects HTTP/HTTPS requests at the application layer
+  - **Real-time Traffic Filtering**: Block or allow traffic based on configurable rules
+  - **Integration**: Works with CloudFront, Application Load Balancer, API Gateway, and AppSync
+  - **Managed Rules**: AWS and third-party managed rule sets for common threats
+  - **Custom Rules**: Create custom rules based on your application needs
+
+- **Rule Types:**
+  - **IP Address Rules**: Allow/block specific IP addresses or ranges
+  - **Country/Geographic Rules**: Block traffic from specific countries or regions
+  - **String and Regex Matching**: Inspect request components for specific patterns
+  - **Size Constraints**: Limit the size of request components
+  - **SQL Injection Protection**: Detect and block SQL injection attempts
+  - **Cross-Site Scripting (XSS) Protection**: Prevent XSS attacks
+  - **Rate-based Rules**: Limit requests from individual IP addresses
+
+- **Managed Rule Groups:**
+  - **AWS Managed Rules**: Free rule sets maintained by AWS security team
+    - Core Rule Set: Protection against OWASP Top 10 vulnerabilities
+    - Known Bad Inputs: Block common malicious inputs
+    - SQL Database: Protection against SQL injection attacks
+    - Linux/Windows Operating System: OS-specific protections
+  - **AWS Marketplace Rules**: Third-party managed rules (additional cost)
+  - **Rule Group Versioning**: Automatic updates to managed rules
+
+- **Components:**
+  - **Web ACLs**: Collections of rules that define traffic filtering
+  - **Rules**: Individual conditions for allowing or blocking requests
+  - **Rule Groups**: Reusable collections of rules
+  - **IP Sets**: Collections of IP addresses and ranges
+  - **Regex Pattern Sets**: Regular expressions for pattern matching
+
+- **Actions:**
+  - **Allow**: Permit the request to continue
+  - **Block**: Stop the request and return HTTP 403 status
+  - **Count**: Count matching requests without taking action (monitoring mode)
+  - **CAPTCHA**: Challenge users with CAPTCHA verification
+  - **Custom Response**: Return custom HTTP response
+
+- **Integration Points:**
+  - **CloudFront**: Protect global CDN distributions
+  - **Application Load Balancer**: Protect applications behind ALB
+  - **API Gateway**: Secure REST and HTTP APIs
+  - **AWS AppSync**: Protect GraphQL APIs
+  - **Regional vs. Global**: ALB/API Gateway (regional), CloudFront (global)
+
+- **Monitoring and Logging:**
+  - **CloudWatch Metrics**: Request counts, blocked requests, rule matches
+  - **Web ACL Logs**: Detailed logs of all requests (can send to S3, CloudWatch Logs, Kinesis)
+  - **Sampled Requests**: View sample requests that match rules
+  - **Real-time Metrics**: Monitor traffic patterns and attack attempts
+
+- **Pricing Model:**
+  - **Web ACL**: $1.00 per month per Web ACL
+  - **Rules**: $0.60 per month per rule
+  - **Requests**: $0.60 per million requests
+  - **Managed Rule Groups**: Additional fees for AWS Marketplace rules
+  - **Logging**: Additional charges for log storage and analysis
+
+- **Use Cases:**
+  - Protection against common web attacks (OWASP Top 10)
+  - Geographic access restrictions
+  - Rate limiting and DDoS mitigation
+  - API protection and abuse prevention
+  - Compliance requirements for web application security
+  - Bot management and traffic filtering
+
+- **Best Practices:**
+  - Start with AWS Managed Rules for baseline protection
+  - Use Count mode initially to test rules before enforcing
+  - Monitor CloudWatch metrics for traffic patterns
+  - Enable logging for security analysis and compliance
+  - Regularly review and update custom rules
+  - Use multiple rule evaluation order strategically
+
+- **Exam Tips:**
+  - WAF operates at Layer 7 (application layer), not network layer
+  - Works with CloudFront (global) and ALB/API Gateway (regional)
+  - AWS Managed Rules provide protection against OWASP Top 10
+  - Count mode allows testing rules without blocking traffic
+  - Rate-based rules help protect against DDoS attacks
+  - Remember integration points: CloudFront, ALB, API Gateway, AppSync
+  - WAF cannot protect EC2 instances directly (use ALB in front)
+  - Different from AWS Shield (DDoS protection) and Security Groups (network-level)
+
+### Shield
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** A managed Distributed Denial of Service (DDoS) protection service that safeguards applications running on AWS.
+
+- **Service Tiers:**
+  - **AWS Shield Standard**: Free, automatic protection for all AWS customers
+  - **AWS Shield Advanced**: Premium service with enhanced protections and support
+
+- **Shield Standard (Free):**
+  - **Automatic Protection**: Enabled by default for all AWS customers
+  - **Layer 3/4 Protection**: Network and transport layer DDoS protection
+  - **Always-on Detection**: Continuous monitoring and automatic mitigation
+  - **Protected Services**: CloudFront, Route 53, Elastic Load Balancing, AWS Global Accelerator
+  - **Common Attack Protection**: SYN/UDP floods, reflection attacks, and other Layer 3/4 attacks
+
+- **Shield Advanced ($3,000/month):**
+  - **Enhanced Protection**: Advanced DDoS protection with higher-level attack mitigation
+  - **Additional Services**: Protection for EC2, Elastic Load Balancing, CloudFront, Route 53, Global Accelerator
+  - **Real-time Attack Notifications**: CloudWatch metrics and SNS notifications
+  - **DDoS Response Team (DRT)**: 24/7 access to AWS DDoS experts during attacks
+  - **Cost Protection**: DDoS cost protection for scaling charges during attacks
+  - **Global Threat Environment Dashboard**: Visibility into DDoS attacks worldwide
+
+- **Advanced Features:**
+  - **Application Layer Protection**: Layer 7 DDoS protection when combined with WAF
+  - **Attack Diagnostics**: Detailed attack reports and forensics
+  - **Proactive Engagement**: DRT can proactively contact you during significant events
+  - **Custom Mitigations**: Tailored protection based on your application architecture
+  - **Health-based Detection**: Uses application health to detect attacks
+
+- **Integration with Other Services:**
+  - **AWS WAF**: Combined with Shield Advanced for Layer 7 protection
+  - **CloudFront**: Enhanced protection for global content delivery
+  - **Route 53**: DNS-level DDoS protection
+  - **Global Accelerator**: Network-level optimizations with DDoS protection
+  - **Elastic Load Balancing**: Application-level load balancer protection
+
+- **DDoS Cost Protection:**
+  - **Scaling Protection**: No charges for AWS resource scaling during DDoS attacks
+  - **Covered Services**: EC2, ELB, CloudFront, Route 53, Global Accelerator
+  - **Automatic**: No need to file claims or requests
+  - **Shield Advanced Required**: Only available with Advanced subscription
+
+- **Monitoring and Alerting:**
+  - **CloudWatch Metrics**: DDoS attack metrics and health indicators
+  - **SNS Notifications**: Real-time alerts for detected attacks
+  - **Global Threat Dashboard**: Industry-wide attack visibility
+  - **Attack Reports**: Post-incident analysis and recommendations
+
+- **Best Practices:**
+  - Use CloudFront and Route 53 to absorb and filter malicious traffic
+  - Deploy applications across multiple Availability Zones
+  - Use Auto Scaling to handle legitimate traffic increases
+  - Combine with WAF for comprehensive Layer 3-7 protection
+  - Implement health checks and monitoring for rapid detection
+  - Consider Shield Advanced for mission-critical applications
+
+- **Common DDoS Attack Types Protected:**
+  - **Volumetric Attacks**: UDP floods, ICMP floods, spoofed-packet floods
+  - **Protocol Attacks**: SYN floods, Ping of Death, Smurf attacks
+  - **Application Layer Attacks**: HTTP floods, DNS query floods (when combined with WAF)
+  - **Reflection Attacks**: DNS, NTP, SSDP, CharGen amplification attacks
+
+- **Use Cases:**
+  - Web applications requiring high availability
+  - Gaming platforms with global user base
+  - Financial services with strict uptime requirements
+  - E-commerce sites during high-traffic events
+  - Media streaming services
+  - API services requiring protection from abuse
+
+- **Exam Tips:**
+  - Shield Standard is free and automatically enabled for all AWS customers
+  - Shield Advanced costs $3,000/month but includes DDoS Response Team access
+  - Shield provides DDoS protection, WAF provides application-layer filtering
+  - Cost protection only available with Shield Advanced
+  - Works best when combined with CloudFront and Route 53
+  - Shield protects against Layer 3/4 attacks, use WAF for Layer 7 protection
+  - Global Accelerator and CloudFront provide additional edge protection
+  - DRT (DDoS Response Team) is a key differentiator of Shield Advanced
+
+### GuardDuty
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** A threat detection service that continuously monitors for malicious activity and unauthorized behavior to protect your AWS accounts, workloads, and data.
+
+- **Core Functionality:**
+  - **Threat Intelligence**: Uses machine learning, anomaly detection, and threat intelligence feeds
+  - **Continuous Monitoring**: 24/7 analysis of AWS account and network activity
+  - **No Agents Required**: Agentless service that analyzes existing AWS logs
+  - **Multi-Account Support**: Centralized security monitoring across multiple AWS accounts
+  - **Regional Service**: Must be enabled in each region where you want protection
+
+- **Data Sources Analyzed:**
+  - **VPC Flow Logs**: Network traffic metadata within your VPCs
+  - **DNS Logs**: DNS queries made by resources in your VPCs
+  - **CloudTrail Events**: API calls and management events across your AWS account
+  - **S3 Data Events**: Object-level API operations on S3 buckets
+  - **EKS Audit Logs**: Kubernetes API server audit logs
+  - **Lambda Network Activity**: Network connections from Lambda functions
+
+- **Threat Detection Categories:**
+  - **Reconnaissance**: Port scanning, unusual API activity, network probing
+  - **Instance Compromises**: Malware, cryptocurrency mining, backdoor communication
+  - **Account Compromises**: Unusual console logins, API calls from suspicious locations
+  - **Bucket Compromises**: Suspicious S3 access patterns, data exfiltration attempts
+  - **Cryptocurrency Mining**: Detection of mining activity on EC2 instances
+  - **Malware**: Communication with known malicious domains and IPs
+
+- **Finding Types and Severity:**
+  - **Severity Levels**: Low (0.1-3.9), Medium (4.0-6.9), High (7.0-8.9), Critical (9.0-10.0)
+  - **Finding Format**: Service/ThreatPurpose/ThreatFamilyName/DetectionMechanism/Resource
+  - **Evidence**: Detailed information about the threat, including source IPs, ports, and timelines
+  - **Confidence Levels**: How confident GuardDuty is in the accuracy of the finding
+
+- **Integration Capabilities:**
+  - **CloudWatch Events/EventBridge**: Trigger automated responses to findings
+  - **AWS Security Hub**: Centralized security findings management
+  - **AWS Detective**: Deep investigation and analysis of GuardDuty findings
+  - **Lambda Functions**: Automated remediation and notification workflows
+  - **SNS**: Real-time notifications for critical findings
+  - **Third-party SIEM**: Export findings to external security tools
+
+- **Multi-Account Management:**
+  - **Master Account**: Central account that manages GuardDuty for member accounts
+  - **Member Accounts**: Accounts that send findings to the master account
+  - **Automatic Invitation**: Streamlined process for adding accounts to GuardDuty
+  - **Cross-Account Role**: Allows master account to manage member account settings
+
+- **Suppression and Allow Lists:**
+  - **Suppression Rules**: Automatically suppress findings based on criteria
+  - **Trusted IP Lists**: Specify known good IP addresses to reduce false positives
+  - **Threat Lists**: Add known malicious IPs for enhanced detection
+  - **Finding Filters**: Customize which findings are displayed and processed
+
+- **Malware Protection:**
+  - **EBS Snapshot Analysis**: Scans EBS volumes for malware when findings indicate compromise
+  - **On-demand Scanning**: Manual initiation of malware scans
+  - **Automatic Response**: Can be triggered automatically based on specific findings
+  - **Quarantine Actions**: Isolate infected instances for remediation
+
+- **Pricing Model:**
+  - **CloudTrail Events**: $4.00 per million events analyzed
+  - **VPC Flow Logs and DNS Logs**: $1.00 per GB analyzed
+  - **S3 Data Events**: $0.50 per million events analyzed
+  - **EKS Audit Logs**: $2.00 per million events analyzed
+  - **30-day Free Trial**: Full feature access for evaluation
+
+- **Use Cases:**
+  - Continuous security monitoring for AWS environments
+  - Compliance requirements for threat detection and response
+  - Incident response and forensic analysis
+  - Multi-account security management
+  - Detection of insider threats and compromised credentials
+  - Protection against cryptocurrency mining attacks
+
+- **Best Practices:**
+  - Enable in all regions where you have AWS resources
+  - Set up automated responses using CloudWatch Events and Lambda
+  - Integrate with AWS Security Hub for centralized management
+  - Configure appropriate notification thresholds to avoid alert fatigue
+  - Regularly review and tune suppression rules
+  - Use multi-account setup for organization-wide protection
+
+- **GuardDuty vs. Other Security Services:**
+  - **vs. Detective**: GuardDuty detects threats, Detective investigates them
+  - **vs. Inspector**: GuardDuty monitors runtime activity, Inspector assesses vulnerabilities
+  - **vs. Config**: GuardDuty focuses on security threats, Config tracks compliance
+  - **vs. CloudTrail**: GuardDuty analyzes CloudTrail logs for threats, CloudTrail just logs events
+
+- **Exam Tips:**
+  - GuardDuty is a threat detection service, not a prevention service
+  - Uses machine learning and threat intelligence for detection
+  - Requires no agents or software installation
+  - Must be enabled per region, not global
+  - Findings have severity levels from Low to Critical
+  - Integrates with EventBridge for automated response
+  - Can detect cryptocurrency mining, which is a common exam scenario
+  - 30-day free trial available for testing and evaluation
+  - Works with existing AWS logs (CloudTrail, VPC Flow Logs, DNS logs)
+
+### Macie
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** A fully managed data security and data privacy service that uses machine learning and pattern matching to discover and protect your sensitive data in AWS.
+
+- **Core Functionality:**
+  - **Data Discovery**: Automatically discovers and inventories S3 buckets and objects
+  - **Sensitive Data Classification**: Uses ML to identify personally identifiable information (PII) and other sensitive data
+  - **Security Assessment**: Evaluates S3 bucket security and access controls
+  - **Continuous Monitoring**: Ongoing analysis of data access patterns and security posture
+  - **Compliance Support**: Helps meet regulatory requirements for data protection
+
+- **Data Types Detected:**
+  - **Personal Information**: Names, addresses, phone numbers, email addresses
+  - **Financial Data**: Credit card numbers, bank account numbers, financial records
+  - **Healthcare Data**: Medical record numbers, health insurance information
+  - **Government IDs**: Social Security numbers, passport numbers, driver's licenses
+  - **Custom Data Types**: Define custom regex patterns for organization-specific data
+  - **Credentials**: API keys, passwords, database connection strings
+
+- **Classification Methods:**
+  - **Machine Learning**: AWS-trained models for common data types
+  - **Built-in Data Identifiers**: Pre-defined patterns for PII and sensitive data
+  - **Custom Data Identifiers**: Regex patterns for organization-specific data
+  - **Keywords**: Simple keyword-based detection
+  - **Proximity Rules**: Find data based on proximity to keywords or other identifiers
+
+- **S3 Integration:**
+  - **Bucket Inventory**: Complete inventory of all S3 buckets and their security settings
+  - **Object Sampling**: Analyzes representative samples of objects in buckets
+  - **Sensitive Data Jobs**: Scheduled or on-demand analysis of specific buckets
+  - **Bucket Security Assessment**: Evaluates public access, encryption, and access policies
+  - **Object-level Analysis**: Detailed examination of individual files and objects
+
+- **Security and Access Control:**
+  - **Public Bucket Detection**: Identifies publicly accessible S3 buckets
+  - **Encryption Status**: Reports on bucket and object encryption settings
+  - **Access Policy Analysis**: Reviews bucket policies and ACLs for security risks
+  - **Shared Bucket Identification**: Finds buckets shared with external accounts
+  - **Unusual Access Patterns**: Detects abnormal data access behavior
+
+- **Findings and Alerts:**
+  - **Policy Findings**: Security and privacy issues with S3 buckets
+  - **Sensitive Data Findings**: Locations where sensitive data is discovered
+  - **Finding Severity**: Critical, High, Medium, Low severity levels
+  - **Finding Categories**: Multiple categories including public access, encryption, and data exposure
+  - **Custom Suppression**: Suppress specific findings based on your criteria
+
+- **Integration Capabilities:**
+  - **AWS Security Hub**: Centralized findings management
+  - **Amazon EventBridge**: Trigger automated responses to findings
+  - **AWS CloudWatch**: Metrics and monitoring for Macie activities
+  - **AWS Organizations**: Multi-account management and delegation
+  - **Third-party Tools**: Export findings to external SIEM and security tools
+
+- **Multi-Account Management:**
+  - **Administrator Account**: Central management of multiple member accounts
+  - **Member Accounts**: Accounts managed by the Macie administrator
+  - **Delegated Administration**: Designate accounts to manage Macie for the organization
+  - **Cross-Account Findings**: Centralized view of findings across all accounts
+
+- **Pricing Model:**
+  - **Bucket Evaluation**: $1.00 per bucket per month for security and access control evaluation
+  - **Object Monitoring**: $0.10 per GB of data processed for sensitive data discovery
+  - **Automated Data Discovery**: Additional charges based on the amount of data analyzed
+  - **Free Tier**: 30-day free trial with full functionality
+
+- **Use Cases:**
+  - **Data Protection Compliance**: GDPR, HIPAA, PCI DSS compliance requirements
+  - **Data Loss Prevention**: Identify and protect sensitive data from unauthorized access
+  - **Cloud Migration Security**: Assess data security during migration to AWS
+  - **Incident Response**: Quickly identify what sensitive data might be exposed
+  - **Data Governance**: Understand where sensitive data resides across your organization
+  - **Risk Assessment**: Evaluate data security posture across S3 infrastructure
+
+- **Best Practices:**
+  - Enable Macie in all regions where you store sensitive data in S3
+  - Create custom data identifiers for organization-specific sensitive data
+  - Set up automated responses to critical findings using EventBridge
+  - Regularly review and remediate policy findings
+  - Use sample classification to understand data types before full analysis
+  - Integrate with Security Hub for centralized security management
+
+- **Limitations:**
+  - **S3 Only**: Currently only analyzes data stored in Amazon S3
+  - **Regional Service**: Must be enabled in each region where you have S3 buckets
+  - **File Size Limits**: Objects larger than 20 MB are sampled rather than fully analyzed
+  - **Archive Support**: Limited support for analyzing data in Glacier storage classes
+
+- **Exam Tips:**
+  - Macie is specifically for S3 data discovery and protection
+  - Uses machine learning to identify PII and sensitive data automatically
+  - Provides both data discovery and S3 security assessment capabilities
+  - Integrates with Security Hub and EventBridge for automated responses
+  - Pricing is based on bucket evaluation and data processing volume
+  - Supports multi-account management through AWS Organizations
+  - Remember the difference: GuardDuty detects threats, Macie discovers sensitive data
+  - Can create custom data identifiers for organization-specific sensitive data types
+  - 30-day free trial available for evaluation
+
 ---
 
 ## 9. Monitoring & Management
@@ -1029,6 +1878,97 @@ Jump directly to specific AWS service documentation:
   - Requires instrumentation of application code with the X-Ray SDK
   - Sampling rules determine which requests are traced and at what rate
 
+### Systems Manager
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** A suite of management tools that helps you automate operational tasks across your AWS resources.
+
+- **Key Concepts:**
+  - Automation of operational tasks
+  - Management of AWS resources at scale
+  - Secure access to instances without opening inbound ports
+  - Several components including:
+    - Parameter Store: Secure storage for configuration data and secrets
+    - Run Command: Remote execution of commands or scripts
+    - Patch Manager: Automated patching process
+    - State Manager: Ensures resources maintain a defined state
+    - Session Manager: Browser-based shell or CLI access to instances
+    - Inventory: Collects metadata about instances and installed software
+
+  - **Parameter Store:**
+    - Storage for configuration data and secrets
+    - Supports plain text (String, StringList) and encrypted values (SecureString)
+    - Hierarchical storage with versioning
+    - Integration with KMS for encryption
+    - No additional cost for standard parameters
+
+- **Exam Tips:**
+  - Requires the SSM Agent to be installed on managed instances
+  - Provides a unified interface for multiple AWS resource types
+  - Use Parameter Store for storing configuration data instead of hardcoding values
+  - Session Manager eliminates the need for bastion hosts or SSH key management
+  - Integrates with CloudWatch for monitoring and IAM for access control
+  - Supports both EC2 instances and on-premises servers (with hybrid activations)
+
+### Trusted Advisor
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** An online tool that provides real-time guidance to help you provision your resources following AWS best practices.
+
+- **Key Concepts:**
+  - Analyzes your AWS environment and makes recommendations in five categories:
+    - Cost Optimization: Identifying idle and underutilized resources
+    - Performance: Suggestions to improve service performance
+    - Security: Identifying security vulnerabilities and closing gaps
+    - Fault Tolerance: Increasing resiliency by eliminating single points of failure
+    - Service Limits: Notifying when you approach service quotas
+  - Different tiers based on AWS Support plan:
+    - Basic/Developer: Limited to core checks
+    - Business/Enterprise: Full set of checks with programmatic access
+
+- **Exam Tips:**
+  - Business and Enterprise Support plans get access to all Trusted Advisor checks
+  - Can integrate with CloudWatch Events for automated actions based on alerts
+  - Use for identifying cost-saving opportunities, improving security posture, and ensuring optimal resource utilization
+  - Complements other AWS services like Cost Explorer (cost) and Inspector (security)
+  - Unlike manual auditing, provides continuous, automated guidance
+  - Recommendations are based on AWS best practices and the experience of serving hundreds of thousands of AWS customers
+
+### AWS Backup
+
+[Back to Service Index](#aws-service-quick-index)
+
+- **What:** A fully managed, centralized backup service that makes it easy to automate the backup of data across AWS services.
+
+- **Key Concepts:**
+  - Centralized management for backups across multiple AWS services
+  - Policy-based backup solution with scheduling capabilities
+  - Support for cross-region and cross-account backup
+  - Backup plans define backup frequency, window, and retention periods
+  - Backup vaults store and organize recovery points
+
+- **Supported AWS Services:**
+  - Amazon EC2, EBS, RDS, Aurora, DynamoDB
+  - Amazon EFS, FSx for Windows File Server, FSx for Lustre
+  - Amazon S3, VMware workloads, AWS Storage Gateway
+
+- **Key Features:**
+  - Point-in-time recovery for supported services
+  - Lifecycle management to automatically transition recovery points to cold storage
+  - AWS Organizations integration for multi-account management
+  - Tag-based backup policies
+  - Access control via IAM
+
+- **Exam Tips:**
+  - Use when you need to centralize and automate backup across multiple AWS services
+  - Simplifies compliance requirements by allowing consistent backup policies
+  - More cost-effective than managing individual service backups
+  - Can help meet Recovery Point Objectives (RPO) through scheduled, automated backups
+  - Provides a consistent way to protect AWS workloads across multiple services
+  - Does not eliminate service-specific backup options, but provides a unified management layer
+
 ---
 
 ## 10. Application Integration
@@ -1037,24 +1977,193 @@ Jump directly to specific AWS service documentation:
 
 [Back to Service Index](#aws-service-quick-index)
 
-- **What:** Fully managed message queuing for decoupling and scaling microservices, distributed systems, and serverless apps.
-- **Key Concepts:**
-  - Standard vs. FIFO queues, message retention, dead-letter queues
-  - At-least-once delivery (Standard), exactly-once processing (FIFO)
+- **What:** Amazon SQS is a fully managed message queuing service that enables decoupling and scaling of microservices, distributed systems, and serverless applications.
+
+- **Queue Types:**
+  - **Standard Queues**:
+    - Nearly unlimited throughput (API actions per second)
+    - At-least-once delivery (messages may be delivered more than once)
+    - Best-effort ordering (messages may arrive out of order)
+    - Default queue type
+  
+  - **FIFO Queues**:
+    - First-In-First-Out delivery and exactly-once processing
+    - Limited to 300 transactions per second (TPS) without batching
+    - Up to 3,000 TPS with batching (10 messages per batch)
+    - Message group ID for ordering within groups
+    - Message deduplication ID to prevent duplicates
+
+- **Key Features:**
+  - **Message Retention**: 1 minute to 14 days (default: 4 days)
+  - **Message Size**: Up to 256 KB per message
+  - **Visibility Timeout**: 0 seconds to 12 hours (default: 30 seconds)
+  - **Receive Message Wait Time**: 0 to 20 seconds (long polling)
+  - **Maximum Receives**: Number of times a message can be received before moving to DLQ
+
+- **Dead Letter Queues (DLQ):**
+  - Capture messages that can't be processed successfully
+  - Helps isolate problematic messages for debugging
+  - Prevents message loss and infinite processing loops
+  - Can be Standard or FIFO (must match source queue type)
+  - Same message retention period as source queue
+
+- **Security Features:**
+  - **Encryption at Rest**: Server-side encryption using SQS keys (SSE-SQS) or KMS keys (SSE-KMS)
+  - **Encryption in Transit**: HTTPS endpoints for secure message transmission
+  - **Access Control**: IAM policies, SQS access policies, VPC endpoints
+  - **Message Privacy**: Messages are private by default
+
+- **Polling Mechanisms:**
+  - **Short Polling** (default):
+    - Returns immediately, even if no messages
+    - May not check all servers
+    - Higher cost due to more API calls
+  
+  - **Long Polling**:
+    - Waits for messages up to 20 seconds
+    - Checks all servers
+    - Reduces cost and eliminates empty responses
+    - Set ReceiveMessageWaitTimeSeconds > 0
+
+- **Integration Patterns:**
+  - **Fan-out with SNS**: SNS topic sends to multiple SQS queues
+  - **Lambda Triggers**: Process messages automatically with Lambda functions
+  - **Auto Scaling**: Scale EC2 instances based on queue depth
+  - **Cross-Account Access**: Share queues across AWS accounts
+
+- **Monitoring and Metrics:**
+  - **CloudWatch Metrics**: Message count, age, visibility timeout breaches
+  - **ApproximateNumberOfMessages**: Messages available for retrieval
+  - **ApproximateAgeOfOldestMessage**: Age of oldest non-deleted message
+  - **NumberOfMessagesSent**: Total messages added to queue
+
+- **Cost Optimization:**
+  - **Batching**: Send up to 10 messages in single request (reduces API calls)
+  - **Long Polling**: Reduces empty receives and API calls
+  - **Message Filtering**: Use SNS message filtering before SQS delivery
+  - **Appropriate Retention**: Set retention period based on processing needs
+
+- **Use Cases:**
+  - Decoupling microservices and distributed applications
+  - Processing background jobs and tasks
+  - Buffering writes to databases or external APIs
+  - Handling traffic spikes and load leveling
+  - Fan-out messaging patterns with SNS
+  - Event-driven architectures
+
 - **Exam Tips:**
-  - Use SQS to decouple application components
-  - FIFO queues for order and deduplication
+  - Standard queues: high throughput, at-least-once delivery, best-effort ordering
+  - FIFO queues: exact order, exactly-once processing, lower throughput
+  - Use DLQs to handle failed message processing
+  - Long polling reduces cost and latency
+  - Maximum message size is 256 KB (use S3 for larger payloads)
+  - Visibility timeout should be longer than function execution time
+  - Can't change queue type after creation (Standard to FIFO or vice versa)
 
 ### Amazon SNS (Simple Notification Service)
 
 [Back to Service Index](#aws-service-quick-index)
 
-- **What:** Pub/sub messaging for application-to-application and application-to-person notifications.
-- **Key Concepts:**
-  - Topics, subscriptions (email, SMS, Lambda, SQS, HTTP/S)
+- **What:** Amazon SNS is a fully managed pub/sub messaging service for application-to-application (A2A) and application-to-person (A2P) notifications.
+
+- **Core Concepts:**
+  - **Topics**: Communication channel for sending messages and subscribing to notifications
+  - **Publishers**: Applications or services that send messages to topics
+  - **Subscribers**: Endpoints that receive messages from topics
+  - **Message**: Data payload sent through SNS (up to 256 KB)
+
+- **Subscription Types:**
+  - **Email/Email-JSON**: Send notifications to email addresses
+  - **SMS**: Send text messages to mobile phones
+  - **HTTP/HTTPS**: Send messages to web endpoints
+  - **Amazon SQS**: Deliver messages to SQS queues
+  - **AWS Lambda**: Trigger Lambda functions
+  - **Application**: Push notifications to mobile applications
+  - **Kinesis Data Firehose**: Deliver messages to data analytics services
+
+- **Topic Types:**
+  - **Standard Topics**:
+    - High throughput (unlimited)
+    - At-least-once delivery
+    - Best-effort message ordering
+    - Lower cost
+  
+  - **FIFO Topics**:
+    - First-in, first-out delivery
+    - Exactly-once processing
+    - Strict message ordering
+    - Higher cost but guaranteed ordering
+
+- **Message Attributes:**
+  - **Metadata**: Additional information about the message
+  - **Data Types**: String, Number, Binary
+  - **Size Limit**: Up to 10 attributes per message
+  - **Filtering**: Use attributes for message filtering
+  - **Reserved Attributes**: AWS-specific attributes (AWS.SNS.*)
+
+- **Message Filtering:**
+  - **Filter Policies**: JSON policies applied to subscriptions
+  - **Attribute-based**: Filter based on message attributes
+  - **Exact Match**: String values must match exactly
+  - **Numeric Ranges**: Filter numeric values within ranges
+  - **Prefix Matching**: String values that start with specified text
+  - **Anything-but**: Match everything except specified values
+
+- **Dead Letter Queues (DLQ):**
+  - **Purpose**: Capture messages that couldn't be delivered after retries
+  - **Configuration**: Per subscription, not per topic
+  - **SQS Integration**: Use SQS queue as DLQ for failed deliveries
+  - **Redrive Policy**: Define retry attempts before sending to DLQ
+
+- **Security Features:**
+  - **Encryption at Rest**: Server-side encryption using KMS keys
+  - **Encryption in Transit**: HTTPS endpoints for secure delivery
+  - **Access Control**: Topic policies, IAM policies, VPC endpoints
+  - **Cross-Account Publishing**: Share topics across AWS accounts
+  - **Message Privacy**: Messages encrypted and access controlled
+
+- **Delivery Reliability:**
+  - **Retry Logic**: Automatic retries for failed deliveries
+  - **Delivery Status Logging**: Track successful and failed deliveries
+  - **CloudWatch Metrics**: Monitor publish/delivery success rates
+  - **Delivery Delays**: Configurable delivery retry backoff
+
+- **Message Format:**
+  - **Raw Message Delivery**: Send original message without SNS metadata
+  - **JSON Format**: Default format with SNS-specific fields
+  - **Content-Based Deduplication**: FIFO topics can deduplicate based on content
+  - **Message Structure**: Subject, message, timestamp, signature
+
+- **Integration Patterns:**
+  - **Fan-out**: One message to multiple SQS queues or Lambda functions
+  - **Event Broadcasting**: Notify multiple services of events
+  - **Mobile Push**: Send notifications to mobile applications
+  - **Email/SMS Notifications**: Human-readable alerts and updates
+  - **Cross-Region Replication**: Distribute messages across regions
+
+- **Monitoring and Metrics:**
+  - **CloudWatch Metrics**: Number of messages published, delivered, failed
+  - **CloudTrail**: API call logging for auditing
+  - **Delivery Status**: Per-destination delivery success/failure tracking
+  - **Cost Tracking**: Monitor costs by destination type
+
+- **Use Cases:**
+  - Application decoupling and microservices communication
+  - Real-time notifications for critical events
+  - Fan-out messaging to multiple consumers
+  - Mobile push notifications for apps
+  - Email and SMS alerts for operational events
+  - Integration with serverless architectures
+  - Event-driven processing workflows
+
 - **Exam Tips:**
-  - Use SNS for fan-out to multiple endpoints
-  - Integrate SNS with SQS for message durability
+  - SNS delivers messages to multiple subscribers (fan-out pattern)
+  - Use message filtering to reduce unnecessary message delivery
+  - FIFO topics guarantee order but have lower throughput
+  - Combine SNS + SQS for reliable fan-out with message durability
+  - Raw message delivery removes SNS envelope for cleaner integration
+  - Set up DLQs on subscriptions to handle delivery failures
+  - Message size limit is 256 KB (use S3 for larger payloads)
 
 ### Amazon EventBridge (CloudWatch Events)
 
@@ -1074,34 +2183,218 @@ Jump directly to specific AWS service documentation:
 - **Key Concepts:**
   - State machines, tasks, parallel execution, error handling
 
-### Managed Message Broker (MQ)
+### Amazon MQ
 
 [Back to Service Index](#aws-service-quick-index)
 
-- **What:** Managed message broker service for Apache ActiveMQ and RabbitMQ that makes it easy to set up and operate message brokers in the cloud.
-- **Key Concepts:**
-  - Supports industry-standard APIs and protocols (JMS, AMQP, MQTT, OpenWire, STOMP)
-  - Provides both queues and topics for messaging
-  - Available in single-instance (development) or highly available (production) modes
-  - Runs within a VPC for network isolation
-- **Exam Tips:**
-  - Use when migrating existing applications using message brokers to AWS with minimal code changes
-  - Not a public service - requires private network connections for on-premises integration
-  - No native AWS service integration like SNS and SQS have
-  - Preferred for applications that use open standard messaging protocols and require compatibility with existing systems
+- **What:** A managed message broker service that makes it easy to set up and operate message brokers in the cloud using industry-standard APIs and protocols.
 
-### AppFlow
+- **Supported Message Brokers:**
+  - **Apache ActiveMQ**: Java-based open-source message broker
+  - **RabbitMQ**: Erlang-based message broker with advanced routing capabilities
+  - Both support industry-standard messaging protocols and APIs
+
+- **Core Features:**
+  - **Managed Infrastructure**: AWS handles provisioning, setup, and maintenance
+  - **High Availability**: Multi-AZ deployments with automatic failover
+  - **Security**: VPC isolation, encryption in transit and at rest, IAM integration
+  - **Monitoring**: CloudWatch integration for metrics and logging
+  - **Backup and Recovery**: Automated daily backups with point-in-time recovery
+
+- **Supported Protocols and APIs:**
+  - **ActiveMQ**: JMS, AMQP, STOMP, MQTT, OpenWire, WebSocket
+  - **RabbitMQ**: AMQP 0.9.1, MQTT, STOMP, WebSocket
+  - **Cross-platform Support**: Java, .NET, Python, Ruby, Node.js, and more
+  - **Standard APIs**: No vendor lock-in, use existing application code
+
+- **Deployment Options:**
+  - **Single-instance**: Cost-effective option for development and testing
+  - **Active/Standby**: High availability with automatic failover to standby broker
+  - **Cluster**: Multiple active brokers for high throughput (RabbitMQ only)
+  - **Network of Brokers**: Distributed messaging across multiple brokers (ActiveMQ)
+
+- **Messaging Patterns:**
+  - **Point-to-Point**: Direct message delivery between producer and consumer via queues
+  - **Publish/Subscribe**: Broadcast messages to multiple subscribers via topics
+  - **Request/Reply**: Synchronous communication pattern with response correlation
+  - **Message Routing**: Advanced routing based on content, headers, or patterns (RabbitMQ)
+
+- **Security Features:**
+  - **VPC Integration**: Deploy brokers within your VPC for network isolation
+  - **Encryption**: SSL/TLS encryption in transit, EBS encryption at rest
+  - **Authentication**: LDAP, simple authentication, or AWS IAM integration
+  - **Authorization**: Fine-grained permissions for users and applications
+  - **Network Security**: Security groups and NACLs for access control
+
+- **Monitoring and Management:**
+  - **CloudWatch Metrics**: Broker performance, queue depth, connection count
+  - **CloudWatch Logs**: Broker logs for troubleshooting and auditing
+  - **Management Console**: Web-based interface for broker administration
+  - **Configuration Management**: Template-based configuration with version control
+  - **Maintenance Windows**: Scheduled maintenance with minimal downtime
+
+- **Integration Capabilities:**
+  - **AWS Services**: Limited native integration compared to SQS/SNS
+  - **On-premises**: Bridge on-premises message brokers with cloud applications
+  - **Hybrid Architecture**: Connect existing enterprise messaging infrastructure
+  - **Third-party Tools**: Compatible with existing monitoring and management tools
+
+- **Use Cases:**
+  - **Enterprise Application Migration**: Lift-and-shift applications using JMS or AMQP
+  - **Hybrid Messaging**: Connect on-premises and cloud-based applications
+  - **Legacy System Integration**: Maintain compatibility with existing message brokers
+  - **Complex Routing**: Advanced message routing and transformation requirements
+  - **Protocol Requirements**: Applications requiring specific messaging protocols
+
+- **Amazon MQ vs. Native AWS Services:**
+  
+  | Feature | Amazon MQ | SQS/SNS |
+  |---------|-----------|---------|
+  | **Protocols** | JMS, AMQP, MQTT, STOMP | AWS APIs only |
+  | **AWS Integration** | Limited | Native, extensive |
+  | **Scalability** | Manual scaling | Automatic, unlimited |
+  | **Cost** | Higher (instance-based) | Lower (usage-based) |
+  | **Use Case** | Migration, protocol compatibility | Cloud-native applications |
+
+- **Pricing Model:**
+  - **Instance Hours**: Pay for broker instance time (different instance types available)
+  - **Storage**: EBS storage costs for message persistence
+  - **Data Transfer**: Standard AWS data transfer charges
+  - **No Message Charges**: Unlike SQS/SNS, no per-message fees
+
+- **Best Practices:**
+  - Use Amazon MQ for migration scenarios requiring protocol compatibility
+  - Choose SQS/SNS for new cloud-native applications
+  - Implement proper authentication and authorization
+  - Monitor queue depths and connection counts
+  - Use Multi-AZ for production workloads requiring high availability
+  - Plan for maintenance windows and broker updates
+
+- **Limitations:**
+  - **Regional Service**: Must provision in specific regions
+  - **Instance-based**: Requires capacity planning and scaling management
+  - **Limited AWS Integration**: Not as tightly integrated as SQS/SNS
+  - **Protocol Support**: Limited to supported broker versions and protocols
+
+- **Migration Considerations:**
+  - **Assessment**: Evaluate if native AWS services (SQS/SNS) can meet requirements
+  - **Compatibility**: Ensure application compatibility with managed broker versions
+  - **Network**: Plan VPC integration and connectivity requirements
+  - **Monitoring**: Adapt existing monitoring tools for CloudWatch integration
+
+- **Exam Tips:**
+  - Use Amazon MQ when migrating existing applications that use JMS, AMQP, or other standard protocols
+  - Choose SQS/SNS for new cloud-native applications for better AWS integration
+  - Amazon MQ runs in your VPC, unlike SQS/SNS which are managed AWS services
+  - Supports both ActiveMQ and RabbitMQ with their respective protocol support
+  - More expensive than SQS/SNS but provides protocol compatibility
+  - Remember that Amazon MQ is for migration scenarios, not greenfield development
+  - Limited native AWS service integration compared to SQS/SNS
+
+### Amazon AppFlow
 
 [Back to Service Index](#aws-service-quick-index)
 
-- **What:** Fully managed integration service that enables you to securely transfer data between AWS services and SaaS applications.
-- **Key Concepts:**
-  - No-code data flow creation
-  - Supports various data sources and destinations
-  - Data transformation and filtering capabilities
+- **What:** A fully managed integration service that makes it easy to securely transfer data between AWS services and Software as a Service (SaaS) applications.
+
+- **Core Functionality:**
+  - **No-Code Integration**: Visual interface for creating data flows without coding
+  - **Bi-directional Data Transfer**: Move data to and from SaaS applications
+  - **Real-time and Batch Processing**: Support for both streaming and scheduled data transfers
+  - **Data Transformation**: Built-in data mapping, filtering, and transformation capabilities
+  - **Secure Transfer**: Encryption in transit and at rest with private connectivity options
+
+- **Supported SaaS Applications:**
+  - **CRM Systems**: Salesforce, HubSpot, Zendesk
+  - **Marketing Platforms**: Marketo, Google Analytics, Facebook Ads
+  - **Service Management**: ServiceNow, Jira
+  - **E-commerce**: Shopify, Magento
+  - **Productivity Tools**: Slack, Microsoft Teams
+  - **Custom Applications**: REST APIs and JDBC sources
+
+- **AWS Service Integrations:**
+  - **Data Storage**: S3, Redshift
+  - **Analytics**: Amazon QuickSight, EMR
+  - **Data Lakes**: AWS Lake Formation
+  - **Databases**: RDS, Aurora
+  - **Data Processing**: Glue, Lambda
+
+- **Flow Types:**
+  - **On-demand Flows**: Manually triggered data transfers
+  - **Scheduled Flows**: Time-based automatic data transfers (hourly, daily, weekly)
+  - **Event-triggered Flows**: Automatically triggered by specific events in source systems
+  - **Real-time Flows**: Continuous data streaming for near real-time integration
+
+- **Data Transformation Features:**
+  - **Field Mapping**: Map source fields to destination fields
+  - **Data Filtering**: Include/exclude records based on conditions
+  - **Data Validation**: Ensure data quality and format compliance
+  - **Calculations**: Perform arithmetic operations and concatenations
+  - **Conditional Logic**: Apply business rules during data transfer
+  - **Data Type Conversion**: Convert between different data formats
+
+- **Security and Compliance:**
+  - **Encryption**: AES-256 encryption for data at rest and TLS 1.2 for data in transit
+  - **Private Connectivity**: VPC integration for secure data transfer
+  - **IAM Integration**: Fine-grained access control and permissions
+  - **Audit Logging**: CloudTrail integration for comprehensive audit trails
+  - **Compliance**: SOC, ISO, PCI DSS compliance certifications
+
+- **Monitoring and Management:**
+  - **Flow Execution History**: Track success, failures, and data transfer volumes
+  - **CloudWatch Integration**: Metrics and alarms for monitoring flow performance
+  - **Error Handling**: Automatic retry and error notification capabilities
+  - **Data Lineage**: Track data movement and transformations
+  - **Cost Monitoring**: Usage-based pricing with detailed cost tracking
+
+- **Use Cases:**
+  - **Customer Data Integration**: Sync customer data between CRM and data warehouse
+  - **Marketing Analytics**: Transfer campaign data from advertising platforms to analytics tools
+  - **Business Intelligence**: Aggregate data from multiple SaaS applications for reporting
+  - **Data Migration**: Move data from legacy systems to modern cloud-based solutions
+  - **Real-time Synchronization**: Keep data consistent across multiple applications
+  - **Compliance Reporting**: Consolidate data for regulatory reporting requirements
+
+- **Pricing Model:**
+  - **Flow Execution**: Pay per flow run based on the number of records processed
+  - **Data Processing**: Charges based on volume of data transferred
+  - **No Infrastructure Costs**: Fully managed service with no servers to maintain
+  - **Free Tier**: Limited free usage for evaluation and small workloads
+
+- **Integration Patterns:**
+  - **Hub and Spoke**: Centralize data from multiple sources to a single destination
+  - **Point-to-Point**: Direct integration between two applications
+  - **Fan-out**: Distribute data from one source to multiple destinations
+  - **Aggregation**: Combine data from multiple sources before transfer
+
+- **Best Practices:**
+  - **Start Small**: Begin with simple flows and gradually add complexity
+  - **Data Quality**: Implement validation and filtering to ensure clean data
+  - **Security**: Use private connectivity for sensitive data transfers
+  - **Monitoring**: Set up CloudWatch alarms for flow failures and performance issues
+  - **Error Handling**: Configure retry logic and error notifications
+  - **Testing**: Use development environments to test flows before production
+
+- **Limitations:**
+  - **Connector Availability**: Limited to supported SaaS applications and AWS services
+  - **Transformation Complexity**: Advanced transformations may require external processing
+  - **Real-time Latency**: Near real-time, not true real-time processing
+  - **Data Volume**: Large datasets may require optimization for performance
+
+- **AppFlow vs. Alternatives:**
+  - **vs. Glue**: AppFlow for SaaS integration, Glue for complex ETL and data catalog
+  - **vs. Lambda**: AppFlow for no-code solutions, Lambda for custom integration logic
+  - **vs. Third-party iPaaS**: AppFlow for AWS-native integration with cost benefits
+
 - **Exam Tips:**
-  - Use AppFlow for real-time and batch data processing
-  - Integrates with services like Salesforce, ServiceNow, and Google Analytics
+  - AppFlow is specifically designed for SaaS application integration
+  - No coding required - visual interface for creating data flows
+  - Supports both real-time and batch data processing
+  - Built-in data transformation and filtering capabilities
+  - Use when you need to integrate SaaS applications with AWS services
+  - Remember the supported SaaS connectors (Salesforce, ServiceNow, etc.)
+  - Pricing is based on flow execution and data volume
+  - Provides secure, managed alternative to custom integration solutions
 
 ---
 
@@ -1133,33 +2426,137 @@ Jump directly to specific AWS service documentation:
 
 - **What:** Managed SFTP, FTPS, and FTP for file transfers directly into and out of S3.
 
-## DataSync
+### AWS DataSync
 
 [Back to Service Index](#aws-service-quick-index)
 
-- **What:** A data transfer service that simplifies, automates, and accelerates moving data between on-premises storage systems and AWS storage services.
+- **What:** A data transfer service that simplifies, automates, and accelerates moving data between on-premises storage systems and AWS storage services, as well as between AWS storage services.
 
-- **Key Concepts:**
-  - Transfers data over Direct Connect, VPN, or public internet
-  - Preserves file metadata (timestamps, ownership, permissions)
-  - Built-in data validation to ensure data integrity
-  - Components:
-    - DataSync Agent: Software appliance installed on-premises
-    - Locations: Source and destination endpoints (where data is copied from/to)
-    - Tasks: The configuration defining what is being synced and how
-  - Bandwidth throttling to control impact on networks
+- **Core Components:**
+  - **DataSync Agent**: VM or hardware appliance deployed on-premises or in AWS
+  - **Locations**: Define source and destination endpoints for data transfer
+  - **Tasks**: Configuration that defines what data to copy and how to copy it
+  - **Task Executions**: Individual runs of a DataSync task
 
-- **Supported Storage:**
-  - **Source:** NFS, SMB, HDFS, self-managed object storage
-  - **Destination:** S3, EFS, FSx for Windows, FSx for Lustre
+- **Supported Source Storage:**
+  - **Network File System (NFS)**: NFS v3 and v4 shares
+  - **Server Message Block (SMB)**: SMB v2 and v3 shares
+  - **Hadoop Distributed File System (HDFS)**: Hadoop clusters
+  - **Object Storage**: Self-managed object storage systems
+  - **AWS Services**: S3, EFS, FSx as sources for cross-service transfers
+
+- **Supported Destination Storage:**
+  - **Amazon S3**: All storage classes (Standard, IA, One Zone-IA, Glacier, Deep Archive)
+  - **Amazon EFS**: Standard and One Zone storage classes
+  - **Amazon FSx for Windows**: Windows-based file systems
+  - **Amazon FSx for Lustre**: High-performance file systems
+  - **Amazon FSx for NetApp ONTAP**: Enterprise NAS features
+  - **Amazon FSx for OpenZFS**: ZFS-based file systems
+
+- **Transfer Methods:**
+  - **Over Internet**: Public internet with TLS encryption
+  - **AWS Direct Connect**: Dedicated network connection for consistent bandwidth
+  - **VPN Connection**: Secure tunnel over internet
+  - **VPC Endpoints**: Private connectivity within AWS network
+  - **Cross-Region**: Transfer data between different AWS regions
+
+- **Data Validation and Integrity:**
+  - **In-Transit Verification**: Real-time checksum validation during transfer
+  - **Post-Transfer Verification**: Comparison of source and destination after transfer
+  - **Metadata Preservation**: Maintains timestamps, ownership, permissions, and ACLs
+  - **Error Reporting**: Detailed logs of any transfer failures or discrepancies
+
+- **Performance Features:**
+  - **Parallel Transfers**: Multi-threaded transfers for faster performance
+  - **Bandwidth Throttling**: Control network utilization to limit impact on operations
+  - **Incremental Transfers**: Only transfer changed data in subsequent runs
+  - **Compression**: Reduce transfer time and bandwidth usage
+  - **Performance Optimization**: Automatic tuning based on network conditions
+
+- **Scheduling and Automation:**
+  - **One-time Transfers**: Manual execution for migration scenarios
+  - **Scheduled Transfers**: Hourly, daily, weekly, or custom schedules
+  - **Event-driven Transfers**: Trigger transfers based on CloudWatch Events
+  - **API Integration**: Programmatic control via AWS SDK and CLI
+  - **CloudFormation Support**: Infrastructure as Code deployment
+
+- **Security Features:**
+  - **Encryption in Transit**: TLS 1.2 encryption for all data transfers
+  - **Encryption at Rest**: Inherit destination encryption settings (KMS, S3 SSE)
+  - **IAM Integration**: Fine-grained access control and permissions
+  - **VPC Integration**: Private network connectivity without internet exposure
+  - **Network Security**: Security groups and NACLs for access control
+
+- **Monitoring and Logging:**
+  - **CloudWatch Metrics**: Transfer progress, throughput, and completion status
+  - **CloudWatch Logs**: Detailed transfer logs and error messages
+  - **CloudTrail Integration**: API call logging for audit and compliance
+  - **SNS Notifications**: Alerts for task completion, failure, or success
+  - **Task History**: Complete history of all task executions
+
+- **Use Cases:**
+  - **Data Migration**: One-time migration of large datasets to AWS
+  - **Hybrid Storage**: Regular synchronization between on-premises and cloud
+  - **Backup and Archive**: Automated backup of on-premises data to AWS
+  - **Data Lake Population**: Transfer data from various sources to S3 data lakes
+  - **Content Distribution**: Replicate content across multiple AWS regions
+  - **Disaster Recovery**: Maintain synchronized copies for disaster recovery
+
+- **DataSync vs. Other Transfer Methods:**
+
+  | Feature | DataSync | AWS Transfer Family | Storage Gateway |
+  |---------|----------|-------------------|-----------------|
+  | **Use Case** | Bulk data migration | FTP/SFTP protocols | Hybrid storage |
+  | **Performance** | Up to 10x faster | Protocol limited | Real-time access |
+  | **Protocols** | NFS, SMB, HDFS | FTP, SFTP, FTPS | NFS, SMB, iSCSI |
+  | **Scheduling** | Yes | Limited | Continuous |
+
+- **Pricing Model:**
+  - **Data Transfer**: Pay per GB of data transferred
+  - **No Infrastructure Costs**: No need to provision or manage servers
+  - **No Minimum Fees**: Pay only for actual data transferred
+  - **Cross-Region Charges**: Additional charges for cross-region transfers
+  - **VPC Endpoint Charges**: Additional charges when using VPC endpoints
+
+- **Best Practices:**
+  - **Bandwidth Management**: Use throttling during business hours to minimize impact
+  - **Network Optimization**: Use Direct Connect for large, recurring transfers
+  - **Security**: Enable encryption and use VPC endpoints for sensitive data
+  - **Monitoring**: Set up CloudWatch alarms for transfer failures
+  - **Testing**: Start with small test transfers to validate configuration
+  - **Scheduling**: Plan transfers during off-peak hours for better performance
+
+- **Agent Deployment Options:**
+  - **VMware vSphere**: VM deployment on ESXi hosts
+  - **Microsoft Hyper-V**: VM deployment on Hyper-V infrastructure
+  - **Linux KVM**: VM deployment on KVM-based virtualization
+  - **Amazon EC2**: Deploy agent in AWS for cloud-to-cloud transfers
+  - **Hardware Appliance**: Physical appliance for high-performance scenarios
+
+- **Advanced Features:**
+  - **Filters**: Include/exclude files based on patterns or attributes
+  - **Overwrite Behavior**: Configure how to handle existing files at destination
+  - **Task Reporting**: Detailed reports of transfer results and statistics
+  - **Multi-Region Support**: Transfer data across different AWS regions
+  - **Cross-Account Transfers**: Transfer data between different AWS accounts
+
+- **Limitations:**
+  - **File System Support**: Limited to supported protocols (NFS, SMB, HDFS)
+  - **Agent Requirements**: Requires agent deployment for on-premises sources
+  - **Network Dependency**: Performance depends on network bandwidth and latency
+  - **Regional Availability**: Not available in all AWS regions
 
 - **Exam Tips:**
-  - Use for migrating large datasets to AWS (one-time transfers)
-  - Use for recurring transfers in hybrid environments
-  - More feature-rich than AWS Transfer Family (which focuses on FTP/SFTP protocols)
-  - Up to 10x faster than open-source tools
-  - Tasks can be scheduled to run hourly, daily, or weekly
-  - Pay only for data transferred (no minimum fees or upfront commitments)
+  - DataSync is specifically for moving large amounts of data to/from AWS
+  - Agent required for on-premises sources, not needed for AWS-to-AWS transfers
+  - Up to 10x faster than traditional tools due to optimizations
+  - Preserves file metadata and permissions during transfers
+  - Use for one-time migrations or recurring synchronization
+  - Integrates with VPC endpoints for private connectivity
+  - Remember the supported protocols: NFS, SMB, HDFS
+  - Different from AWS Transfer Family (which focuses on FTP/SFTP)
+  - Can transfer between AWS services (S3 to EFS, etc.)
+  - Scheduling capabilities for automated, recurring transfers
 
 ---
 
@@ -1262,25 +2659,31 @@ Jump directly to specific AWS service documentation:
 
 ---
 
-## 14. Glossary
+## 14. Exam Tips & Scenarios
 
-- **Region:** A geographical area with multiple, isolated locations known as Availability Zones
-- **Availability Zone (AZ):** A data center or group of data centers within a region
-- **Edge Location:** A site for content delivery (CloudFront, Route 53)
-- **IAM:** Identity and Access Management
-- **S3:** Simple Storage Service
-- **EC2:** Elastic Compute Cloud
-- **VPC:** Virtual Private Cloud
-- **RDS:** Relational Database Service
-- **DynamoDB:** Managed NoSQL database
-- **CloudWatch:** Monitoring and observability service
-- **CloudTrail:** API call logging service
-- **KMS:** Key Management Service
-- **SCP:** Service Control Policy
+*This section is currently the same as Section 13. Content will be differentiated in future updates.*
 
 ---
 
-## Mnemonic Devices
+## 15. Practical Scenario Walkthroughs
+
+*This section will contain detailed walkthroughs of common AWS architecture scenarios. Content to be added.*
+
+---
+
+## 16. Common Misconceptions
+
+*This section will address frequent misunderstandings about AWS services and concepts. Content to be added.*
+
+---
+
+## 17. Service Comparison & Decision Trees
+
+*This section will provide detailed service comparisons and decision frameworks. Content to be added.*
+
+---
+
+## 18. Mnemonic Devices
 
 > This section provides memory aids to help you remember complex AWS concepts, service features, and relationships.
 
@@ -1382,192 +2785,20 @@ Jump directly to specific AWS service documentation:
 - **G** - Gateway Endpoints
 - **E** - Egress-only Internet Gateway
 
-### Cognito
+---
 
-[Back to Service Index](#aws-service-quick-index)
+## 19. Glossary
 
-- **What:** Authentication, authorization, and user management service for web and mobile applications.
-
-- **Key Concepts:**
-  - User Pools: User directory service with sign-up/sign-in functionality
-    - Provides JSON Web Tokens (JWT) upon authentication
-    - Supports MFA and customizable web UI
-    - Handles user profiles and directory management
-  - Identity Pools: Provides temporary AWS credentials
-    - Allows guest access (unauthenticated identities)
-    - Supports federated identities (Google, Facebook, SAML, etc.)
-    - Assumes IAM roles to access AWS resources
-  - Can use both User Pools and Identity Pools together
-
-- **Exam Tips:**
-  - Understand the difference between User Pools (authentication) and Identity Pools (authorization)
-  - User Pools authenticate users and return tokens; Identity Pools authorize access to AWS resources
-  - Identity pools can work with social identity providers and Cognito User Pools
-  - Cognito can handle guest users through unauthenticated identities
-  - Temporary credentials from Identity Pools use IAM roles
-
-## Detective
-
-[Back to Service Index](#aws-service-quick-index)
-
-- **What:** Security service that automatically collects log data from AWS resources and uses machine learning, statistical analysis, and graph theory to help identify security issues or suspicious activities.
-
-- **Key Concepts:**
-  - Analyzes trillions of events from multiple data sources like VPC Flow Logs, CloudTrail, and GuardDuty
-  - Creates a unified, interactive view of resource behavior and interactions over time
-  - Provides visualizations to identify patterns and anomalies
-  - Helps with in-depth security investigations and root cause analysis
-  - Complements GuardDuty by providing deep analysis capabilities
-
-- **Exam Tips:**
-  - Unlike GuardDuty, which focuses on real-time threat detection, Detective focuses on investigation and analysis
-  - No need to set up or maintain complex data collection and analysis infrastructure
-  - Works best when used with other AWS security services (GuardDuty, Security Hub, etc.)
-  - Stores and analyzes up to a year of historical event data
-  - Helps answer questions like "who accessed this resource?" and "what actions did an IAM role take?"
-  - No agents required - uses existing AWS log sources
-
-## Systems Manager
-
-[Back to Service Index](#aws-service-quick-index)
-
-- **What:** A suite of management tools that helps you automate operational tasks across your AWS resources.
-
-- **Key Concepts:**
-  - Automation of operational tasks
-  - Management of AWS resources at scale
-  - Secure access to instances without opening inbound ports
-  - Several components including:
-    - Parameter Store: Secure storage for configuration data and secrets
-    - Run Command: Remote execution of commands or scripts
-    - Patch Manager: Automated patching process
-    - State Manager: Ensures resources maintain a defined state
-    - Session Manager: Browser-based shell or CLI access to instances
-    - Inventory: Collects metadata about instances and installed software
-
-  - **Parameter Store:**
-    - Storage for configuration data and secrets
-    - Supports plain text (String, StringList) and encrypted values (SecureString)
-    - Hierarchical storage with versioning
-    - Integration with KMS for encryption
-    - No additional cost for standard parameters
-
-- **Exam Tips:**
-  - Requires the SSM Agent to be installed on managed instances
-  - Provides a unified interface for multiple AWS resource types
-  - Use Parameter Store for storing configuration data instead of hardcoding values
-  - Session Manager eliminates the need for bastion hosts or SSH key management
-  - Integrates with CloudWatch for monitoring and IAM for access control
-  - Supports both EC2 instances and on-premises servers (with hybrid activations)
-
-## Trusted Advisor
-
-[Back to Service Index](#aws-service-quick-index)
-
-- **What:** An online tool that provides real-time guidance to help you provision your resources following AWS best practices.
-
-- **Key Concepts:**
-  - Analyzes your AWS environment and makes recommendations in five categories:
-    - Cost Optimization: Identifying idle and underutilized resources
-    - Performance: Suggestions to improve service performance
-    - Security: Identifying security vulnerabilities and closing gaps
-    - Fault Tolerance: Increasing resiliency by eliminating single points of failure
-    - Service Limits: Notifying when you approach service quotas
-  - Different tiers based on AWS Support plan:
-    - Basic/Developer: Limited to core checks
-    - Business/Enterprise: Full set of checks with programmatic access
-
-- **Exam Tips:**
-  - Business and Enterprise Support plans get access to all Trusted Advisor checks
-  - Can integrate with CloudWatch Events for automated actions based on alerts
-  - Use for identifying cost-saving opportunities, improving security posture, and ensuring optimal resource utilization
-  - Complements other AWS services like Cost Explorer (cost) and Inspector (security)
-  - Unlike manual auditing, provides continuous, automated guidance
-  - Recommendations are based on AWS best practices and the experience of serving hundreds of thousands of AWS customers
-
-## AWS Backup
-
-[Back to Service Index](#aws-service-quick-index)
-
-- **What:** A fully managed, centralized backup service that makes it easy to automate the backup of data across AWS services.
-
-- **Key Concepts:**
-  - Centralized management for backups across multiple AWS services
-  - Policy-based backup solution with scheduling capabilities
-  - Support for cross-region and cross-account backup
-  - Backup plans define backup frequency, window, and retention periods
-  - Backup vaults store and organize recovery points
-
-- **Supported AWS Services:**
-  - Amazon EC2, EBS, RDS, Aurora, DynamoDB
-  - Amazon EFS, FSx for Windows File Server, FSx for Lustre
-  - Amazon S3, VMware workloads, AWS Storage Gateway
-
-- **Key Features:**
-  - Point-in-time recovery for supported services
-  - Lifecycle management to automatically transition recovery points to cold storage
-  - AWS Organizations integration for multi-account management
-  - Tag-based backup policies
-  - Access control via IAM
-
-- **Exam Tips:**
-  - Use when you need to centralize and automate backup across multiple AWS services
-  - Simplifies compliance requirements by allowing consistent backup policies
-  - More cost-effective than managing individual service backups
-  - Can help meet Recovery Point Objectives (RPO) through scheduled, automated backups
-  - Provides a consistent way to protect AWS workloads across multiple services
-  - Does not eliminate service-specific backup options, but provides a unified management layer
-
-## Elastic Load Balancing (ELB)
-
-[Back to Service Index](#aws-service-quick-index)
-
-- **What:** A service that automatically distributes incoming application traffic across multiple targets, such as EC2 instances, containers, and IP addresses.
-
-- **Types of Load Balancers:**
-  - **Application Load Balancer (ALB)** - Layer 7 load balancer for HTTP/HTTPS traffic
-  - **Network Load Balancer (NLB)** - Layer 4 load balancer for TCP, TLS, UDP traffic
-  - **Gateway Load Balancer (GWLB)** - For deploying, scaling, and managing third-party virtual appliances
-  - **Classic Load Balancer (CLB)** - Legacy load balancer (not recommended for new implementations)
-
-- **Application Load Balancer (ALB):**
-  - Works at Layer 7 (application layer)
-  - Content-based routing with rules based on HTTP headers, paths, host headers
-  - Support for WebSockets
-  - HTTP/HTTPS traffic only (SSL termination)
-  - Can route to multiple target groups based on URL paths or host headers
-  - Integrates with AWS WAF for application-level protection
-  - Slower than NLB but more feature-rich for HTTP/HTTPS applications
-
-- **Network Load Balancer (NLB):**
-  - Works at Layer 4 (transport layer)
-  - Handles millions of requests per second with ultra-low latency
-  - Supports static IP addresses for each AZ and elastic IP addresses
-  - Preserves source IP address of clients
-  - Supports TCP, UDP, TLS protocols
-  - Ideal for non-HTTP protocols (SMTP, SSH, game servers, financial apps)
-  - Supports unbroken encryption (end-to-end TLS)
-
-- **Gateway Load Balancer (GWLB):**
-  - Helps deploy, scale, and manage third-party virtual appliances
-  - Examples: firewalls, intrusion detection/prevention systems, deep packet inspection
-  - Uses GENEVE protocol (port 6081)
-  - Combines functions of a transparent network gateway and load balancer
-  - Works with GWLB endpoints to route traffic to/from virtual appliances
-
-- **Common Features:**
-  - Health checks to ensure traffic is only sent to healthy targets
-  - Integration with Auto Scaling Groups
-  - Support for sticky sessions (session affinity)
-  - Cross-zone load balancing for even distribution across AZs
-  - Access logs to S3 for detailed connection information
-  - Connection draining (deregistration delay) for graceful target removal
-
-- **Exam Tips:**
-  - Choose ALB for HTTP/HTTPS applications and content-based routing
-  - Choose NLB for highest performance, static IPs, or non-HTTP protocols
-  - Choose GWLB for deploying security appliances and traffic inspection
-  - Load balancers operate in multiple AZs for high availability
-  - ALB terminates HTTPS connections; NLB allows end-to-end encryption
-  - Internal load balancers have only private IPs; internet-facing have public IPs
-  - Target groups can include EC2 instances, IP addresses, Lambda functions, or containers
+- **Region:** A geographical area with multiple, isolated locations known as Availability Zones
+- **Availability Zone (AZ):** A data center or group of data centers within a region
+- **Edge Location:** A site for content delivery (CloudFront, Route 53)
+- **IAM:** Identity and Access Management
+- **S3:** Simple Storage Service
+- **EC2:** Elastic Compute Cloud
+- **VPC:** Virtual Private Cloud
+- **RDS:** Relational Database Service
+- **DynamoDB:** Managed NoSQL database
+- **CloudWatch:** Monitoring and observability service
+- **CloudTrail:** API call logging service
+- **KMS:** Key Management Service
+- **SCP:** Service Control Policy
