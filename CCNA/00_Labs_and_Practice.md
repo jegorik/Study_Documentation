@@ -12,7 +12,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 ## Basic Labs
 
 ### Lab 1: Basic Device Configuration
+
 **Objective:** Configure basic settings on a Cisco router and switch
+
 - [ ] Configure hostnames, passwords, and banners
 - [ ] Configure console, VTY, and enable passwords
 - [ ] Set up IP addressing on router interfaces
@@ -21,7 +23,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 - [ ] Practice password recovery
 
 ### Lab 2: Basic Switching
+
 **Objective:** Configure and verify basic switching operations
+
 - [ ] Create VLANs and assign ports
 - [ ] Configure trunk links between switches
 - [ ] Verify VLAN configuration and port assignments
@@ -29,7 +33,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 - [ ] Test connectivity between devices in the same and different VLANs
 
 ### Lab 3: Static Routing
+
 **Objective:** Configure and verify static routes
+
 - [ ] Set up a three-router topology
 - [ ] Configure IP addressing
 - [ ] Configure static routes between networks
@@ -40,7 +46,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 ## Intermediate Labs
 
 ### Lab 4: VLANs and Inter-VLAN Routing
+
 **Objective:** Configure inter-VLAN routing using router-on-a-stick
+
 - [ ] Configure multiple VLANs on switches
 - [ ] Configure subinterfaces on router
 - [ ] Configure inter-VLAN routing
@@ -48,7 +56,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 - [ ] Troubleshoot inter-VLAN routing issues
 
 ### Lab 5: OSPF Routing
+
 **Objective:** Configure and verify single-area OSPF
+
 - [ ] Set up multi-router topology
 - [ ] Configure OSPF on all routers
 - [ ] Verify OSPF adjacencies and database
@@ -56,7 +66,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 - [ ] Configure OSPF authentication
 
 ### Lab 6: ACLs and NAT
+
 **Objective:** Configure and verify ACLs and NAT
+
 - [ ] Create standard and extended ACLs
 - [ ] Apply ACLs to interfaces
 - [ ] Verify ACL operation
@@ -67,7 +79,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 ## Advanced Labs
 
 ### Lab 7: EtherChannel and Spanning Tree
+
 **Objective:** Configure and verify EtherChannel and STP
+
 - [ ] Configure LACP EtherChannel between switches
 - [ ] Verify EtherChannel operation
 - [ ] Configure Rapid PVST+
@@ -76,7 +90,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 - [ ] Test STP failover and convergence
 
 ### Lab 8: DHCP and DNS
+
 **Objective:** Configure and verify DHCP and DNS services
+
 - [ ] Configure DHCP server on Cisco router
 - [ ] Configure DHCP client on devices
 - [ ] Configure DHCP relay
@@ -84,7 +100,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 - [ ] Verify DHCP and DNS operation
 
 ### Lab 9: Wireless Configuration
+
 **Objective:** Configure basic wireless network
+
 - [ ] Set up a WLC (or AP in autonomous mode)
 - [ ] Configure WLAN with WPA2 security
 - [ ] Configure client connectivity
@@ -92,7 +110,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 - [ ] Configure guest wireless access
 
 ### Lab 10: Network Services and Security
+
 **Objective:** Configure various network services and security features
+
 - [ ] Configure SSH for remote access
 - [ ] Configure NTP client/server
 - [ ] Set up Syslog
@@ -103,7 +123,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 ## Comprehensive Practice Scenarios
 
 ### Scenario 1: Small Business Network
+
 **Objective:** Design and implement a complete small business network
+
 - [ ] Design appropriate addressing scheme
 - [ ] Configure routing and switching infrastructure
 - [ ] Implement appropriate security measures
@@ -111,7 +133,9 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 - [ ] Test and troubleshoot end-to-end connectivity
 
 ### Scenario 2: Branch Office Connectivity
+
 **Objective:** Set up a branch office with connectivity to HQ
+
 - [ ] Configure branch routers and switches
 - [ ] Set up WAN connectivity
 - [ ] Implement routing between sites
@@ -121,24 +145,28 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 ## Troubleshooting Exercises
 
 ### Exercise 1: VLAN and Trunking Issues
+
 - [ ] Identify and fix misconfigured VLANs
 - [ ] Troubleshoot trunk links
 - [ ] Resolve native VLAN mismatches
 - [ ] Fix incorrect port assignments
 
 ### Exercise 2: Routing Problems
+
 - [ ] Diagnose and fix routing protocol issues
 - [ ] Resolve incorrect routing tables
 - [ ] Fix packet forwarding problems
 - [ ] Troubleshoot adjacency issues
 
 ### Exercise 3: Access Control Issues
+
 - [ ] Troubleshoot ACL problems
 - [ ] Identify incorrect NAT configurations
 - [ ] Fix broken remote access
 - [ ] Resolve security policy conflicts
 
 ## Additional Resources
+
 - [Cisco Packet Tracer](https://www.netacad.com/courses/packet-tracer)
 - [GNS3](https://www.gns3.com/)
 - [EVE-NG](https://www.eve-ng.net/)
@@ -146,7 +174,7 @@ This document outlines practice labs and tasks to reinforce your CCNA knowledge.
 
 ## Lab Documentation Template
 
-```
+```markdown
 # Lab Title
 Date: [Date]
 Duration: [Time taken]

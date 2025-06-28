@@ -3,6 +3,7 @@
 This template can be used to create flashcards from your notes for effective knowledge retention.
 
 ## How to Use This Template
+
 1. Create a new note in your CCNA folder
 2. Title it "CCNA Flashcards - [Topic]" 
 3. Copy the template below
@@ -10,7 +11,7 @@ This template can be used to create flashcards from your notes for effective kno
 
 ## Template
 
-```
+```text
 Question: [Insert question here]
 Answer: [Insert answer here]
 Topic: [Topic category]
@@ -46,6 +47,7 @@ Difficulty: Medium
 Reference: [[5. Security Fundamentals/5.1 Enterprise Security Fundamentals]]
 
 ## Study Schedule
+
 - Week 1-2: Network Fundamentals
 - Week 3-4: Network Access
 - Week 5-6: IP Connectivity

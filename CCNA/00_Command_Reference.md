@@ -3,6 +3,7 @@
 A comprehensive reference for essential Cisco IOS commands organized by topic.
 
 ## Basic Device Management
+
 | Command                              | Description                     | Mode              |
 |--------------------------------------|---------------------------------|-------------------|
 | `enable`                             | Enter privileged EXEC mode      | User EXEC         |
@@ -16,6 +17,7 @@ A comprehensive reference for essential Cisco IOS commands organized by topic.
 | `shutdown`                           | Disable interface               | Interface config  |
 
 ## Interface Configuration
+
 | Command                           | Description                       | Mode              |
 |-----------------------------------|-----------------------------------|-------------------|
 | `interface [type][slot/number]`   | Enter interface configuration mode| Global config     |
@@ -28,6 +30,7 @@ A comprehensive reference for essential Cisco IOS commands organized by topic.
 | `show ip interface brief`         | Display IP interface summary      | Privileged EXEC   |
 
 ## Switching
+
 | Command                                    | Description                            | Mode             |
 |--------------------------------------------|----------------------------------------|------------------|
 | `vlan [vlan-id]`                           | Create VLAN and enter VLAN config mode | Global config    |
@@ -41,6 +44,7 @@ A comprehensive reference for essential Cisco IOS commands organized by topic.
 | `show interfaces trunk`                    | Display trunk ports information        | Privileged EXEC  |
 
 ## Spanning Tree Protocol
+
 | Command                                      | Description                    | Mode             |
 |----------------------------------------------|--------------------------------|------------------|
 | `spanning-tree mode [pvst/rapid-pvst/mst]`   | Set STP mode                   | Global config    |
@@ -51,6 +55,7 @@ A comprehensive reference for essential Cisco IOS commands organized by topic.
 | `show spanning-tree`                         | Display STP information        | Privileged EXEC  |
 
 ## Routing
+
 | Command                                      | Description                      | Mode           |
 |----------------------------------------------|----------------------------------|----------------|
 | `ip routing`                                 | Enable IP routing                | Global config  |
@@ -61,6 +66,7 @@ A comprehensive reference for essential Cisco IOS commands organized by topic.
 | `show ip ospf neighbor`                      | Display OSPF neighbors           | Privileged EXEC|
 
 ## ACLs
+
 | Command                                                                | Description                      | Mode             |
 |------------------------------------------------------------------------|----------------------------------|------------------|
 | `access-list [number] [permit/deny] [source] [wildcard]`               | Create standard ACL              | Global config    |
@@ -70,6 +76,7 @@ A comprehensive reference for essential Cisco IOS commands organized by topic.
 | `show ip interface`                                                    | Show ACLs applied to interface   | Privileged EXEC  |
 
 ## NAT
+
 | Command                                                                    | Description              | Mode             |
 |----------------------------------------------------------------------------|--------------------------|------------------|
 | `ip nat inside`                                                            | Mark interface as inside | Interface config |
@@ -80,6 +87,7 @@ A comprehensive reference for essential Cisco IOS commands organized by topic.
 | `show ip nat translations`                                                 | Display NAT translations | Privileged EXEC  |
 
 ## DHCP
+
 | Command                                        | Description                 | Mode             |
 |------------------------------------------------|-----------------------------|------------------|
 | `ip dhcp pool [name]`                          | Create DHCP pool            | Global config    |
@@ -91,6 +99,7 @@ A comprehensive reference for essential Cisco IOS commands organized by topic.
 | `show ip dhcp binding`                         | Display DHCP bindings       | Privileged EXEC  |
 
 ## Security
+
 | Command                              | Description                  | Mode           |
 |--------------------------------------|------------------------------|----------------|
 | `username [name] password [password]`| Create local user            | Global config  |
@@ -104,6 +113,7 @@ A comprehensive reference for essential Cisco IOS commands organized by topic.
 | `crypto key generate rsa`            | Generate RSA key for SSH     | Global config  |
 
 ## Device Monitoring
+
 | Command                   | Description                 | Mode                |
 |---------------------------|-----------------------------|---------------------|
 | `show version`            | Display device information  | Privileged EXEC     |
