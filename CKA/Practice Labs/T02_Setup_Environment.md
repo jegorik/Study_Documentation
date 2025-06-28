@@ -9,6 +9,7 @@
 ## 🏛️ Scenario Context
 
 This setup creates a **FinServ Bank** environment where:
+
 - Payment processing microservices lose connectivity during peak trading hours
 - Multiple potential root causes simulate real production network failures
 - Students must systematically diagnose and restore service connectivity
@@ -342,6 +343,7 @@ echo "⏰ Students have 25 minutes to restore connectivity..."
 ## 🔍 Verification Commands
 
 ### **Environment Health Check**
+
 ```bash
 # Overall system status
 kubectl get all -n finserv-payments
@@ -357,6 +359,7 @@ kubectl get events --sort-by=.metadata.creationTimestamp -n finserv-payments
 ```
 
 ### **Connectivity Testing Tools**
+
 ```bash
 # Create debug pod for network testing
 kubectl run network-debug --image=busybox:1.35 --rm -it -n finserv-payments -- sh
@@ -374,6 +377,7 @@ kubectl exec -it network-debug -n finserv-payments -- nslookup kubernetes.defaul
 ```
 
 ### **Real-time Monitoring**
+
 ```bash
 # Monitor service endpoint changes
 kubectl get endpoints -w -n finserv-payments
@@ -395,24 +399,28 @@ kubectl get pods -l k8s-app=kube-dns -n kube-system
 Students should observe these symptoms depending on the scenario:
 
 ### **DNS Failure Symptoms:**
+
 - Services resolve to `NXDOMAIN` or incorrect IPs
 - Connectivity works with direct IP but fails with service names
 - CoreDNS logs show resolution errors
 - Cross-namespace DNS resolution problems
 
 ### **Service Selector Symptoms:**
+
 - Service endpoints show no available backends
 - `kubectl get endpoints` shows empty endpoint list
 - Pods are healthy but not receiving traffic
 - Service traffic load balancing fails
 
 ### **Network Policy Symptoms:**
+
 - Connection timeouts between services
 - Pods can't reach external DNS
 - Communication works from some pods but not others
 - Policy logs (if available) show blocked connections
 
 ### **Port Configuration Symptoms:**
+
 - Connections refused on expected ports
 - Service responds but backend pods don't receive traffic
 - Port mismatch between service and container definitions
@@ -458,23 +466,27 @@ echo "✅ FinServ Bank environment cleaned up successfully"
 ## 🔧 Instructor Notes
 
 ### **Timing Setup:**
+
 1. **Pre-lab (8-10 min):** Execute Steps 1-3 to establish baseline environment
 2. **Lab Start:** Choose and execute ONE failure scenario from Step 4
 3. **During Lab:** Monitor student progress and provide guided hints if needed
 
 ### **Scenario Selection Guide:**
+
 - **DNS Failure (A):** Best for testing systematic DNS troubleshooting
 - **Service Selector (B):** Good for service/endpoint relationship understanding  
 - **Network Policy (C):** Advanced scenario for security-aware students
 - **Port Configuration (D):** Basic but tricky configuration debugging
 
 ### **Common Student Approaches:**
+
 - **Overwhelmed Response:** May try complex solutions before checking basics
 - **Tool Dependency:** Over-reliance on monitoring tools vs systematic debugging
 - **Scope Confusion:** Difficulty determining if problem is local or cluster-wide
 - **DNS Assumptions:** Not considering DNS as potential root cause
 
 ### **Success Indicators:**
+
 - Systematic troubleshooting approach (service → endpoints → pods → network)
 - Effective use of kubectl debugging commands
 - Proper DNS testing from pod contexts
@@ -482,12 +494,14 @@ echo "✅ FinServ Bank environment cleaned up successfully"
 - Ability to verify fix effectiveness
 
 ### **Extension Scenarios:**
+
 - **Multi-failure:** Combine 2+ failure modes for advanced challenge
 - **Cross-namespace:** Add services in different namespaces with communication issues
 - **External Dependencies:** Include external service connectivity problems
 - **Performance:** Add latency/bandwidth issues alongside connectivity problems
 
 ### **Troubleshooting Hints by Scenario:**
+
 - **DNS:** Focus on CoreDNS logs and configuration
 - **Selector:** Compare service selectors with pod labels
 - **Network Policy:** Trace ingress/egress rules systematically

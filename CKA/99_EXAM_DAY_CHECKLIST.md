@@ -50,7 +50,7 @@ kubectl get nodes -o wide                   # Node details
 kubectl get componentstatuses               # Control plane health
 kubectl config get-contexts                 # Available contexts
 kubectl config use-context <context>        # Switch context
-```
+```bash
 
 ### Resource Management (CRUD Operations)
 ```bash
@@ -79,7 +79,7 @@ kubectl patch deployment nginx -p '{"spec":{"replicas":5}}'
 kubectl delete pod <pod-name>
 kubectl delete deployment nginx
 kubectl delete all --selector=app=nginx
-```
+```bash
 
 ### Scaling and Updates
 ```bash
@@ -88,7 +88,7 @@ kubectl set image deployment/nginx nginx=nginx:1.21
 kubectl rollout status deployment/nginx
 kubectl rollout history deployment/nginx
 kubectl rollout undo deployment/nginx --to-revision=1
-```
+```bash
 
 ### Troubleshooting Commands
 ```bash
@@ -98,21 +98,21 @@ kubectl exec -it <pod-name> -- /bin/bash    # Execute into pod
 kubectl port-forward <pod-name> 8080:80     # Port forwarding
 kubectl top nodes                           # Node resource usage
 kubectl top pods                            # Pod resource usage
-```
+```bash
 
 ### Configuration and Secrets
 ```bash
 kubectl create configmap app-config --from-file=config.yaml
 kubectl create secret tls tls-secret --cert=tls.crt --key=tls.key
 kubectl get configmaps,secrets -o yaml
-```
+```text
 
 ### YAML Generation and Dry-run
 ```bash
 kubectl create deployment nginx --image=nginx --dry-run=client -o yaml > deployment.yaml
 kubectl run pod1 --image=nginx --dry-run=client -o yaml > pod.yaml
 kubectl expose deployment nginx --port=80 --dry-run=client -o yaml > service.yaml
-```
+```text
 
 ---
 
@@ -130,7 +130,7 @@ kubectl logs <pod-name>
 # - Resource constraints  
 # - Configuration errors
 # - Node capacity
-```
+```bash
 
 ### Scenario 2: Service Not Accessible
 ```bash
@@ -145,7 +145,7 @@ kubectl run debug --image=busybox --rm -it -- wget -qO- <service-name>:80
 # - Wrong selector labels
 # - Port mismatches
 # - Network policies blocking traffic
-```
+```bash
 
 ### Scenario 3: Node Issues
 ```bash
@@ -161,7 +161,7 @@ kubectl describe node <node-name> | grep -A 5 "Allocated resources"
 kubectl cordon <node-name>              # Mark unschedulable
 kubectl drain <node-name> --ignore-daemonsets --force
 kubectl uncordon <node-name>            # Mark schedulable
-```
+```bash
 
 ### Scenario 4: Persistent Volume Issues
 ```bash
@@ -174,7 +174,7 @@ kubectl describe pvc <pvc-name>
 # - Storage class problems
 # - Access mode mismatches
 # - Size constraints
-```
+```bash
 
 ### Scenario 5: Security and RBAC
 ```bash
@@ -186,7 +186,7 @@ kubectl get roles,rolebindings,clusterroles,clusterrolebindings
 kubectl create serviceaccount mysa
 kubectl create role pod-reader --verb=get,list --resource=pods
 kubectl create rolebinding read-pods --role=pod-reader --serviceaccount=default:mysa
-```
+```bash
 
 ---
 
@@ -200,7 +200,7 @@ kubectl create rolebinding read-pods --role=pod-reader --serviceaccount=default:
 /var/lib/kubelet/                  # Kubelet data
 /var/lib/etcd/                     # etcd data
 /var/log/containers/               # Container logs
-```
+```text
 
 ### Key Configuration Files
 ```bash
@@ -208,14 +208,14 @@ kubectl create rolebinding read-pods --role=pod-reader --serviceaccount=default:
 /etc/kubernetes/admin.conf         # Admin kubeconfig  
 /var/lib/kubelet/config.yaml       # Kubelet configuration
 /etc/kubernetes/manifests/kube-apiserver.yaml    # API server config
-```
+```bash
 
 ### Service Files (systemd)
 ```bash
 /etc/systemd/system/kubelet.service
 /etc/systemd/system/docker.service
 /etc/systemd/system/containerd.service
-```
+```text
 
 ---
 
@@ -267,7 +267,7 @@ spec:
       limits:
         cpu: 500m
         memory: 512Mi
-```
+```yaml
 
 ### Service Definition
 ```yaml
@@ -282,7 +282,7 @@ spec:
   - port: 80
     targetPort: 8080
   type: ClusterIP
-```
+```text
 
 ### Network Policy Example
 ```yaml
@@ -295,7 +295,7 @@ spec:
   policyTypes:
   - Ingress
   - Egress
-```
+```yaml
 
 ### Persistent Volume Claim
 ```yaml
@@ -310,7 +310,7 @@ spec:
     requests:
       storage: 1Gi
   storageClassName: standard
-```
+```text
 
 ---
 

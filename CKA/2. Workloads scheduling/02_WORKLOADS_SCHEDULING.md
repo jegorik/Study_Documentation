@@ -24,7 +24,7 @@
 
 ### Study Resources
 
-- Official Kubernetes Documentation: https://kubernetes.io/docs/concepts/workloads/
+- Official Kubernetes Documentation: <https://kubernetes.io/docs/concepts/workloads/>
 - CNCF Training Materials: Application Lifecycle Management
 - Practice Labs: Workload deployment and management
 

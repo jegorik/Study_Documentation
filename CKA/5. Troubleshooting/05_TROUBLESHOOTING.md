@@ -24,7 +24,7 @@
 
 ### Study Resources
 
-- Official Kubernetes Documentation: https://kubernetes.io/docs/tasks/debug-application-cluster/
+- Official Kubernetes Documentation: <https://kubernetes.io/docs/tasks/debug-application-cluster/>
 - CNCF Training Materials: Troubleshooting and Monitoring
 - Practice Labs: Failure scenarios and debugging
 

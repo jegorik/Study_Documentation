@@ -344,7 +344,7 @@ kubectl wait --for=condition=ready pod -l app=api-gateway -n ecommerce --timeout
 kubectl wait --for=condition=ready pod -l app=checkout -n ecommerce --timeout=120s
 ```
 
-#### Expected Outcome:
+#### Expected Outcome
 
 - Frontend web tier deployed with 4 replicas
 - API gateway tier deployed with 3 replicas
@@ -510,7 +510,7 @@ kubectl describe service checkout-nodeport -n ecommerce
 kubectl get endpoints -n ecommerce
 ```
 
-#### Expected Outcome:
+#### Expected Outcome
 
 - LoadBalancer service configured for external frontend access
 - ClusterIP service with session affinity for API gateway

@@ -1,9 +1,11 @@
 # CKA Exam Cheat Sheets - Master Index
 
 ## 📚 Complete Study Guide for Certified Kubernetes Administrator (CKA) Exam
+
 ## 🔧 Core CKA Topics
 
 ### 1. Cluster Architecture & Components (25%)
+
 - **File:** [01_KUBERNETES_ARCHITECTURE.md](1.%20Kubernetes%20Architecture/01_KUBERNETES_ARCHITECTURE.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
@@ -13,6 +15,7 @@
   - Component troubleshooting
 
 ### 2. Workloads & Scheduling (20%)  
+
 - **File:** [02_WORKLOADS_SCHEDULING.md](2.%20Workloads%20scheduling/02_WORKLOADS_SCHEDULING.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
@@ -21,7 +24,8 @@
   - ConfigMaps and Secrets
   - Resource management and scheduling
 
-### 3. Services & Networking (20%)
+### 3. Services & Networking (15%)
+
 - **File:** [03_SERVICES_NETWORKING.md](3.%20Services%20networking/03_SERVICES_NETWORKING.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
@@ -31,6 +35,7 @@
   - DNS and service discovery
 
 ### 4. Storage (10%)
+
 - **File:** [04_STORAGE.md](4.%20Storage/04_STORAGE.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
@@ -40,6 +45,7 @@
   - Dynamic provisioning
 
 ### 5. Troubleshooting (30%)
+
 - **File:** [05_TROUBLESHOOTING.md](5.%20Troubleshooting/05_TROUBLESHOOTING.md)
 - **Status:** ✅ Complete
 - **Key Areas:**
@@ -53,16 +59,19 @@
 ## 🚀 Quick Start Guide
 
 ### For First-Time Users
+
 1. Start with [Kubernetes Architecture](1.%20Kubernetes%20Architecture/01_KUBERNETES_ARCHITECTURE.md) to understand the foundation
 2. Move to [Workloads & Scheduling](2.%20Workloads%20scheduling/02_WORKLOADS_SCHEDULING.md) for practical application management
 3. Continue with remaining topics based on your exam preparation needs
 
 ### For Exam Review
+
 1. Use the **Quick Reference Cards** in each cheat sheet for rapid review
 2. Focus on **Live Examples** sections for hands-on practice
 3. Practice **Essential Commands** listed in each topic
 
 ### For Troubleshooting Practice
+
 1. Review the **Troubleshooting Tips** in each section
 2. Practice the scenarios in **Live Examples**
 3. Use the **Table of Useful Commands** for quick command reference
@@ -72,24 +81,28 @@
 ## 📋 Study Checklist
 
 ### Week 1: Foundation
+
 - [ ] Complete Kubernetes Architecture study
 - [ ] Practice control plane troubleshooting
 - [ ] Set up personal lab environment
 - [ ] Master kubectl basic commands
 
 ### Week 2: Workloads
+
 - [ ] Practice pod and deployment management
 - [ ] Learn service configuration
 - [ ] Master ConfigMap and Secret usage
 - [ ] Practice rolling updates and rollbacks
 
 ### Week 3: Advanced Topics
+
 - [ ] Study networking and ingress
 - [ ] Learn storage configuration
 - [ ] Practice security implementations
 - [ ] Master RBAC concepts
 
 ### Week 4: Exam Preparation
+
 - [ ] Complete troubleshooting scenarios
 - [ ] Practice time management with mock exams
 - [ ] Review all quick reference cards
@@ -100,6 +113,7 @@
 ## 🛠️ Essential Tools and Commands
 
 ### Required kubectl Knowledge
+
 ```bash
 # Cluster information
 kubectl cluster-info
@@ -116,6 +130,7 @@ kubectl explain,api-resources
 ```
 
 ### Key Configuration Files
+
 - Kubeconfig: `~/.kube/config`
 - Kubelet config: `/var/lib/kubelet/config.yaml`
 - Static pods: `/etc/kubernetes/manifests/`
@@ -126,12 +141,14 @@ kubectl explain,api-resources
 ## 🎯 Exam Day Strategy
 
 ### Time Management (2 hours, 15-20 questions)
+
 - **Easy questions (40%):** 5-7 minutes each
 - **Medium questions (40%):** 8-10 minutes each  
 - **Hard questions (20%):** 12-15 minutes each
 - **Buffer time:** 10-15 minutes for review
 
 ### Question Approach
+
 1. **Read carefully** - understand what's being asked
 2. **Plan your approach** - identify required steps
 3. **Execute systematically** - use imperative commands when possible
@@ -139,6 +156,7 @@ kubectl explain,api-resources
 5. **Move on** - don't get stuck on one question
 
 ### Common Pitfalls to Avoid
+
 - Not reading the question context (namespace, cluster)
 - Forgetting to switch contexts when specified
 - Not verifying the solution works
@@ -150,16 +168,19 @@ kubectl explain,api-resources
 ## 📖 Additional Resources
 
 ### Official Documentation
+
 - [Kubernetes Documentation](https://kubernetes.io/docs/)
 - [kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
 - [CKA Curriculum](https://github.com/cncf/curriculum/blob/master/CKA_Curriculum_v1.30.pdf)
 
 ### Practice Environments
+
 - [Killer.sh CKA Simulator](https://killer.sh/cka)
 - [Play with Kubernetes](https://labs.play-with-k8s.com/)
 - [Katacoda Kubernetes Scenarios](https://katacoda.com/courses/kubernetes)
 
 ### Community Resources
+
 - [Kubernetes Slack](https://kubernetes.slack.com/)
 - [CNCF Community](https://community.cncf.io/)
 - [Kubernetes GitHub](https://github.com/kubernetes/kubernetes)
@@ -186,6 +207,7 @@ kubectl explain,api-resources
 **Next Review:** June 2025
 
 ### Version History
+
 - **v1.0** (May 29, 2025): Initial release with Architecture and Workloads
 - **v2.0** (May 29, 2025): Complete CKA coverage - Added Services & Networking, Storage, and Troubleshooting
 - **v2.1** (Current): All 5 major exam domains complete with 100% coverage

@@ -134,7 +134,7 @@ EOF
 cat /tmp/disaster-recovery/recovery-plan.md
 ```
 
-#### Expected Outcome:
+#### Expected Outcome
 
 - Infrastructure capabilities documented
 - Recovery sequence planned
@@ -147,7 +147,7 @@ cat /tmp/disaster-recovery/recovery-plan.md
 **Difficulty:** Expert  
 **Objective:** Rebuild Kubernetes control plane with backup data restoration
 
-#### Your Mission:
+#### Your Mission
 
 The control plane is the heart of your cluster. You need to rebuild it quickly while ensuring all critical configurations are restored from backups.
 
@@ -222,7 +222,7 @@ chmod +x /tmp/disaster-recovery/restore-etcd.sh
 sudo systemctl start kubelet
 ```
 
-#### Expected Outcome:
+#### Expected Outcome
 
 - Control plane operational
 - Basic cluster functionality restored
@@ -236,7 +236,7 @@ sudo systemctl start kubelet
 **Difficulty:** Advanced  
 **Objective:** Restore worker nodes and integrate them into the recovered cluster
 
-#### Your Mission:
+#### Your Mission
 
 Your trading applications need compute capacity. Restore worker nodes and ensure they're properly integrated with appropriate taints, labels, and resource configurations.
 
@@ -313,7 +313,7 @@ chmod +x /tmp/disaster-recovery/configure-nodes.sh
 /tmp/disaster-recovery/configure-nodes.sh
 ```
 
-#### Expected Outcome:
+#### Expected Outcome
 
 - Worker node join procedures prepared
 - Node labeling strategy implemented
@@ -327,7 +327,7 @@ chmod +x /tmp/disaster-recovery/configure-nodes.sh
 **Difficulty:** Expert  
 **Objective:** Restore mission-critical trading applications and their persistent data
 
-#### Your Mission:
+#### Your Mission
 
 Now that the infrastructure is ready, restore the trading applications with their data. This includes databases, trading engines, and compliance monitoring systems.
 
@@ -579,7 +579,7 @@ EOF
 kubectl apply -f /tmp/disaster-recovery/trading-engine.yaml
 ```
 
-#### Expected Outcome:
+#### Expected Outcome
 
 - Critical namespaces created with compliance labels
 - Persistent storage restored for trading data
@@ -593,7 +593,7 @@ kubectl apply -f /tmp/disaster-recovery/trading-engine.yaml
 **Difficulty:** Expert  
 **Objective:** Restore security configurations, RBAC policies, and compliance monitoring
 
-#### Your Mission:
+#### Your Mission
 
 Financial systems require strict security and compliance controls. Restore all security configurations and ensure audit trails are properly maintained for regulatory requirements.
 
@@ -845,7 +845,7 @@ EOF
 cat /tmp/disaster-recovery/recovery-report.md
 ```
 
-#### Expected Outcome:
+#### Expected Outcome
 
 - RBAC policies restored for all critical roles
 - Network security policies enforced

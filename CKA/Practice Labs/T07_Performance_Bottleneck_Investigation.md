@@ -8,6 +8,7 @@
 ## 📋 Lab Overview
 
 ### Scenario
+
 You're the Senior Site Reliability Engineer at **TechFlow Industries**, a high-traffic SaaS platform serving 10 million users globally. The platform has been experiencing severe performance degradation over the past 48 hours:
 
 - **User-reported issues:** 300% increase in page load times
@@ -18,7 +19,8 @@ You're the Senior Site Reliability Engineer at **TechFlow Industries**, a high-t
 The CEO has escalated this as a **P0 incident**. Multiple teams have investigated but the root cause remains elusive. As the Kubernetes expert, you're the final escalation point to identify and resolve the performance bottlenecks before the next business day.
 
 ### Crisis Situation
-```
+
+```text
 🚨 CRITICAL ALERT DASHBOARD 🚨
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📊 Response Time:     2.8s avg (Target: <500ms)     🔴 CRITICAL
@@ -31,6 +33,7 @@ The CEO has escalated this as a **P0 incident**. Multiple teams have investigate
 ```
 
 ### Learning Objectives
+
 - Master systematic performance investigation methodology
 - Identify resource bottlenecks across multiple cluster components
 - Analyze complex inter-service dependencies and bottlenecks
@@ -39,7 +42,9 @@ The CEO has escalated this as a **P0 incident**. Multiple teams have investigate
 - Handle multi-layer infrastructure performance issues
 
 ### Real-World Context
+
 This scenario mirrors incidents at companies like:
+
 - **Netflix:** Global streaming performance degradation
 - **Shopify:** Black Friday traffic surge handling
 - **Slack:** Workspace performance optimization
@@ -50,6 +55,7 @@ This scenario mirrors incidents at companies like:
 ## 🛠️ Lab Environment Setup
 
 ### Cluster State (Performance Degraded)
+
 ```bash
 # Cluster overview (DEGRADED STATE)
 kubectl cluster-info
@@ -65,36 +71,38 @@ kubectl top pods --all-namespaces --sort-by=cpu
 ```
 
 ### Application Architecture
-```
+
+```text
 ┌─────────────────────────────────────────────────────┐
-│                 TECHFLOW PLATFORM                  │
+│                 TECHFLOW PLATFORM                   │
 ├─────────────────────────────────────────────────────┤
-│  🌐 Frontend (React SPA)                           │
-│  ├── Load Balancer: 10M requests/day               │
-│  └── CDN: Static assets                           │
+│  🌐 Frontend (React SPA)                            │
+│  ├── Load Balancer: 10M requests/day                │
+│  └── CDN: Static assets                             │
 ├─────────────────────────────────────────────────────┤
-│  🔗 API Gateway (Kong/Nginx)                       │
-│  ├── Rate Limiting: 1000 req/min/user             │
-│  ├── Authentication: JWT validation               │
-│  └── Routing: 12 microservices                   │
+│  🔗 API Gateway (Kong/Nginx)                        │
+│  ├── Rate Limiting: 1000 req/min/user               │
+│  ├── Authentication: JWT validation                 │
+│  └── Routing: 12 microservices                      │
 ├─────────────────────────────────────────────────────┤
-│  🏗️ Microservices Layer                            │
-│  ├── user-service: User management                │
-│  ├── auth-service: Authentication                 │
-│  ├── payment-service: Transactions               │
-│  ├── notification-service: Email/SMS             │
-│  ├── analytics-service: Data processing          │
-│  └── search-service: Elasticsearch               │
+│  🏗️ Microservices Layer                             │
+│  ├── user-service: User management                  │
+│  ├── auth-service: Authentication                   │
+│  ├── payment-service: Transactions                  │
+│  ├── notification-service: Email/SMS                │
+│  ├── analytics-service: Data processing             │
+│  └── search-service: Elasticsearch                  │
 ├─────────────────────────────────────────────────────┤
-│  💾 Data Layer                                     │
-│  ├── PostgreSQL: Primary database                │
-│  ├── Redis: Caching & sessions                   │
-│  ├── Elasticsearch: Search & analytics           │
-│  └── MinIO: Object storage                       │
+│  💾 Data Layer                                      │
+│  ├── PostgreSQL: Primary database                   │
+│  ├── Redis: Caching & sessions                      │
+│  ├── Elasticsearch: Search & analytics              │
+│  └── MinIO: Object storage                          │
 └─────────────────────────────────────────────────────┘
 ```
 
 ### Key Components Provided
+
 - Production workloads experiencing performance issues
 - Monitoring stack (Prometheus, Grafana, Jaeger)
 - Multiple microservices with complex dependencies
@@ -106,13 +114,17 @@ kubectl top pods --all-namespaces --sort-by=cpu
 ## 🎯 Tasks & Challenges
 
 ### Task 1: Rapid System Assessment (8 minutes)
+
 **Objective:** Quickly identify the scope and severity of performance issues
 
 #### Challenge Description
+
 Multiple symptoms are manifesting simultaneously, making it difficult to identify the primary bottleneck. Previous investigations by different teams have focused on individual components without a holistic view.
 
 #### Your Mission
+
 1. **Cluster Health Overview**
+
    ```bash
    # Get immediate cluster health snapshot
    kubectl get componentstatuses
@@ -124,6 +136,7 @@ Multiple symptoms are manifesting simultaneously, making it difficult to identif
    ```
 
 2. **Resource Utilization Analysis**
+
    ```bash
    # CPU and Memory pressure points
    kubectl top nodes --sort-by=cpu
@@ -138,6 +151,7 @@ Multiple symptoms are manifesting simultaneously, making it difficult to identif
    ```
 
 3. **Critical Pod Status Assessment**
+
    ```bash
    # Find problematic pods
    kubectl get pods --all-namespaces --field-selector=status.phase!=Running
@@ -150,6 +164,7 @@ Multiple symptoms are manifesting simultaneously, making it difficult to identif
    ```
 
 4. **Service Connectivity Test**
+
    ```bash
    # Test inter-service communication
    kubectl run debug-pod --rm -i --tty --image=nicolaka/netshoot -- /bin/bash
@@ -161,6 +176,7 @@ Multiple symptoms are manifesting simultaneously, making it difficult to identif
    ```
 
 5. **Initial Metrics Collection**
+
    ```bash
    # Gather baseline metrics for analysis
    kubectl get hpa --all-namespaces
@@ -170,6 +186,7 @@ Multiple symptoms are manifesting simultaneously, making it difficult to identif
    ```
 
 #### Success Criteria
+
 - [ ] Complete cluster health assessment documented
 - [ ] Top 10 resource-consuming pods identified
 - [ ] Pod restart patterns analyzed
@@ -177,6 +194,7 @@ Multiple symptoms are manifesting simultaneously, making it difficult to identif
 - [ ] Initial hypothesis formed about bottleneck location
 
 #### 🔍 Investigation Notes Template
+
 ```markdown
 ## Initial Assessment Findings
 
@@ -203,13 +221,16 @@ Secondary issues: [List of contributing factors]
 ---
 
 ### Task 2: Deep Dive Resource Investigation (12 minutes)
+
 **Objective:** Identify specific resource bottlenecks and their cascading effects
 
 #### Challenge Description
+
 Initial assessment shows multiple resource pressure points. You need to determine which bottleneck is the primary cause and which are secondary effects. Resource limits, requests, and actual usage patterns need detailed analysis.
 
 #### Your Mission
 1. **Detailed Node Resource Analysis**
+
    ```bash
    # Deep dive into node resource allocation
    kubectl describe nodes | grep -A 5 -B 5 "Allocated resources"
@@ -228,6 +249,7 @@ Initial assessment shows multiple resource pressure points. You need to determin
    ```
 
 2. **Pod Resource Requests vs Limits Analysis**
+
    ```bash
    # Analyze resource configuration mismatches
    kubectl get pods --all-namespaces -o=custom-columns=\
@@ -245,6 +267,7 @@ Initial assessment shows multiple resource pressure points. You need to determin
    ```
 
 3. **Memory and CPU Utilization Patterns**
+
    ```bash
    # Historical resource usage (if Prometheus available)
    # Query Prometheus for resource trends
@@ -259,6 +282,7 @@ Initial assessment shows multiple resource pressure points. You need to determin
    ```
 
 4. **Storage I/O Analysis**
+
    ```bash
    # Check PV usage and performance
    kubectl get pv -o custom-columns=\
@@ -278,6 +302,7 @@ Initial assessment shows multiple resource pressure points. You need to determin
    ```
 
 5. **Network Resource Investigation**
+
    ```bash
    # Check network policies that might cause bottlenecks
    kubectl get netpol --all-namespaces
@@ -292,6 +317,7 @@ Initial assessment shows multiple resource pressure points. You need to determin
    ```
 
 6. **Horizontal Pod Autoscaler Analysis**
+
    ```bash
    # HPA behavior during high load
    kubectl get hpa --all-namespaces -o wide
@@ -307,6 +333,7 @@ Initial assessment shows multiple resource pressure points. You need to determin
    ```
 
 #### Success Criteria
+
 - [ ] Node resource allocation patterns identified
 - [ ] Pod resource misconfigurations documented
 - [ ] Memory/CPU usage trends analyzed
@@ -315,6 +342,7 @@ Initial assessment shows multiple resource pressure points. You need to determin
 - [ ] HPA scaling behavior understood
 
 #### 🔍 Resource Analysis Template
+
 ```markdown
 ## Resource Bottleneck Analysis
 
@@ -343,13 +371,17 @@ Initial assessment shows multiple resource pressure points. You need to determin
 ---
 
 ### Task 3: Application-Level Performance Deep Dive (15 minutes)
+
 **Objective:** Investigate application-specific bottlenecks, database performance, and service dependencies
 
 #### Challenge Description
+
 Resource analysis points to application-level issues. You need to investigate database connections, service dependencies, caching effectiveness, and application code performance patterns that might be causing the systemic slowdown.
 
 #### Your Mission
+
 1. **Database Performance Investigation**
+
    ```bash
    # PostgreSQL performance analysis
    kubectl exec -n production deployment/postgresql -- psql -U admin -d techflow -c "
@@ -382,6 +414,7 @@ Resource analysis points to application-level issues. You need to investigate da
    ```
 
 2. **Redis Cache Performance Analysis**
+
    ```bash
    # Redis performance metrics
    kubectl exec -n production deployment/redis -- redis-cli info stats
@@ -405,6 +438,7 @@ Resource analysis points to application-level issues. You need to investigate da
    ```
 
 3. **Microservice Dependency Analysis**
+
    ```bash
    # Service mesh traffic analysis (if using Istio)
    kubectl get virtualservices --all-namespaces
@@ -423,6 +457,7 @@ Resource analysis points to application-level issues. You need to investigate da
    ```
 
 4. **Application Log Analysis**
+
    ```bash
    # Analyze application error patterns
    kubectl logs -n production deployment/user-service --tail=1000 | \
@@ -442,6 +477,7 @@ Resource analysis points to application-level issues. You need to investigate da
    ```
 
 5. **Thread and Connection Pool Analysis**
+
    ```bash
    # Check for thread pool exhaustion
    kubectl exec -n production deployment/user-service -- \
@@ -457,6 +493,7 @@ Resource analysis points to application-level issues. You need to investigate da
    ```
 
 6. **JVM Performance Analysis (Java Services)**
+
    ```bash
    # Heap usage analysis
    for deployment in user-service auth-service payment-service; do
@@ -470,6 +507,7 @@ Resource analysis points to application-level issues. You need to investigate da
    ```
 
 #### Success Criteria
+
 - [ ] Database performance bottlenecks identified
 - [ ] Cache effectiveness analyzed
 - [ ] Service dependency latencies measured
@@ -478,6 +516,7 @@ Resource analysis points to application-level issues. You need to investigate da
 - [ ] JVM performance issues identified
 
 #### 🔍 Application Performance Analysis
+
 ```markdown
 ## Application-Level Bottlenecks
 
@@ -509,13 +548,17 @@ Resource analysis points to application-level issues. You need to investigate da
 ---
 
 ### Task 4: Network and Infrastructure Bottlenecks (10 minutes)
+
 **Objective:** Investigate network latency, DNS issues, and infrastructure-level performance problems
 
 #### Challenge Description
+
 Application metrics suggest network-related bottlenecks. You need to investigate DNS resolution times, network policies affecting performance, ingress controller bottlenecks, and inter-node communication issues.
 
 #### Your Mission
+
 1. **DNS Performance Investigation**
+
    ```bash
    # DNS resolution time testing
    kubectl run dns-perf-test --rm -i --tty --image=tutum/dnsutils -- sh
@@ -531,6 +574,7 @@ Application metrics suggest network-related bottlenecks. You need to investigate
    ```
 
 2. **Network Policy Impact Assessment**
+
    ```bash
    # Check network policies affecting performance
    kubectl get netpol --all-namespaces -o yaml | grep -A 10 -B 10 "spec:"
@@ -545,6 +589,7 @@ Application metrics suggest network-related bottlenecks. You need to investigate
    ```
 
 3. **Ingress Controller Performance**
+
    ```bash
    # Nginx Ingress Controller metrics
    kubectl get pods -n ingress-nginx -o wide
@@ -562,6 +607,7 @@ Application metrics suggest network-related bottlenecks. You need to investigate
    ```
 
 4. **Inter-Node Network Performance**
+
    ```bash
    # Node-to-node network testing
    nodes=($(kubectl get nodes -o jsonpath='{.items[*].metadata.name}'))
@@ -583,6 +629,7 @@ Application metrics suggest network-related bottlenecks. You need to investigate
    ```
 
 5. **CNI Plugin Performance**
+
    ```bash
    # Check CNI plugin status and performance
    kubectl get pods -n kube-system -l k8s-app=calico-node  # or flannel, weave
@@ -596,6 +643,7 @@ Application metrics suggest network-related bottlenecks. You need to investigate
    ```
 
 6. **Service Mesh Performance (if applicable)**
+
    ```bash
    # Istio/Envoy performance metrics
    kubectl get pods -n istio-system
@@ -611,6 +659,7 @@ Application metrics suggest network-related bottlenecks. You need to investigate
    ```
 
 #### Success Criteria
+
 - [ ] DNS resolution performance measured
 - [ ] Network policy impact assessed
 - [ ] Ingress controller bottlenecks identified
@@ -619,6 +668,7 @@ Application metrics suggest network-related bottlenecks. You need to investigate
 - [ ] Service mesh overhead quantified
 
 #### 🔍 Network Performance Analysis
+
 ```markdown
 ## Network Infrastructure Bottlenecks
 
@@ -649,13 +699,17 @@ Application metrics suggest network-related bottlenecks. You need to investigate
 ---
 
 ### Task 5: Real-Time Performance Optimization (12 minutes)
+
 **Objective:** Implement immediate fixes and optimizations to restore performance
 
 #### Challenge Description
+
 With bottlenecks identified, you need to implement rapid fixes while the system is under load. This requires careful prioritization of changes and real-time monitoring of their impact.
 
 #### Your Mission
+
 1. **Critical Resource Adjustments**
+
    ```bash
    # Immediate CPU/Memory limit adjustments for critical services
    kubectl patch deployment user-service -n production -p='
@@ -682,6 +736,7 @@ With bottlenecks identified, you need to implement rapid fixes while the system 
    ```
 
 2. **Database Performance Optimization**
+
    ```bash
    # Optimize PostgreSQL configuration
    kubectl exec -n production deployment/postgresql -- psql -U admin -d techflow -c "
@@ -736,6 +791,7 @@ With bottlenecks identified, you need to implement rapid fixes while the system 
    ```
 
 3. **Cache Optimization**
+
    ```bash
    # Scale Redis for better cache performance
    kubectl scale deployment redis -n production --replicas=3
@@ -763,6 +819,7 @@ With bottlenecks identified, you need to implement rapid fixes while the system 
    ```
 
 4. **Network Performance Improvements**
+
    ```bash
    # Optimize CoreDNS for better performance
    kubectl patch configmap coredns -n kube-system -p='
@@ -789,6 +846,7 @@ With bottlenecks identified, you need to implement rapid fixes while the system 
    ```
 
 5. **Application-Level Optimizations**
+
    ```bash
    # Update HPA for more aggressive scaling
    kubectl patch hpa user-service-hpa -n production -p='
@@ -844,6 +902,7 @@ With bottlenecks identified, you need to implement rapid fixes while the system 
    ```
 
 6. **Real-Time Impact Monitoring**
+
    ```bash
    # Monitor the impact of changes in real-time
    watch -n 5 'kubectl top nodes; echo "---"; kubectl top pods -n production --sort-by=cpu | head -10'
@@ -863,6 +922,7 @@ With bottlenecks identified, you need to implement rapid fixes while the system 
    ```
 
 #### Success Criteria
+
 - [ ] Critical services scaled and optimized
 - [ ] Database performance improved
 - [ ] Cache hit ratio increased
@@ -871,6 +931,7 @@ With bottlenecks identified, you need to implement rapid fixes while the system 
 - [ ] Real-time monitoring showing positive trends
 
 #### 🔍 Optimization Impact Tracking
+
 ```markdown
 ## Performance Optimization Results
 
@@ -901,13 +962,17 @@ With bottlenecks identified, you need to implement rapid fixes while the system 
 ---
 
 ### Task 6: Long-term Performance Strategy & Prevention (8 minutes)
+
 **Objective:** Implement monitoring, alerting, and preventive measures to avoid future performance crises
 
 #### Challenge Description
+
 With immediate performance restored, you need to establish long-term monitoring and alerting systems to prevent future incidents. This includes capacity planning, automated scaling policies, and comprehensive observability.
 
 #### Your Mission
+
 1. **Advanced Monitoring Setup**
+
    ```yaml
    # Deploy comprehensive monitoring stack
    apiVersion: v1
@@ -955,6 +1020,7 @@ With immediate performance restored, you need to establish long-term monitoring 
    ```
 
 2. **Automated Scaling Policies**
+
    ```yaml
    # Enhanced HPA with custom metrics
    apiVersion: autoscaling/v2
@@ -1031,6 +1097,7 @@ With immediate performance restored, you need to establish long-term monitoring 
    ```
 
 3. **Capacity Planning Dashboard**
+
    ```yaml
    # Grafana dashboard configuration
    apiVersion: v1
@@ -1076,6 +1143,7 @@ With immediate performance restored, you need to establish long-term monitoring 
    ```
 
 4. **Performance Testing Automation**
+
    ```yaml
    # Automated load testing job
    apiVersion: batch/v1
@@ -1114,6 +1182,7 @@ With immediate performance restored, you need to establish long-term monitoring 
    ```
 
 5. **Incident Response Automation**
+
    ```yaml
    # Automated incident response
    apiVersion: v1
@@ -1150,6 +1219,7 @@ With immediate performance restored, you need to establish long-term monitoring 
    ```
 
 6. **Documentation and Runbooks**
+
    ```markdown
    # Performance Incident Response Runbook
    
@@ -1175,6 +1245,7 @@ With immediate performance restored, you need to establish long-term monitoring 
    ```
 
 #### Success Criteria
+
 - [ ] Comprehensive monitoring and alerting deployed
 - [ ] Automated scaling policies implemented
 - [ ] Capacity planning dashboard created
@@ -1183,6 +1254,7 @@ With immediate performance restored, you need to establish long-term monitoring 
 - [ ] Long-term performance strategy defined
 
 #### 🔍 Prevention Strategy Implementation
+
 ```markdown
 ## Long-term Performance Strategy
 
@@ -1216,12 +1288,15 @@ With immediate performance restored, you need to establish long-term monitoring 
 ## 🔍 Troubleshooting Guide
 
 ### Issue 1: Multiple Cascading Failures
+
 **Symptoms:**
+
 - Multiple pods failing simultaneously
 - Resource constraints across nodes
 - Service-to-service communication timeouts
 
 **Investigation Steps:**
+
 ```bash
 # Check for resource pressure
 kubectl describe nodes | grep -E "(Pressure|Condition)"
@@ -1233,24 +1308,29 @@ kubectl describe pod <failing-pod> | grep -A 10 -B 10 "Events:"
 ```
 
 **Common Root Causes:**
+
 - Node resource exhaustion
 - Network partitions
 - DNS resolution failures
 - Shared dependency failures (database, cache)
 
 **Resolution Strategy:**
+
 1. Identify the primary failure (usually resource or network)
 2. Scale critical services immediately
 3. Fix the root cause
 4. Allow cascading services to recover
 
 ### Issue 2: Intermittent Performance Degradation
+
 **Symptoms:**
+
 - Performance issues come and go
 - Difficult to reproduce consistently
 - Metrics show periodic spikes
 
 **Investigation Steps:**
+
 ```bash
 # Look for periodic patterns
 kubectl top pods --all-namespaces --sort-by=cpu | head -20
@@ -1262,24 +1342,29 @@ kubectl get cronjobs --all-namespaces -o wide
 ```
 
 **Common Root Causes:**
+
 - Batch processing jobs consuming resources
 - Memory leaks causing periodic restarts
 - Cache invalidation patterns
 - Auto-scaling thrashing
 
 **Resolution Strategy:**
+
 1. Identify the periodic trigger
 2. Adjust resource allocation or scheduling
 3. Implement proper resource isolation
 4. Optimize the triggering process
 
 ### Issue 3: Database Connection Pool Exhaustion
+
 **Symptoms:**
+
 - "Connection pool exhausted" errors
 - Long database query queues
 - Application timeouts
 
 **Investigation Steps:**
+
 ```bash
 # Check database connections
 kubectl exec -n production deployment/postgresql -- psql -U admin -d techflow -c "
@@ -1291,6 +1376,7 @@ curl -s http://localhost:8080/actuator/metrics/hikaricp.connections
 ```
 
 **Resolution Strategy:**
+
 1. Implement connection pooling (PgBouncer)
 2. Optimize query performance
 3. Scale database read replicas
@@ -1301,6 +1387,7 @@ curl -s http://localhost:8080/actuator/metrics/hikaricp.connections
 ## 📊 Success Metrics
 
 ### Performance Recovery Benchmarks
+
 - [ ] **Response Time Restoration**
   - Target: <500ms average
   - Achieved: \_\_\_ms average
@@ -1317,6 +1404,7 @@ curl -s http://localhost:8080/actuator/metrics/hikaricp.connections
   - Zero pod crash loops
 
 ### Business Impact Recovery
+
 - [ ] **Revenue Protection**
   - Revenue loss stopped
   - Customer complaints resolved
@@ -1328,6 +1416,7 @@ curl -s http://localhost:8080/actuator/metrics/hikaricp.connections
   - Incident documentation complete
 
 ### Long-term Sustainability
+
 - [ ] **Monitoring & Alerting**
   - Proactive alerts implemented
   - Capacity planning dashboard active
@@ -1345,18 +1434,21 @@ curl -s http://localhost:8080/actuator/metrics/hikaricp.connections
 Upon completing this expert-level lab, you will have mastered:
 
 ### Advanced Troubleshooting Skills
+
 - **Systematic performance investigation methodology**
 - **Multi-layer bottleneck identification techniques**
 - **Real-time optimization under pressure**
 - **Root cause analysis in complex distributed systems**
 
 ### Production Engineering Excellence
+
 - **Performance monitoring and alerting design**
 - **Capacity planning and resource optimization**
 - **Incident response automation**
 - **Long-term performance strategy development**
 
 ### CKA Expert-Level Competencies
+
 - **Complex troubleshooting scenarios** (Critical exam skill)
 - **Resource management optimization** (Production-ready skills)
 - **Performance analysis across all cluster components**
@@ -1367,6 +1459,7 @@ Upon completing this expert-level lab, you will have mastered:
 ## 🌐 Real-World Applications
 
 ### Industry Scenarios This Prepares You For
+
 1. **E-commerce Peak Traffic Events**
    - Black Friday/Cyber Monday traffic surges
    - Flash sales causing system overload
@@ -1388,6 +1481,7 @@ Upon completing this expert-level lab, you will have mastered:
    - Cost optimization under scale
 
 ### Career Skills Developed
+
 - **Site Reliability Engineering (SRE)**
 - **DevOps Performance Engineering**
 - **Platform Engineering Leadership**
@@ -1398,11 +1492,13 @@ Upon completing this expert-level lab, you will have mastered:
 ## 📚 Additional Resources
 
 ### Advanced Topics for Further Study
+
 - [Kubernetes Performance Tuning Guide](https://kubernetes.io/docs/concepts/cluster-administration/system-logs/)
 - [Prometheus Performance Monitoring](https://prometheus.io/docs/practices/instrumentation/)
 - [Distributed Systems Performance](http://www.brendangregg.com/systems-performance-2nd-edition-book.html)
 
 ### Professional Development
+
 - **SRE Certification Paths**
 - **Performance Engineering Specialization**
 - **Kubernetes Expert Certifications (CKS, CKAD)**
@@ -1412,18 +1508,21 @@ Upon completing this expert-level lab, you will have mastered:
 ## 🚀 Next Steps
 
 ### Immediate Actions
+
 1. [ ] Document lessons learned from this incident
 2. [ ] Implement monitoring recommendations
 3. [ ] Update incident response procedures
 4. [ ] Schedule performance review sessions
 
 ### Advanced Challenges
+
 1. [ ] Create chaos engineering scenarios
 2. [ ] Implement predictive scaling algorithms
 3. [ ] Design multi-cluster performance strategies
 4. [ ] Build automated performance regression detection
 
 ### Certification Readiness
+
 - [ ] Master all troubleshooting methodologies
 - [ ] Practice time-constrained debugging
 - [ ] Understand performance implications of all Kubernetes resources

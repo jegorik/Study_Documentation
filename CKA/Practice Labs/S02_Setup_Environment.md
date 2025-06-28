@@ -11,12 +11,14 @@
 ### DataFlow Solutions - Database Migration Crisis
 
 **Company Profile:**
+
 - **Industry:** SaaS Analytics Platform
 - **Scale:** 500+ enterprise clients, 2TB+ daily data processing
 - **Critical Systems:** Customer analytics dashboards, real-time reporting, API services
 - **Growth Challenge:** 300% data growth in last 6 months causing VM database bottlenecks
 
 **Migration Drivers:**
+
 - **Performance Issues:** Query response times exceeding 500ms SLA
 - **Scalability Limits:** Single VM database hitting resource constraints
 - **Availability Requirements:** Need 99.9% uptime for enterprise clients
@@ -27,6 +29,7 @@
 ## 🎲 Chaos Simulation Scripts
 
 ### 1. Storage Pressure Simulation
+
 Create realistic storage scenarios that mirror production challenges:
 
 ```bash
@@ -137,6 +140,7 @@ echo "📋 Monitor with: kubectl get jobs -n dataflow-db"
 ```
 
 ### 2. Database Migration Scenarios
+
 Simulate various migration challenges:
 
 ```bash
@@ -317,6 +321,7 @@ echo "  kubectl get pods -n dataflow-db -o wide"
 ```
 
 ### 3. Monitoring and Alerting Setup
+
 Create realistic monitoring scenarios:
 
 ```bash
@@ -470,6 +475,7 @@ echo "🔍 View logs: kubectl logs -n dataflow-db -l job-name=dataflow-monitorin
 ## 🎯 Scenario Activation
 
 ### Quick Setup (2-3 minutes)
+
 ```bash
 # Make scripts executable and run basic setup
 chmod +x *.sh
@@ -482,6 +488,7 @@ kubectl get pods -n dataflow-db -w
 ```
 
 ### Full Scenario Activation (5-8 minutes)
+
 ```bash
 # Full chaos simulation
 ./simulate_storage_pressure.sh
@@ -497,6 +504,7 @@ kubectl get jobs,pods,networkpolicies -n dataflow-db
 ## 🔧 Environment Cleanup
 
 ### Scenario Cleanup
+
 ```bash
 #!/bin/bash
 # File: cleanup_environment.sh
@@ -523,6 +531,7 @@ echo "✅ Environment cleanup completed"
 ## 📊 Expected Environment State
 
 After setup, you should have:
+
 - [ ] Storage pressure simulation jobs running
 - [ ] Database with legacy corruption scenarios
 - [ ] Production load simulation active
@@ -530,6 +539,7 @@ After setup, you should have:
 - [ ] Network chaos (intermittent)
 
 **Success Indicators:**
+
 ```bash
 # Should show multiple jobs and scenarios
 kubectl get jobs -n dataflow-db

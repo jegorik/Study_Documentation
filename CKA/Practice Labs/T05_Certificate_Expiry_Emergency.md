@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 You're the Senior DevOps Engineer at **TechCorp**, a fintech company processing $100M+ transactions daily. At 3:47 AM, monitoring alerts flood your phone - the entire Kubernetes cluster is failing authentication. API server calls are timing out, kubectl commands fail with certificate errors, and nodes are showing "NotReady" status.
 
 **Your Role:** Senior DevOps Engineer (On-Call)  
@@ -17,6 +18,7 @@ You're the Senior DevOps Engineer at **TechCorp**, a fintech company processing 
 **Urgency:** Every minute of downtime costs $50,000 in lost transactions  
 
 ### The Challenge
+
 Multiple certificates have expired simultaneously, causing a complete cluster breakdown. You must diagnose and restore certificate chain integrity under extreme time pressure.
 
 ---
@@ -24,6 +26,7 @@ Multiple certificates have expired simultaneously, causing a complete cluster br
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Certificate troubleshooting and renewal procedures
 - [ ] **Secondary Skills:** Cluster recovery, API server debugging, etcd access
 - [ ] **Real-world Application:** Production certificate management strategies
@@ -34,6 +37,7 @@ By completing this lab, you will:
 ## 🏗️ Lab Environment Setup
 
 ### Initial Cluster State
+
 ```bash
 # BROKEN - Multiple certificate failures
 SYMPTOMS:
@@ -67,14 +71,17 @@ AFFECTED CERTIFICATES:
 ## 🔍 Task 1: Emergency Certificate Assessment (5 minutes)
 
 ### Objective
+
 Rapidly diagnose which certificates have expired and understand the cascade failure impact.
 
 ### Your Mission
+
 Identify expired certificates and assess the scope of the certificate crisis.
 
 ### Step-by-Step Instructions
 
 #### 1.1 Direct Certificate Analysis
+
 ```bash
 # Check API server certificate (bypassing kubectl)
 sudo openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text -noout | grep -A 2 "Not After"
@@ -90,6 +97,7 @@ sudo find /etc/kubernetes/pki -name "*.crt" -exec openssl x509 -in {} -text -noo
 ```
 
 #### 1.2 Service Status Assessment
+
 ```bash
 # Check systemd service status
 sudo systemctl status kubelet
@@ -107,14 +115,17 @@ sudo ETCDCTL_API=3 etcdctl --cert=/etc/kubernetes/pki/etcd/peer.crt --key=/etc/k
 ## 🔧 Task 2: API Server Certificate Recovery (8 minutes)
 
 ### Objective
+
 Restore API server functionality by renewing expired certificates and restarting critical services.
 
 ### Your Mission
+
 Renew API server certificates and restore cluster API access.
 
 ### Step-by-Step Instructions
 
 #### 2.1 Backup Current Certificates
+
 ```bash
 # Create backup directory
 sudo mkdir -p /root/cert-backup-$(date +%Y%m%d-%H%M%S)
@@ -125,6 +136,7 @@ sudo find /etc/kubernetes/pki -name "*.crt" -exec sh -c 'echo "=== $1 ==="; open
 ```
 
 #### 2.2 Renew API Server Certificates
+
 ```bash
 # Renew API server certificate
 sudo kubeadm certs renew apiserver
@@ -140,6 +152,7 @@ sudo kubeadm certs check-expiration
 ```
 
 #### 2.3 Restart API Server
+
 ```bash
 # Move API server manifest temporarily (force restart)
 sudo mv /etc/kubernetes/manifests/kube-apiserver.yaml /tmp/
@@ -156,14 +169,17 @@ kubectl get nodes 2>/dev/null || echo "API server still starting..."
 ## 🖥️ Task 3: Node Certificate Renewal (7 minutes)
 
 ### Objective
+
 Restore kubelet certificates and bring nodes back to Ready status.
 
 ### Your Mission
+
 Renew kubelet certificates and restore node connectivity.
 
 ### Step-by-Step Instructions
 
 #### 3.1 Kubelet Certificate Renewal
+
 ```bash
 # Renew kubelet serving certificate
 sudo kubeadm certs renew apiserver-kubelet-client
@@ -177,6 +193,7 @@ sudo systemctl status kubelet
 ```
 
 #### 3.2 Bootstrap Token Recovery (if needed)
+
 ```bash
 # Create new bootstrap token
 sudo kubeadm token create --print-join-command
@@ -186,6 +203,7 @@ sudo cat /var/lib/kubelet/config.yaml | grep rotateCertificates
 ```
 
 #### 3.3 Verify Node Recovery
+
 ```bash
 # Wait for node to become Ready
 kubectl get nodes -w
@@ -199,6 +217,7 @@ sudo journalctl -u kubelet -f --since "5 minutes ago"
 ## 💾 Task 4: etcd Certificate Restoration (3 minutes)
 
 ### Objective
+
 Restore etcd cluster communication by renewing peer and server certificates.
 
 ### Your Mission
@@ -207,6 +226,7 @@ Renew etcd certificates and verify cluster health.
 ### Step-by-Step Instructions
 
 #### 4.1 Renew etcd Certificates
+
 ```bash
 # Renew etcd server certificate
 sudo kubeadm certs renew etcd-server
@@ -219,6 +239,7 @@ sudo kubeadm certs renew etcd-healthcheck-client
 ```
 
 #### 4.2 Restart etcd and Verify
+
 ```bash
 # Restart etcd (via manifest manipulation)
 sudo mv /etc/kubernetes/manifests/etcd.yaml /tmp/
@@ -235,14 +256,17 @@ sudo ETCDCTL_API=3 etcdctl --cert=/etc/kubernetes/pki/etcd/healthcheck-client.cr
 ## ✅ Task 5: Cluster Health Validation (2 minutes)
 
 ### Objective
+
 Confirm complete cluster recovery and implement monitoring for future certificate expirations.
 
 ### Your Mission
+
 Validate all cluster components are healthy and set up certificate monitoring.
 
 ### Step-by-Step Instructions
 
 #### 5.1 Comprehensive Health Check
+
 ```bash
 # Check all nodes are Ready
 kubectl get nodes
@@ -257,6 +281,7 @@ kubectl delete deployment test-nginx
 ```
 
 #### 5.2 Certificate Expiration Monitoring Setup
+
 ```bash
 # Check all certificate expiration dates
 sudo kubeadm certs check-expiration
@@ -280,6 +305,7 @@ sudo /usr/local/bin/check-k8s-certs.sh
 ## 🎯 Expected Outcomes
 
 Upon completion, you should have:
+
 - ✅ All expired certificates renewed
 - ✅ API server responding to kubectl commands
 - ✅ All nodes in Ready status
@@ -294,6 +320,7 @@ Upon completion, you should have:
 ### Common Issues & Quick Fixes
 
 **Issue:** kubectl still failing after certificate renewal
+
 ```bash
 # Solution: Update kubeconfig
 sudo cp /etc/kubernetes/admin.conf ~/.kube/config
@@ -301,6 +328,7 @@ sudo chown $(id -u):$(id -g) ~/.kube/config
 ```
 
 **Issue:** etcd still showing unhealthy
+
 ```bash
 # Solution: Restart all control plane components
 sudo mv /etc/kubernetes/manifests/*.yaml /tmp/
@@ -309,6 +337,7 @@ sudo mv /tmp/*.yaml /etc/kubernetes/manifests/
 ```
 
 **Issue:** Nodes still NotReady after kubelet restart
+
 ```bash
 # Solution: Check for CNI issues
 kubectl get pods -n kube-system | grep -E "(calico|flannel|weave)"
@@ -319,11 +348,13 @@ kubectl get pods -n kube-system | grep -E "(calico|flannel|weave)"
 ## 📚 Knowledge Check
 
 ### Critical Understanding Questions
+
 1. **Certificate Dependencies:** Which certificates must be valid for kubectl to work?
 2. **Recovery Order:** Why is API server certificate renewal the first priority?
 3. **Automation:** How would you prevent this emergency in production?
 
 ### Advanced Scenarios
+
 - What if the CA certificate itself had expired?
 - How would you handle this in a multi-master cluster?
 - What's the impact of certificate rotation on running workloads?
@@ -333,6 +364,7 @@ kubectl get pods -n kube-system | grep -E "(calico|flannel|weave)"
 ## 🔄 Production Prevention Strategy
 
 ### Implement Certificate Lifecycle Management
+
 ```bash
 # Add to crontab for automated renewal (30 days before expiry)
 0 2 1 * * /usr/local/bin/check-k8s-certs.sh | mail -s "K8s Certificate Status" admin@company.com

@@ -5,6 +5,7 @@
 ## 📊 Overall Progress Overview
 
 ### Exam Domains Summary
+
 | Domain | Weight | Status | Confidence | Last Review |
 |--------|--------|--------|------------|-------------|
 | 🔧 **Troubleshooting** | 30% | ⏳ In Progress | ⭐⭐⭐☆☆ | ___ |
@@ -20,7 +21,9 @@
 ## 🔧 Troubleshooting (30% - Highest Priority!)
 
 ### Core Troubleshooting Skills
+
 #### Cluster Component Issues
+
 - [ ] **Diagnose cluster component failures**
   - [ ] Check kubelet status and logs
   - [ ] Verify API server accessibility
@@ -30,6 +33,7 @@
   - **Practice:** `systemctl status kubelet`, `journalctl -u kubelet`
 
 #### Node Troubleshooting
+
 - [ ] **Diagnose node not ready status**
   - [ ] Check node conditions and events
   - [ ] Verify network connectivity
@@ -45,6 +49,7 @@
   - **Practice:** `docker system prune`, `df -h`, `free -h`
 
 #### Pod and Workload Issues
+
 - [ ] **Debug pod startup failures**
   - [ ] Analyze pod events and conditions
   - [ ] Check image pull issues
@@ -60,6 +65,7 @@
   - **Practice:** `kubectl exec -it`, `kubectl top pods`
 
 #### Network Troubleshooting
+
 - [ ] **Diagnose service connectivity issues**
   - [ ] Verify service endpoints
   - [ ] Test DNS resolution
@@ -75,6 +81,7 @@
   - **Practice:** Network debugging pods, ping tests
 
 ### Application Troubleshooting
+
 - [ ] **Debug failed deployments**
   - [ ] Check rollout status and history
   - [ ] Identify resource quota issues
@@ -96,7 +103,9 @@
 ## 🏗️ Cluster Architecture, Installation & Configuration (25%)
 
 ### Cluster Architecture Understanding
+
 #### Control Plane Components
+
 - [ ] **Master the API Server**
   - [ ] Understand API server role and responsibilities
   - [ ] Know authentication and authorization flow
@@ -126,6 +135,7 @@
   - **Practice:** Scheduling constraints, node affinity
 
 #### Worker Node Components
+
 - [ ] **Master kubelet operations**
   - [ ] Understand pod lifecycle management
   - [ ] Know container runtime interaction
@@ -148,7 +158,9 @@
   - **Practice:** Container runtime commands, image operations
 
 ### Cluster Installation and Configuration
+
 #### Cluster Setup Methods
+
 - [ ] **kubeadm installation**
   - [ ] Understand kubeadm init process
   - [ ] Know worker node joining procedures
@@ -164,6 +176,7 @@
   - **Practice:** "Kubernetes the Hard Way" tutorial
 
 #### High Availability Clusters
+
 - [ ] **Multi-master setup**
   - [ ] Understand load balancer configuration
   - [ ] Know etcd clustering
@@ -179,6 +192,7 @@
   - **Practice:** `etcdctl snapshot save/restore`
 
 ### Network Configuration
+
 - [ ] **CNI (Container Network Interface)**
   - [ ] Understand CNI plugin architecture
   - [ ] Know popular CNI solutions (Calico, Flannel, Weave)
@@ -193,7 +207,9 @@
 ## ⚙️ Workloads & Scheduling (15%)
 
 ### Pod Management
+
 #### Basic Pod Operations
+
 - [ ] **Create and manage pods**
   - [ ] Use imperative commands (`kubectl run`)
   - [ ] Create pods from YAML manifests
@@ -209,6 +225,7 @@
   - **Practice:** Multi-container pod scenarios
 
 #### Pod Configuration
+
 - [ ] **Resource management**
   - [ ] Set CPU and memory requests/limits
   - [ ] Understand resource quotas
@@ -224,7 +241,9 @@
   - **Practice:** Security context configurations
 
 ### Workload Controllers
+
 #### Deployments
+
 - [ ] **Create and manage deployments**
   - [ ] Use imperative commands
   - [ ] Create from YAML manifests
@@ -240,6 +259,7 @@
   - **Practice:** `kubectl rollout`, update scenarios
 
 #### ReplicaSets and DaemonSets
+
 - [ ] **ReplicaSet management**
   - [ ] Understand relationship with deployments
   - [ ] Create standalone ReplicaSets
@@ -255,6 +275,7 @@
   - **Practice:** DaemonSet deployment, node affinity
 
 #### StatefulSets and Jobs
+
 - [ ] **StatefulSet management**
   - [ ] Deploy stateful applications
   - [ ] Manage persistent volumes
@@ -270,7 +291,9 @@
   - **Practice:** Batch processing scenarios
 
 ### Scheduling
+
 #### Node Selection
+
 - [ ] **Node selectors and affinity**
   - [ ] Use node selectors for basic node selection
   - [ ] Configure node affinity rules
@@ -292,7 +315,9 @@
 ## 🌐 Services & Networking (20%)
 
 ### Service Types and Configuration
+
 #### Core Service Types
+
 - [ ] **ClusterIP services**
   - [ ] Create internal cluster services
   - [ ] Configure service selectors
@@ -315,6 +340,7 @@
   - **Practice:** Cloud load balancer scenarios
 
 #### Advanced Service Features
+
 - [ ] **Headless services**
   - [ ] Create services without cluster IP
   - [ ] Enable direct pod addressing
@@ -330,7 +356,9 @@
   - **Practice:** Service discovery scenarios
 
 ### Ingress and Network Policies
+
 #### Ingress Controllers
+
 - [ ] **Ingress configuration**
   - [ ] Deploy ingress controllers
   - [ ] Create ingress resources
@@ -346,6 +374,7 @@
   - **Practice:** TLS configuration scenarios
 
 #### Network Policies
+
 - [ ] **Traffic segmentation**
   - [ ] Create ingress network policies
   - [ ] Configure egress network policies
@@ -361,6 +390,7 @@
   - **Practice:** Micro-segmentation scenarios
 
 ### DNS and Service Mesh
+
 - [ ] **CoreDNS configuration**
   - [ ] Understand cluster DNS
   - [ ] Configure DNS policies
@@ -375,7 +405,9 @@
 ## 💾 Storage (10%)
 
 ### Persistent Volumes and Claims
+
 #### Storage Architecture
+
 - [ ] **Persistent Volume (PV) management**
   - [ ] Create static persistent volumes
   - [ ] Configure access modes (ReadWriteOnce, ReadOnlyMany, ReadWriteMany)
@@ -391,6 +423,7 @@
   - **Practice:** PVC binding scenarios
 
 #### Dynamic Provisioning
+
 - [ ] **Storage Classes**
   - [ ] Create storage class definitions
   - [ ] Configure provisioner parameters
@@ -406,7 +439,9 @@
   - **Practice:** CSI driver deployment
 
 ### Volume Types and Usage
+
 #### Volume Types
+
 - [ ] **EmptyDir volumes**
   - [ ] Create temporary storage
   - [ ] Configure memory-backed volumes
@@ -429,6 +464,7 @@
   - **Practice:** Configuration volume scenarios
 
 #### Storage Best Practices
+
 - [ ] **Data persistence patterns**
   - [ ] Design stateful applications
   - [ ] Handle data backup and restore
@@ -443,6 +479,7 @@
 ## 📚 Configuration and Secrets Management
 
 ### ConfigMaps
+
 - [ ] **Create and manage ConfigMaps**
   - [ ] Create from literals, files, and directories
   - [ ] Mount as volumes or environment variables
@@ -451,6 +488,7 @@
   - **Practice:** `kubectl create configmap`, volume mounting
 
 ### Secrets
+
 - [ ] **Secret types and usage**
   - [ ] Generic secrets for passwords/keys
   - [ ] TLS secrets for certificates
@@ -459,6 +497,7 @@
   - **Practice:** Secret creation and mounting
 
 ### Security Context and RBAC
+
 - [ ] **Pod Security Standards**
   - [ ] Configure security contexts
   - [ ] Implement pod security policies
@@ -480,6 +519,7 @@
 ## 🎯 Exam-Specific Skills
 
 ### Time Management
+
 - [ ] **Quick resource creation**
   - [ ] Master imperative commands
   - [ ] Use YAML generation shortcuts
@@ -488,6 +528,7 @@
   - **Target:** Create basic resources in <2 minutes
 
 ### Documentation Navigation
+
 - [ ] **Kubernetes.io efficiency**
   - [ ] Know key documentation sections
   - [ ] Use search effectively
@@ -496,6 +537,7 @@
   - **Target:** Find relevant docs in <30 seconds
 
 ### Verification and Testing
+
 - [ ] **Solution validation**
   - [ ] Test all created resources
   - [ ] Verify connectivity and functionality
@@ -510,32 +552,39 @@
 ## 📊 Study Progress Tracking
 
 ### Weekly Goals
+
 #### Week 1-2: Foundation
+
 - [ ] Complete Architecture understanding
 - [ ] Master basic kubectl commands
 - [ ] Practice pod management scenarios
 
 #### Week 3-4: Core Skills
+
 - [ ] Complete Workloads & Scheduling
 - [ ] Master Services & Networking
 - [ ] Practice configuration management
 
 #### Week 5-6: Advanced Topics
+
 - [ ] Complete Storage understanding
 - [ ] Master Troubleshooting skills
 - [ ] Practice complex scenarios
 
 #### Week 7: Exam Preparation
+
 - [ ] Complete all mock exams
 - [ ] Practice under time pressure
 - [ ] Review weak areas
 
 #### Week 8: Final Preparation
+
 - [ ] Light review only
 - [ ] Confidence building
 - [ ] Exam day preparation
 
 ### Confidence Rating Scale
+
 - ⭐☆☆☆☆ **1/5 - Just Started:** Basic awareness, no hands-on experience
 - ⭐⭐☆☆☆ **2/5 - Learning:** Understanding concepts, beginning practice
 - ⭐⭐⭐☆☆ **3/5 - Developing:** Can complete tasks with reference
@@ -543,7 +592,9 @@
 - ⭐⭐⭐⭐⭐ **5/5 - Expert:** Can teach others, handle complex scenarios
 
 ### Exam Readiness Indicators
+
 ✅ **Ready for exam when:**
+
 - [ ] All topics rated ⭐⭐⭐⭐☆ or higher
 - [ ] Mock exam scores consistently >80%
 - [ ] Can complete practice scenarios within time limits
@@ -563,6 +614,7 @@
 | ___ | ___ | ___ min | ___ | ⭐⭐⭐☆☆ → ⭐⭐⭐⭐☆ | ___ |
 
 **Weekly Reflection:**
+
 - **Strengths this week:** ___
 - **Areas needing more focus:** ___
 - **Plan for next week:** ___

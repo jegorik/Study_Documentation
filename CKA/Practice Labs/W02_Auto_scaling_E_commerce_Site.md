@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 **EliteShop Commerce** is a rapidly growing e-commerce platform that experiences extreme traffic variations throughout the day and seasonal spikes during sales events. During Black Friday last year, their fixed-resource deployment crashed when traffic increased 2000% in just 30 minutes, resulting in $3.2M in lost revenue and significant customer churn.
 
 **Your Role:** Senior Site Reliability Engineer (SRE)  
@@ -17,7 +18,9 @@
 **Urgency:** **CRITICAL** - Holiday sales start in 3 weeks, auto-scaling must be bulletproof
 
 ### The Challenge
+
 You must implement a comprehensive auto-scaling solution that:
+
 - Automatically scales pods based on CPU, memory, and custom metrics
 - Handles rapid traffic spikes without service degradation
 - Optimizes resource usage during low-traffic periods to reduce costs
@@ -32,6 +35,7 @@ You must implement a comprehensive auto-scaling solution that:
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Master Horizontal Pod Autoscaler (HPA) and Vertical Pod Autoscaler (VPA) configuration for production workloads
 - [ ] **Secondary Skills:** Configure custom metrics autoscaling, manage ConfigMaps for dynamic configuration, implement resource optimization strategies
 - [ ] **Real-world Application:** Design enterprise-grade auto-scaling architectures that handle extreme traffic variations
@@ -42,12 +46,13 @@ By completing this lab, you will:
 ## 🔧 Prerequisites
 
 ### Knowledge Requirements
-- [ ] Understanding of Kubernetes Deployments and ReplicaSets
+
 - [ ] Basic knowledge of resource requests and limits
 - [ ] Familiarity with ConfigMaps and environment variables
 - [ ] Previous completion of W01 (Rolling Update Disaster Recovery) recommended
 
 ### Environment Setup
+
 ```bash
 # Cluster requirements
 - Kubernetes cluster v1.28+ with metrics-server enabled
@@ -69,6 +74,7 @@ helm version
 You arrive to find an e-commerce platform with dangerous scaling limitations:
 
 ### Current Infrastructure Problems
+
 1. **Static Resource Allocation** - Fixed 5 replicas regardless of traffic
 2. **No Metrics-Based Scaling** - Manual scaling decisions only
 3. **Resource Waste** - Over-provisioned during low traffic periods
@@ -77,6 +83,7 @@ You arrive to find an e-commerce platform with dangerous scaling limitations:
 6. **No Cost Optimization** - Running expensive resources 24/7
 
 ### Immediate Symptoms
+
 ```bash
 # Check current static deployment
 kubectl get deployments -o wide
@@ -96,9 +103,11 @@ kubectl top nodes
 ## 📋 Tasks & Solutions
 
 ### Task 1: Deploy Metrics Server and Monitoring Infrastructure
+
 **Scenario:** Set up the foundation for metrics-based autoscaling with comprehensive monitoring.
 
 #### 📊 Metrics Server Installation
+
 ```bash
 # 1. Install metrics-server if not present
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
@@ -120,6 +129,7 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
 ```
 
 #### ✅ Custom Metrics API Setup
+
 ```yaml
 # Install Prometheus Adapter for custom metrics
 cat << 'EOF' | kubectl apply -f -
@@ -198,9 +208,11 @@ EOF
 ```
 
 ### Task 2: Create E-commerce Application with Resource Specifications
+
 **Scenario:** Deploy a realistic e-commerce application with proper resource requests and limits.
 
 #### 🛒 E-commerce Application Deployment
+
 ```yaml
 # Create comprehensive e-commerce application stack
 cat << 'EOF' | kubectl apply -f -
@@ -654,9 +666,11 @@ EOF
 ```
 
 ### Task 3: Configure Horizontal Pod Autoscaler (HPA)
+
 **Scenario:** Implement intelligent horizontal scaling based on multiple metrics including CPU, memory, and custom metrics.
 
 #### 🔄 Basic HPA Configuration
+
 ```yaml
 # Create HPA for frontend with CPU and memory metrics
 cat << 'EOF' | kubectl apply -f -
@@ -752,6 +766,7 @@ EOF
 ```
 
 #### 🎯 Advanced Custom Metrics HPA
+
 ```yaml
 # Custom metrics HPA based on request rate and queue length
 cat << 'EOF' | kubectl apply -f -
@@ -816,9 +831,11 @@ EOF
 ```
 
 ### Task 4: Configure Vertical Pod Autoscaler (VPA)
+
 **Scenario:** Implement vertical scaling to optimize resource allocation and reduce waste.
 
 #### 📏 VPA Installation and Configuration
+
 ```bash
 # 1. Install VPA (if not present)
 git clone https://github.com/kubernetes/autoscaler.git
@@ -828,6 +845,7 @@ cd ../../../
 ```
 
 #### ⬆️ VPA Configuration for Applications
+
 ```yaml
 # VPA for database with recommendation mode
 cat << 'EOF' | kubectl apply -f -
@@ -905,9 +923,11 @@ EOF
 ```
 
 ### Task 5: Implement Dynamic Configuration Management
+
 **Scenario:** Create intelligent ConfigMap management that adjusts application behavior based on traffic patterns.
 
 #### 🔧 Traffic-Aware Configuration
+
 ```yaml
 # Create ConfigMaps for different traffic scenarios
 cat << 'EOF' | kubectl apply -f -
@@ -1086,9 +1106,11 @@ EOF
 ```
 
 ### Task 6: Load Testing and Auto-scaling Validation
+
 **Scenario:** Perform comprehensive load testing to validate auto-scaling behavior under realistic traffic patterns.
 
 #### 🚀 Load Testing Setup
+
 ```bash
 # 1. Install and configure load testing tools
 kubectl create namespace loadtest
@@ -1125,6 +1147,7 @@ EOF
 ```
 
 #### 🧪 Comprehensive Load Testing Script
+
 ```bash
 # Create comprehensive load testing script
 cat << 'EOF' > load-test-suite.sh
@@ -1265,9 +1288,11 @@ chmod +x load-test-suite.sh
 ```
 
 ### Task 7: Monitoring and Alerting Setup
+
 **Scenario:** Implement comprehensive monitoring and alerting for auto-scaling events and performance metrics.
 
 #### 📊 Grafana Dashboard Configuration
+
 ```yaml
 # Create Grafana dashboard for auto-scaling monitoring
 cat << 'EOF' | kubectl apply -f -
@@ -1436,6 +1461,7 @@ kubectl get prometheusrules -n monitoring
 ## 💡 Key Learning Points
 
 ### Auto-scaling Architecture Mastered
+
 1. **Horizontal Pod Autoscaler (HPA):** Multi-metric scaling with CPU, memory, and custom metrics
 2. **Vertical Pod Autoscaler (VPA):** Resource optimization and right-sizing
 3. **Configuration Management:** Dynamic ConfigMap switching based on traffic patterns
@@ -1444,6 +1470,7 @@ kubectl get prometheusrules -n monitoring
 6. **Performance Optimization:** Cost reduction during low traffic, performance during peaks
 
 ### Production Auto-scaling Best Practices
+
 - **Scaling Policies:** Conservative scale-down, aggressive scale-up for traffic spikes
 - **Resource Management:** Proper requests/limits for predictable scaling behavior
 - **Metrics Strategy:** Multi-dimensional scaling based on business-relevant metrics
@@ -1451,6 +1478,7 @@ kubectl get prometheusrules -n monitoring
 - **Monitoring:** Comprehensive observability for scaling decisions and performance
 
 ### Common Auto-scaling Pitfalls Avoided
+
 - **Avoided:** Aggressive scale-down causing service disruption
 - **Avoided:** Missing resource requests/limits preventing HPA function
 - **Avoided:** Single-metric scaling missing important performance indicators
@@ -1462,6 +1490,7 @@ kubectl get prometheusrules -n monitoring
 ## 🚀 Bonus Challenges
 
 ### Advanced Auto-scaling Features
+
 1. **Predictive Scaling:** Implement machine learning-based traffic prediction
 2. **Multi-Cluster Scaling:** Scale across multiple Kubernetes clusters
 3. **Custom Metrics:** Integrate business metrics (orders/second, revenue/minute)
@@ -1469,6 +1498,7 @@ kubectl get prometheusrules -n monitoring
 5. **Cost Optimization:** Advanced algorithms for cost-efficient scaling
 
 ### Enterprise Extensions
+
 1. **SLA-Based Scaling:** Scale based on service level objectives
 2. **Geographic Scaling:** Region-aware scaling for global applications
 3. **Database Auto-scaling:** Extend auto-scaling to database layers

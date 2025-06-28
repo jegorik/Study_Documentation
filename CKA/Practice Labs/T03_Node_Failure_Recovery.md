@@ -12,6 +12,7 @@
 You're the Lead DevOps Engineer at **CloudScale Financial Services**, a trading platform that processes millions of transactions per day. During a busy trading session, multiple worker nodes in your production Kubernetes cluster have started failing due to hardware issues and network problems. Customer-facing services are experiencing downtime, and your team needs to quickly recover the affected workloads while maintaining data consistency and service availability.
 
 **Business Impact:**
+
 - 🔴 **Trading Platform Down:** Revenue loss of $50,000 per minute
 - 🟠 **Customer Authentication Failing:** User frustration mounting
 - 🟡 **Data Processing Delayed:** Risk of compliance violations
@@ -22,6 +23,7 @@ You're the Lead DevOps Engineer at **CloudScale Financial Services**, a trading 
 ## 🏗️ Lab Environment Setup
 
 ### Initial Cluster State
+
 ```bash
 # Expected cluster topology
 NAME               STATUS   ROLES           AGE   VERSION
@@ -34,6 +36,7 @@ worker-node-05     Ready    worker          45d   v1.28.2
 ```
 
 ### Prerequisites
+
 - 6-node cluster (1 master, 5 workers)
 - Multiple running applications with different failure tolerance
 - Various storage types (emptyDir, hostPath, PVCs)
@@ -57,12 +60,15 @@ worker-node-05     Ready    worker          45d   v1.28.2
 ## 🔧 Task 1: Node Failure Detection & Assessment (4 minutes)
 
 ### Objective
+
 Identify failed nodes, analyze the root cause, and assess the impact on running workloads.
 
 ### Current Situation
+
 Multiple alerts are firing in your monitoring system indicating node failures. You need to quickly assess the cluster state and identify which applications are affected.
 
 ### Your Mission
+
 1. **Check overall cluster health and identify failed nodes**
 2. **Analyze node conditions and failure reasons**
 3. **List affected pods and their current states**
@@ -71,6 +77,7 @@ Multiple alerts are firing in your monitoring system indicating node failures. Y
 ### Step-by-Step Instructions
 
 #### 1.1 Assess Cluster Node Status
+
 ```bash
 # Check all nodes with detailed status
 kubectl get nodes -o wide
@@ -84,6 +91,7 @@ kubectl describe node worker-node-04
 ```
 
 #### 1.2 Analyze Failed Node Details
+
 ```bash
 # Check node events for failure indicators
 kubectl get events --field-selector involvedObject.kind=Node --sort-by='.lastTimestamp'
@@ -97,6 +105,7 @@ kubectl top nodes  # If metrics-server is available
 ```
 
 #### 1.3 Identify Affected Workloads
+
 ```bash
 # List all pods on failed nodes
 kubectl get pods -A -o wide --field-selector spec.nodeName=worker-node-02
@@ -110,6 +119,7 @@ kubectl get pods -A | grep Terminating
 ```
 
 #### 1.4 Critical Service Assessment
+
 ```bash
 # Check status of critical services
 kubectl get deployments -A
@@ -121,12 +131,14 @@ kubectl get endpoints -A | grep -E "(<1|0>)"
 ```
 
 ### Expected Findings
+
 - Two worker nodes (worker-node-02, worker-node-04) are NotReady
 - Several pods are in Pending or Unknown state
 - Some critical services have reduced replica counts
 - DaemonSet pods on failed nodes need attention
 
 ### 🚨 Troubleshooting Tips
+
 - **Node conditions** provide detailed failure reasons (DiskPressure, MemoryPressure, NetworkUnavailable)
 - **Pod phases** indicate current state (Pending, Running, Succeeded, Failed, Unknown)
 - **Events** show the sequence of failures and system responses
@@ -136,12 +148,15 @@ kubectl get endpoints -A | grep -E "(<1|0>)"
 ## 🚑 Task 2: Emergency Workload Evacuation (5 minutes)
 
 ### Objective
+
 Safely evacuate workloads from failed nodes and prevent new pods from being scheduled on them.
 
 ### Current Situation
+
 You have identified the failed nodes and affected workloads. Now you need to safely move critical applications to healthy nodes while preventing data loss.
 
 ### Your Mission
+
 1. **Cordon failed nodes to prevent new scheduling**
 2. **Drain nodes safely with proper handling of PodDisruptionBudgets**
 3. **Force delete stuck pods if necessary**
@@ -150,6 +165,7 @@ You have identified the failed nodes and affected workloads. Now you need to saf
 ### Step-by-Step Instructions
 
 #### 2.1 Cordon Failed Nodes
+
 ```bash
 # Prevent new pods from being scheduled on failed nodes
 kubectl cordon worker-node-02
@@ -160,6 +176,7 @@ kubectl get nodes | grep SchedulingDisabled
 ```
 
 #### 2.2 Drain Nodes Safely
+
 ```bash
 # Start with graceful drain (respects PodDisruptionBudgets)
 kubectl drain worker-node-02 --ignore-daemonsets --delete-emptydir-data --timeout=300s
@@ -171,6 +188,7 @@ kubectl get pods -A -o wide | grep -E "(worker-node-02|worker-node-04)"
 ```
 
 #### 2.3 Handle Stuck Pods
+
 ```bash
 # If pods are stuck in Terminating state, force delete them
 # First, try graceful deletion with shorter grace period
@@ -186,6 +204,7 @@ kubectl get pods -A --field-selector status.phase=Unknown -o json | \
 ```
 
 #### 2.4 Monitor Migration Progress
+
 ```bash
 # Watch pods being rescheduled
 kubectl get pods -A -o wide --watch
@@ -200,6 +219,7 @@ kubectl top nodes
 ### Lab Environment - Simulated Failures
 
 #### Create Test Environment
+
 ```yaml
 # trading-platform.yaml
 apiVersion: apps/v1
@@ -263,12 +283,14 @@ kubectl apply -f trading-platform.yaml
 ```
 
 ### Expected Outcomes
+
 - Failed nodes are cordoned and no new pods scheduled
 - Existing pods are gracefully moved to healthy nodes
 - Critical services maintain minimum availability through PDBs
 - Resource usage is redistributed across remaining nodes
 
 ### 🚨 Troubleshooting Tips
+
 - **PodDisruptionBudgets** may prevent draining if not enough replicas
 - **Local storage** (emptyDir, hostPath) will be lost during pod migration
 - **DaemonSets** require `--ignore-daemonsets` flag during drain
@@ -279,12 +301,15 @@ kubectl apply -f trading-platform.yaml
 ## 🔄 Task 3: Pod Rescheduling & Recovery (5 minutes)
 
 ### Objective
+
 Ensure critical pods are properly rescheduled and recover services to full capacity.
 
 ### Current Situation
+
 Pods have been evacuated from failed nodes, but some services may be running with reduced capacity. You need to verify proper rescheduling and scale up if necessary.
 
 ### Your Mission
+
 1. **Verify all critical pods are running**
 2. **Scale up deployments if needed**
 3. **Check resource constraints on remaining nodes**
@@ -293,6 +318,7 @@ Pods have been evacuated from failed nodes, but some services may be running wit
 ### Step-by-Step Instructions
 
 #### 3.1 Verify Pod Rescheduling
+
 ```bash
 # Check that all pods are properly scheduled
 kubectl get pods -A -o wide | grep -v Running
@@ -306,6 +332,7 @@ kubectl describe pods -A | grep -E "(Failed|Pending)"
 ```
 
 #### 3.2 Scale Up Critical Services
+
 ```bash
 # If any critical services are under-replicated, scale them up
 kubectl scale deployment trading-engine -n production --replicas=4
@@ -319,6 +346,7 @@ kubectl rollout status deployment/trading-engine -n production
 ```
 
 #### 3.3 Resource Capacity Assessment
+
 ```bash
 # Check resource availability on remaining nodes
 kubectl describe nodes | grep -A 5 "Allocated resources"
@@ -333,6 +361,7 @@ kubectl get resourcequota -A
 ```
 
 #### 3.4 Temporary Scheduling Adjustments
+
 ```yaml
 # If needed, create anti-affinity rules to distribute critical pods
 # critical-app-affinity.yaml
@@ -384,6 +413,7 @@ kubectl get pods -n production -o wide
 ```
 
 ### Expected Outcomes
+
 - All critical pods are running on healthy nodes
 - Services are back to full capacity
 - Resource usage is balanced across remaining nodes
@@ -394,12 +424,15 @@ kubectl get pods -n production -o wide
 ## 💾 Task 4: Storage Recovery Procedures (6 minutes)
 
 ### Objective
+
 Handle storage-related issues caused by node failures and ensure data consistency.
 
 ### Current Situation
+
 Some applications use persistent storage that was attached to the failed nodes. You need to assess storage impact and recover data access.
 
 ### Your Mission
+
 1. **Identify affected PersistentVolumes and claims**
 2. **Handle hostPath and local storage issues**
 3. **Recover network-attached storage**
@@ -408,6 +441,7 @@ Some applications use persistent storage that was attached to the failed nodes. 
 ### Step-by-Step Instructions
 
 #### 4.1 Assess Storage Impact
+
 ```bash
 # Check PersistentVolume status
 kubectl get pv -o wide
@@ -423,6 +457,7 @@ kubectl get pods -A -o yaml | grep -B 5 -A 5 "worker-node-0[24]"
 ```
 
 #### 4.2 Handle Local Storage Issues
+
 ```bash
 # Identify pods that used hostPath or local storage on failed nodes
 kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.nodeName}{"\t"}{.spec.volumes[*].hostPath.path}{"\n"}{end}' | grep -E "worker-node-0[24]"
@@ -433,6 +468,7 @@ kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Delete"
 ```
 
 #### 4.3 Recover Network Storage
+
 ```bash
 # For network-attached storage (NFS, iSCSI, EBS), check connectivity
 kubectl describe pv | grep -A 10 -B 5 "NFS\|iSCSI\|AWSElasticBlockStore"
@@ -449,6 +485,7 @@ kubectl get pods -A -o yaml | grep -A 10 -B 10 persistentVolumeClaim
 #### 4.4 Storage Recovery Examples
 
 #### Database Storage Recovery
+
 ```yaml
 # database-recovery.yaml
 apiVersion: apps/v1
@@ -503,6 +540,7 @@ spec:
 ```
 
 #### Shared Storage Recovery
+
 ```yaml
 # shared-storage.yaml
 apiVersion: v1
@@ -534,6 +572,7 @@ spec:
 ```
 
 #### 4.5 Verify Data Recovery
+
 ```bash
 # Apply storage configurations
 kubectl apply -f database-recovery.yaml
@@ -551,12 +590,14 @@ kubectl logs -f deployment/trading-engine -n production
 ```
 
 ### Expected Outcomes
+
 - Network-attached storage is properly reattached
 - Local storage issues are identified and handled
 - Database connectivity is restored
 - Data integrity is verified
 
 ### 🚨 Troubleshooting Tips
+
 - **Local storage** (hostPath, emptyDir) is lost when nodes fail
 - **Network storage** usually survives but may need manual detachment/reattachment
 - **StatefulSets** require careful handling to maintain data consistency
@@ -567,12 +608,15 @@ kubectl logs -f deployment/trading-engine -n production
 ## 🔧 Task 5: Node Repair & Rejoin Process (3 minutes)
 
 ### Objective
+
 Simulate node repair and safely bring recovered nodes back into the cluster.
 
 ### Current Situation
+
 Infrastructure team has resolved the hardware issues on the failed nodes. You need to bring them back online and integrate them into the cluster safely.
 
 ### Your Mission
+
 1. **Verify node health before rejoining**
 2. **Uncordon recovered nodes**
 3. **Gradually rebalance workloads**
@@ -581,6 +625,7 @@ Infrastructure team has resolved the hardware issues on the failed nodes. You ne
 ### Step-by-Step Instructions
 
 #### 5.1 Pre-Rejoin Health Checks
+
 ```bash
 # Simulate node recovery (in real scenario, this involves hardware fixes)
 # Check node status
@@ -596,6 +641,7 @@ kubectl get nodes worker-node-02 -o yaml | grep -A 5 conditions
 ```
 
 #### 5.2 Uncordon Recovered Nodes
+
 ```bash
 # Bring nodes back into scheduling
 kubectl uncordon worker-node-02
@@ -607,6 +653,7 @@ kubectl describe nodes worker-node-02 | grep -A 5 "Conditions"
 ```
 
 #### 5.3 Gradual Workload Rebalancing
+
 ```bash
 # Don't force immediate rebalancing - let natural scheduling occur
 # Monitor new pod placement
@@ -620,6 +667,7 @@ kubectl top nodes
 ```
 
 #### 5.4 Cluster Health Validation
+
 ```bash
 # Verify all nodes are healthy
 kubectl get nodes
@@ -633,6 +681,7 @@ kubectl get daemonsets -A -o wide
 ```
 
 ### Expected Outcomes
+
 - Recovered nodes rejoin cluster successfully
 - New pods are scheduled on recovered nodes
 - Cluster capacity is restored
@@ -643,12 +692,15 @@ kubectl get daemonsets -A -o wide
 ## ✅ Task 6: Service Availability Validation (2 minutes)
 
 ### Objective
+
 Confirm all services are fully operational and performance has returned to normal.
 
 ### Current Situation
+
 Nodes are recovered and workloads are rebalanced. You need to validate that all critical services are operating normally and SLA requirements are met.
 
 ### Your Mission
+
 1. **Test service endpoints and connectivity**
 2. **Verify application functionality**
 3. **Check performance metrics**
@@ -657,6 +709,7 @@ Nodes are recovered and workloads are rebalanced. You need to validate that all 
 ### Step-by-Step Instructions
 
 #### 6.1 Service Endpoint Testing
+
 ```bash
 # Test critical service endpoints
 kubectl get services -A
@@ -671,6 +724,7 @@ curl payment-svc.production.svc.cluster.local
 ```
 
 #### 6.2 Application Health Checks
+
 ```bash
 # Check deployment health
 kubectl get deployments -A
@@ -684,6 +738,7 @@ kubectl logs -f deployment/trading-engine -n production --tail=50
 ```
 
 #### 6.3 Performance Validation
+
 ```bash
 # Monitor resource usage
 kubectl top nodes
@@ -697,6 +752,7 @@ kubectl get hpa -A
 ```
 
 #### 6.4 Incident Documentation
+
 ```bash
 # Generate incident report
 echo "Node Failure Recovery Incident Report" > incident_report.txt
@@ -711,6 +767,7 @@ kubectl get events --sort-by='.lastTimestamp' >> incident_report.txt
 ```
 
 ### Expected Outcomes
+
 - All services respond correctly
 - Performance metrics are within normal ranges
 - No error logs or warnings
@@ -721,6 +778,7 @@ kubectl get events --sort-by='.lastTimestamp' >> incident_report.txt
 ## 🎯 Success Criteria
 
 ### ✅ Must Complete (Pass)
+
 - [ ] Identified failed nodes and affected workloads
 - [ ] Successfully evacuated pods from failed nodes
 - [ ] Restored critical services to full capacity
@@ -729,6 +787,7 @@ kubectl get events --sort-by='.lastTimestamp' >> incident_report.txt
 - [ ] Validated complete service restoration
 
 ### 🌟 Excellence Indicators (Distinction)
+
 - [ ] Minimal service downtime during recovery
 - [ ] Proper use of PodDisruptionBudgets
 - [ ] Efficient resource rebalancing
@@ -737,6 +796,7 @@ kubectl get events --sort-by='.lastTimestamp' >> incident_report.txt
 - [ ] Implemented improvements for future failures
 
 ### ⚡ Speed Benchmarks
+
 - **Target Time:** 25 minutes
 - **Expert Time:** 20 minutes
 - **Detection Phase:** < 5 minutes
@@ -748,12 +808,14 @@ kubectl get events --sort-by='.lastTimestamp' >> incident_report.txt
 ## 🔍 Post-Lab Review
 
 ### Key Learning Outcomes
+
 1. **Node Failure Detection:** Systematic approach to identifying and assessing node failures
 2. **Workload Migration:** Safe evacuation and rescheduling procedures
 3. **Storage Recovery:** Handling different storage types during node failures
 4. **Cluster Resilience:** Building and maintaining resilient cluster architectures
 
 ### Real-World Applications
+
 - **Production Outages:** Quick response to hardware failures
 - **Maintenance Windows:** Planned node maintenance procedures
 - **Disaster Recovery:** Node-level disaster recovery procedures
@@ -769,6 +831,7 @@ kubectl get events --sort-by='.lastTimestamp' >> incident_report.txt
 | Resource pressure | New pods stay in Pending | Monitor and plan for reduced capacity scenarios |
 
 ### Exam Tips
+
 - **Practice kubectl drain commands** with various flags
 - **Understand PodDisruptionBudget** behavior during maintenance
 - **Know storage recovery procedures** for different volume types
@@ -779,15 +842,18 @@ kubectl get events --sort-by='.lastTimestamp' >> incident_report.txt
 ## 📚 Additional Resources
 
 ### Kubernetes Documentation
+
 - [Node Management](https://kubernetes.io/docs/concepts/architecture/nodes/)
 - [Safely Drain a Node](https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/)
 - [Pod Disruption Budgets](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)
 
 ### Troubleshooting Guides
+
 - [Cluster Troubleshooting](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/)
 - [Node Troubleshooting](https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/#looking-at-logs)
 
 ### Best Practices
+
 - [Production Readiness](https://kubernetes.io/docs/concepts/cluster-administration/production-environment/)
 - [Cluster Management](https://kubernetes.io/docs/concepts/cluster-administration/)
 
@@ -796,17 +862,20 @@ kubectl get events --sort-by='.lastTimestamp' >> incident_report.txt
 ## 🚀 Next Steps
 
 ### Immediate Actions
+
 1. **Practice variations** with different failure scenarios
 2. **Automate recovery procedures** using scripts
 3. **Test with real applications** in your environment
 4. **Document your recovery playbooks**
 
 ### Advanced Scenarios to Explore
+
 - **T05 - Certificate Expiry Emergency:** Handle certificate-related failures
 - **T07 - Multi-Component Cluster Failure:** Complex disaster scenarios
 - **A07 - Disaster Recovery Simulation:** Full cluster recovery procedures
 
 ### Production Preparation
+
 - Implement **monitoring and alerting** for node health
 - Create **automated recovery scripts** for common scenarios
 - Establish **incident response procedures** for your team

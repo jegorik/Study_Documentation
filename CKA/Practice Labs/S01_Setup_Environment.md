@@ -9,6 +9,7 @@
 ## 📊 Scenario Context
 
 This setup creates a **DataFlow Analytics** environment where:
+
 - Data processing workloads need on-demand storage provisioning
 - Multiple storage classes simulate different performance tiers
 - Storage requirements vary from small (10GB) to large (50GB) volumes
@@ -199,6 +200,7 @@ echo "✅ Storage monitoring tools ready"
 ## 🔍 Verification Commands
 
 ### **Environment Health Check**
+
 ```bash
 # Check namespace and initial setup
 kubectl get all -n dataflow-analytics
@@ -214,6 +216,7 @@ kubectl get pv
 ```
 
 ### **During Lab Monitoring**
+
 ```bash
 # Watch PVC creation and binding in real-time
 kubectl get pvc -w -n dataflow-analytics
@@ -229,6 +232,7 @@ kubectl exec -n dataflow-analytics <pod-name> -- df -h /data 2>/dev/null || echo
 ```
 
 ### **Storage Testing Commands**
+
 ```bash
 # Test data persistence (run after students deploy applications)
 kubectl exec -n dataflow-analytics data-ingestion -- sh -c 'echo "test persistence" > /data/test.txt'
@@ -245,13 +249,17 @@ kubectl get storageclass dataflow-ssd -o jsonpath='{.allowVolumeExpansion}'
 ## 🎯 Expected Student Actions
 
 ### **Task 1: StorageClass Creation**
+
 Students should create:
+
 ```bash
 kubectl create storageclass dataflow-ssd --provisioner=<appropriate-provisioner> --parameters=<storage-params>
 ```
 
 ### **Task 2: PVC Creation**
+
 Students should create PVCs like:
+
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -267,7 +275,9 @@ spec:
 ```
 
 ### **Task 3: Application Integration**
+
 Students should modify the templates to use their PVCs:
+
 ```yaml
 volumes:
 - name: data-volume
@@ -305,11 +315,13 @@ echo "✅ Environment cleaned up successfully"
 ## 🔧 Instructor Notes
 
 ### **Timing Setup:**
+
 1. **Pre-lab (3-5 min):** Execute all setup steps
 2. **Lab Start:** Provide students with template files and storage-monitor.sh
 3. **During Lab:** Use monitoring commands to verify student progress
 
 ### **Common Student Challenges:**
+
 - **Provisioner Selection:** May not know appropriate provisioner for their cluster
 - **Access Modes:** Confusion between ReadWriteOnce vs ReadWriteMany
 - **Binding Issues:** PVCs stuck in Pending due to StorageClass problems
@@ -318,6 +330,7 @@ echo "✅ Environment cleaned up successfully"
 ### **Adaptation for Different Environments:**
 
 **For Cloud Providers:**
+
 ```bash
 # AWS EKS
 provisioner: ebs.csi.aws.com
@@ -330,6 +343,7 @@ provisioner: disk.csi.azure.com
 ```
 
 **For Local/Development:**
+
 ```bash
 # Local path provisioner
 provisioner: kubernetes.io/no-provisioner
@@ -337,6 +351,7 @@ provisioner: kubernetes.io/no-provisioner
 ```
 
 ### **Success Indicators:**
+
 - StorageClass created with appropriate parameters
 - PVCs automatically trigger PV creation and binding
 - Applications successfully mount and use dynamic volumes
@@ -344,6 +359,7 @@ provisioner: kubernetes.io/no-provisioner
 - Storage monitoring shows healthy usage
 
 ### **Extension Scenarios:**
+
 - Add volume expansion demonstrations
 - Include multiple storage tiers (SSD, HDD, etc.)
 - Introduce storage quotas and limits

@@ -444,7 +444,7 @@ We verify that DNS resolution works for service discovery, internal communicatio
 **Expected Output:**
 
 ```bash
-Name:	backend.ecommerce.svc.cluster.local
+Name: backend.ecommerce.svc.cluster.local
 Address: 10.96.200.234
 
 HTTP/1.1 200 OK

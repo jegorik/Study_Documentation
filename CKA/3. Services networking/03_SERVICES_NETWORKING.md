@@ -24,7 +24,7 @@
 
 ### Study Resources
 
-- Official Kubernetes Documentation: https://kubernetes.io/docs/concepts/services-networking/
+- Official Kubernetes Documentation: <https://kubernetes.io/docs/concepts/services-networking/>
 - CNCF Training Materials: Services and Networking
 - Practice Labs: Network configuration and troubleshooting
 

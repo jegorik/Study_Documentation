@@ -3,22 +3,24 @@
 > **Quick kubectl commands for CKA exam preparation and daily Kubernetes administration**
 
 ## 📋 Table of Contents
-- [Essential Shortcuts](#essential-shortcuts)
-- [Pod Management](#pod-management)
-- [Deployment & ReplicaSet](#deployment--replicaset)
-- [Services & Networking](#services--networking)
-- [Configuration Management](#configuration-management)
-- [Storage & Volumes](#storage--volumes)
-- [Troubleshooting](#troubleshooting)
-- [Resource Management](#resource-management)
-- [Security & RBAC](#security--rbac)
-- [Exam-Specific Tips](#exam-specific-tips)
+
+- [Essential Shortcuts](#-essential-shortcuts)
+- [Pod Management](#-pod-management)
+- [Deployment & ReplicaSet](#-deployment--replicaset)
+- [Services & Networking](#-services--networking)
+- [Configuration Management](#️-configuration-management)
+- [Storage & Volumes](#-storage--volumes)
+- [Troubleshooting](#-troubleshooting)
+- [Resource Management](#-resource-management)
+- [Security & RBAC](#-security--rbac)
+- [Exam-Specific Tips](#-exam-specific-tips)
 
 ---
 
 ## 🚀 Essential Shortcuts
 
 ### Quick Resource Creation
+
 ```bash
 # Generate YAML without creating resource
 kubectl create deployment nginx --image=nginx --dry-run=client -o yaml
@@ -35,6 +37,7 @@ kubectl expose deployment nginx --port=80 --type=ClusterIP
 ```
 
 ### Context & Cluster Management
+
 ```bash
 # List contexts
 kubectl config get-contexts
@@ -50,6 +53,7 @@ kubectl config set-context --current --namespace=<namespace>
 ```
 
 ### Common Options
+
 | Option | Description | Example |
 |--------|-------------|---------|
 | `-o yaml` | Output in YAML format | `kubectl get pod nginx -o yaml` |
@@ -63,6 +67,7 @@ kubectl config set-context --current --namespace=<namespace>
 ## 🔄 Pod Management
 
 ### Pod Creation & Management
+
 ```bash
 # Create pod (imperative)
 kubectl run nginx --image=nginx
@@ -81,6 +86,7 @@ kubectl run nginx --image=nginx --requests='cpu=100m,memory=128Mi' --limits='cpu
 ```
 
 ### Pod Operations
+
 ```bash
 # List pods
 kubectl get pods
@@ -110,6 +116,7 @@ kubectl cp ./local-file nginx:/path/to/file
 ```
 
 ### Pod Deletion
+
 ```bash
 # Delete pod
 kubectl delete pod nginx
@@ -126,6 +133,7 @@ kubectl delete pods -l app=nginx
 ## 📦 Deployment & ReplicaSet
 
 ### Deployment Management
+
 ```bash
 # Create deployment
 kubectl create deployment nginx --image=nginx --replicas=3
@@ -144,6 +152,7 @@ kubectl annotate deployment nginx kubernetes.io/change-cause="Updated to nginx 1
 ```
 
 ### Rolling Updates & Rollbacks
+
 ```bash
 # Check rollout status
 kubectl rollout status deployment/nginx
@@ -163,6 +172,7 @@ kubectl rollout resume deployment/nginx
 ```
 
 ### ReplicaSet Management
+
 ```bash
 # List replicasets
 kubectl get rs
@@ -180,6 +190,7 @@ kubectl scale rs nginx-deployment-abc123 --replicas=4
 ## 🌐 Services & Networking
 
 ### Service Creation
+
 ```bash
 # Expose deployment as ClusterIP (default)
 kubectl expose deployment nginx --port=80
@@ -199,6 +210,7 @@ kubectl create service nodeport nginx --tcp=80:80
 ```
 
 ### Service Management
+
 ```bash
 # List services
 kubectl get services
@@ -215,6 +227,7 @@ kubectl run test-pod --image=busybox --rm -it -- wget -qO- http://nginx-service
 ```
 
 ### Network Troubleshooting
+
 ```bash
 # Check DNS resolution
 kubectl run test-pod --image=busybox --rm -it -- nslookup kubernetes.default
@@ -232,6 +245,7 @@ kubectl describe networkpolicy <policy-name>
 ## ⚙️ Configuration Management
 
 ### ConfigMaps
+
 ```bash
 # Create configmap from literal values
 kubectl create configmap app-config --from-literal=key1=value1 --from-literal=key2=value2
@@ -255,6 +269,7 @@ kubectl get configmap app-config -o yaml
 ```
 
 ### Secrets
+
 ```bash
 # Create secret from literal values
 kubectl create secret generic app-secret --from-literal=username=admin --from-literal=password=secret
@@ -283,6 +298,7 @@ kubectl get secret app-secret -o jsonpath='{.data.password}' | base64 -d
 ## 💾 Storage & Volumes
 
 ### Persistent Volumes
+
 ```bash
 # List persistent volumes
 kubectl get pv
@@ -300,6 +316,7 @@ kubectl describe pvc pvc-name
 ```
 
 ### Storage Classes
+
 ```bash
 # List storage classes
 kubectl get storageclass
@@ -317,6 +334,7 @@ kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storagecla
 ## 🔍 Troubleshooting
 
 ### Cluster Diagnostics
+
 ```bash
 # Check cluster info
 kubectl cluster-info
@@ -333,6 +351,7 @@ kubectl get cs
 ```
 
 ### Pod Troubleshooting
+
 ```bash
 # Get pod events
 kubectl get events --sort-by='.lastTimestamp'
@@ -353,6 +372,7 @@ kubectl exec -it <pod-name> -- /bin/sh
 ```
 
 ### Advanced Troubleshooting
+
 ```bash
 # Check API server logs (if access to control plane)
 journalctl -u kubelet
@@ -374,6 +394,7 @@ kubectl explain deployment.spec
 ## 📊 Resource Management
 
 ### Resource Quotas
+
 ```bash
 # List resource quotas
 kubectl get resourcequota
@@ -387,6 +408,7 @@ kubectl create quota my-quota --hard=cpu=1,memory=1G,pods=2
 ```
 
 ### Limit Ranges
+
 ```bash
 # List limit ranges
 kubectl get limitrange
@@ -397,6 +419,7 @@ kubectl describe limitrange <limit-name>
 ```
 
 ### Resource Monitoring
+
 ```bash
 # Node resource usage
 kubectl top nodes
@@ -412,6 +435,7 @@ kubectl top pods --containers
 ## 🔐 Security & RBAC
 
 ### Service Accounts
+
 ```bash
 # List service accounts
 kubectl get serviceaccounts
@@ -428,6 +452,7 @@ kubectl get secret $(kubectl get sa my-sa -o jsonpath='{.secrets[0].name}') -o j
 ```
 
 ### RBAC
+
 ```bash
 # List roles and cluster roles
 kubectl get roles
@@ -459,6 +484,7 @@ kubectl auth can-i create pods --as=system:serviceaccount:default:my-sa
 ## 🎯 Exam-Specific Tips
 
 ### Time-Saving Commands
+
 ```bash
 # Quick alias setup (add to ~/.bashrc)
 alias k=kubectl
@@ -477,6 +503,7 @@ kubectl run test --image=busybox --rm -it -- wget -qO- http://service-name:port
 ```
 
 ### Essential One-Liners
+
 ```bash
 # Get all resources in namespace
 kubectl get all
@@ -501,6 +528,7 @@ kubectl get pods --field-selector=status.phase!=Running
 ```
 
 ### YAML Generation Templates
+
 ```bash
 # Pod
 kubectl run nginx --image=nginx --dry-run=client -o yaml
@@ -523,6 +551,7 @@ kubectl create cronjob my-cron --image=busybox --schedule="0/5 * * * *" --dry-ru
 ## 📚 Quick Reference Card
 
 ### Most Used Commands (Exam Focus)
+
 ```bash
 # The Big 5 for CKA
 kubectl get pods -o wide
@@ -545,6 +574,7 @@ kubectl scale deployment <name> --replicas=<num>
 ```
 
 ### Key File Locations (Ubuntu Exam Environment)
+
 ```bash
 # Kubelet config
 /var/lib/kubelet/config.yaml

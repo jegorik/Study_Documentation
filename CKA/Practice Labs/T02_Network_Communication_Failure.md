@@ -14,6 +14,7 @@ You're the Site Reliability Engineer at **FinServ Bank**, a digital banking plat
 **Your Mission:** The bank's CTO is breathing down your neck as transaction failures spike to 85%. You have 25 minutes to restore service connectivity before regulatory compliance thresholds are breached and the bank faces potential fines.
 
 **Business Impact:**
+
 - 💳 **$50,000/minute** in failed transaction revenue
 - 📱 **500,000+ customers** unable to access accounts
 - 🏛️ **Regulatory exposure** if downtime exceeds 30 minutes
@@ -37,9 +38,11 @@ By completing this lab, you will master:
 ## 🔧 Lab Tasks
 
 ### **Task 1: Rapid Assessment (5 minutes)**
+
 The payment system is down. Quickly identify the scope and nature of the connectivity failure.
 
 **Your Actions:**
+
 1. Check the health status of all payment-related services and endpoints
 2. Identify which specific service-to-service communications are failing
 3. Determine if the issue is affecting all pods or specific instances
@@ -47,6 +50,7 @@ The payment system is down. Quickly identify the scope and nature of the connect
 5. Document the failure pattern to guide your investigation
 
 **Expected CKA Skills:**
+
 - `kubectl get services`, `kubectl get endpoints`
 - `kubectl describe service` and endpoint analysis
 - Pod connectivity testing with network tools
@@ -56,9 +60,11 @@ The payment system is down. Quickly identify the scope and nature of the connect
 ---
 
 ### **Task 2: DNS and Service Discovery (7 minutes)**
+
 Network issues often stem from DNS problems. Investigate service discovery failures.
 
 **Your Actions:**
+
 1. Test DNS resolution from affected pods to critical services
 2. Verify that service names resolve to correct cluster IPs
 3. Check CoreDNS configuration and pod health
@@ -66,6 +72,7 @@ Network issues often stem from DNS problems. Investigate service discovery failu
 5. Validate that service ports and target ports are correctly configured
 
 **Expected CKA Skills:**
+
 - DNS debugging from pod contexts: `nslookup`, `dig`
 - Service selector and endpoint matching analysis
 - CoreDNS troubleshooting and log analysis
@@ -75,9 +82,11 @@ Network issues often stem from DNS problems. Investigate service discovery failu
 ---
 
 ### **Task 3: Network Policy and Security (8 minutes)**
+
 Security policies might be blocking legitimate traffic. Investigate network policy impacts.
 
 **Your Actions:**
+
 1. Examine existing network policies affecting the payment namespace
 2. Test connectivity with and without network policy restrictions
 3. Identify any recently applied policies that might block traffic
@@ -85,6 +94,7 @@ Security policies might be blocking legitimate traffic. Investigate network poli
 5. Check for conflicting or overly restrictive security rules
 
 **Expected CKA Skills:**
+
 - `kubectl get networkpolicy` and policy analysis
 - Network policy rule interpretation
 - Ingress/egress rule validation
@@ -94,9 +104,11 @@ Security policies might be blocking legitimate traffic. Investigate network poli
 ---
 
 ### **Task 4: Container Network Interface (5 minutes)**
+
 If DNS and policies check out, investigate the underlying network infrastructure.
 
 **Your Actions:**
+
 1. Verify pod network assignments and IP allocation
 2. Check for CNI plugin issues or misconfigurations
 3. Test pod-to-pod connectivity at the IP level
@@ -104,6 +116,7 @@ If DNS and policies check out, investigate the underlying network infrastructure
 5. Implement a connectivity restoration plan
 
 **Expected CKA Skills:**
+
 - Pod network analysis and IP inspection
 - CNI troubleshooting techniques
 - Direct IP connectivity testing
@@ -118,6 +131,7 @@ If DNS and policies check out, investigate the underlying network infrastructure
 <summary>🆘 <strong>Service connectivity failing?</strong> Click for debugging strategy...</summary>
 
 **Service Troubleshooting Pattern:**
+
 ```bash
 # Check service and endpoints
 kubectl get svc payment-service -o wide
@@ -135,6 +149,7 @@ kubectl describe svc payment-service
 ```
 
 **Key Concepts:**
+
 - Services route traffic through endpoints
 - Selector labels must match pod labels exactly
 - Service ports must map to container ports correctly
@@ -145,6 +160,7 @@ kubectl describe svc payment-service
 <summary>🔍 <strong>DNS resolution problems?</strong> Click for DNS debugging...</summary>
 
 **DNS Debugging Strategy:**
+
 ```bash
 # Check CoreDNS status
 kubectl get pods -n kube-system -l k8s-app=kube-dns
@@ -161,16 +177,19 @@ kubectl get configmap coredns -n kube-system -o yaml
 ```
 
 **Common DNS Issues:**
+
 - CoreDNS pods not running or unhealthy
 - Incorrect service names or namespaces
 - DNS policy configuration problems
 - Network policy blocking DNS traffic (port 53)
+
 </details>
 
 <details>
 <summary>⚙️ <strong>Network policies blocking traffic?</strong> Click for policy analysis...</summary>
 
 **Network Policy Investigation:**
+
 ```bash
 # List all network policies
 kubectl get netpol --all-namespaces
@@ -189,10 +208,12 @@ kubectl apply -f policy-backup.yaml
 ```
 
 **Policy Analysis Tips:**
+
 - Policies are additive - multiple policies can affect same pods
 - Empty `podSelector: {}` affects all pods in namespace
 - Default deny policies block all traffic unless explicitly allowed
 - Both ingress AND egress rules may need configuration
+
 </details>
 
 ---
@@ -235,12 +256,14 @@ Ready for more network challenges? Try these related labs:
 ## 📚 Additional Resources
 
 **CKA Exam Topics Covered:**
+
 - Network troubleshooting and connectivity
 - Service discovery and DNS resolution
 - Network policies and security
 - Container networking fundamentals
 
 **Documentation Links:**
+
 - [Debug Services](https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/)
 - [DNS Troubleshooting](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)
 - [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)

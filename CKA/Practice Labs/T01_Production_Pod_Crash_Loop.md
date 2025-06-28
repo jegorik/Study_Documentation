@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 You're a DevOps Engineer at **TechMart**, a rapidly growing e-commerce platform. It's Black Friday morning at 6:00 AM EST, and your company is expecting the highest traffic volume of the year. The marketing team has invested $2M in advertising campaigns driving customers to the website for exclusive deals.
 
 **Your Role:** Senior DevOps Engineer on the Platform Reliability team  
@@ -17,9 +18,11 @@ You're a DevOps Engineer at **TechMart**, a rapidly growing e-commerce platform.
 **Urgency:** **CRITICAL** - Revenue loss of $50,000 per minute during peak hours. CEO and CTO are monitoring the situation directly.
 
 ### The Challenge
+
 Your monitoring alerts are firing rapidly. The `product-catalog` deployment pods are crashing and restarting continuously. Customers can't browse products, add items to cart, or complete purchases. The incident was escalated to you as the primary troubleshooter.
 
 **Critical Business Impact:**
+
 - 🚨 **Revenue Loss:** $50,000/minute during peak traffic
 - 😡 **Customer Experience:** Website showing 500 errors
 - 📈 **Traffic Peak:** Expecting 10x normal load within 2 hours
@@ -30,6 +33,7 @@ Your monitoring alerts are firing rapidly. The `product-catalog` deployment pods
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Master systematic pod troubleshooting using kubectl logs, describe, and events
 - [ ] **Secondary Skills:** Analyze resource constraints, identify configuration issues, implement quick fixes
 - [ ] **Real-world Application:** Handle production incidents under time pressure with methodical approach
@@ -40,11 +44,13 @@ By completing this lab, you will:
 ## 🔧 Prerequisites
 
 ### Knowledge Requirements
+
 - [ ] Basic understanding of Kubernetes pods and deployments
 - [ ] Familiarity with kubectl command-line interface
 - [ ] Understanding of container lifecycle and restart policies
 
 ### Environment Setup
+
 ```bash
 # Cluster requirements
 - Kubernetes cluster (kind/minikube/cloud cluster)
@@ -62,6 +68,7 @@ kubectl get namespaces
 ## 📚 Quick Reference
 
 ### Key Commands for This Lab
+
 ```bash
 kubectl get pods -o wide              # List pods with node placement
 kubectl describe pod <pod-name>       # Detailed pod information
@@ -71,6 +78,7 @@ kubectl get events --sort-by='.lastTimestamp'  # Recent cluster events
 ```
 
 ### Important Concepts
+
 - **Pod Lifecycle:** Pending → Running → Succeeded/Failed → Terminating
 - **Restart Policy:** Always, OnFailure, Never - determines container restart behavior
 - **Resource Limits:** CPU/Memory constraints that can cause pod failures
@@ -81,6 +89,7 @@ kubectl get events --sort-by='.lastTimestamp'  # Recent cluster events
 ## 🚀 Lab Tasks
 
 ### Task 1: Initial Incident Assessment
+
 **Objective:** Quickly identify the scope and nature of the pod crash loop issue
 
 **Your Mission:**
@@ -90,6 +99,7 @@ You've been called in urgently. First, you need to assess the current state of t
 Clear understanding of how many pods are affected, their current states, and initial indicators of what might be causing the crash loop.
 
 **Hints:**
+
 - 💡 Start with a broad view of all pods to identify the problematic ones
 - 💡 Look for patterns in pod names, ages, and restart counts
 - 💡 Note which worker nodes the failing pods are scheduled on
@@ -97,6 +107,7 @@ Clear understanding of how many pods are affected, their current states, and ini
 ---
 
 ### Task 2: Deep Dive into Pod Failure Analysis
+
 **Objective:** Investigate the root cause of the crash loop using kubectl logs and describe
 
 **Your Mission:**
@@ -106,6 +117,7 @@ Now that you've identified the failing pods, dive deep into the logs and pod det
 Clear identification of the root cause - whether it's a configuration issue, resource constraint, dependency failure, or application bug.
 
 **Hints:**
+
 - 💡 Check both current and previous container logs - the previous logs often contain the actual error
 - 💡 Pay attention to exit codes and termination reasons in pod descriptions
 - 💡 Look for resource-related issues like OOMKilled (Out of Memory)
@@ -113,6 +125,7 @@ Clear identification of the root cause - whether it's a configuration issue, res
 ---
 
 ### Task 3: Event Timeline Investigation
+
 **Objective:** Use cluster events to understand the sequence of failures and any related issues
 
 **Your Mission:**
@@ -122,6 +135,7 @@ Examine the cluster events to build a timeline of what happened. Look for patter
 Complete timeline of events leading to the incident and any related cluster issues that might be contributing factors.
 
 **Hints:**
+
 - 💡 Sort events by timestamp to see the sequence of what happened
 - 💡 Look for events related to scheduling, resource allocation, or image pulling
 - 💡 Check if there are events from other components that might be related
@@ -129,6 +143,7 @@ Complete timeline of events leading to the incident and any related cluster issu
 ---
 
 ### Task 4: Implement Emergency Fix and Verification
+
 **Objective:** Apply a quick fix to restore service and verify the resolution
 
 **Your Mission:**
@@ -138,6 +153,7 @@ Based on your analysis, implement an immediate fix to get the service back onlin
 Product catalog service is running stably with healthy pods, ready to handle Black Friday traffic.
 
 **Hints:**
+
 - 💡 Sometimes a simple deployment restart can resolve transient issues
 - 💡 If it's a resource issue, you might need to adjust limits or requests
 - 💡 Monitor the pods for a few minutes to ensure they remain stable
@@ -147,6 +163,7 @@ Product catalog service is running stably with healthy pods, ready to handle Bla
 ## ⏰ Time Management
 
 **Exam Pace Training:**
+
 - [ ] Task 1: 3 minutes (Quick assessment)
 - [ ] Task 2: 6 minutes (Deep analysis)
 - [ ] Task 3: 3 minutes (Event correlation)
@@ -163,7 +180,9 @@ Product catalog service is running stably with healthy pods, ready to handle Bla
 <summary><strong>📖 Click to reveal detailed solution (try solving first!)</strong></summary>
 
 ### Step 1: Initial Pod Assessment
+
 **Command/Action:**
+
 ```bash
 # Get an overview of all pods to identify the failing ones
 kubectl get pods -A
@@ -180,7 +199,8 @@ kubectl get pods --field-selector=status.phase!=Running
 We start with a broad assessment to quickly identify which pods are in trouble. The `-A` flag shows all namespaces, while `-o wide` provides additional details like node placement and IP addresses. High restart counts indicate crash loops.
 
 **Expected Output:**
-```
+
+```bash
 NAME                               READY   STATUS             RESTARTS   AGE
 product-catalog-7d4b8f9c8d-abc12   0/1     CrashLoopBackOff   5          8m
 product-catalog-7d4b8f9c8d-def34   0/1     CrashLoopBackOff   4          8m
@@ -190,7 +210,9 @@ product-catalog-7d4b8f9c8d-ghi56   0/1     CrashLoopBackOff   6          8m
 ---
 
 ### Step 2: Analyze Pod Details and Logs
+
 **Command/Action:**
+
 ```bash
 # Get detailed information about one of the failing pods
 kubectl describe pod product-catalog-7d4b8f9c8d-abc12
@@ -206,6 +228,7 @@ kubectl logs product-catalog-7d4b8f9c8d-abc12 --previous
 The `describe` command provides comprehensive pod information including events, resource usage, and failure reasons. Current logs might be empty if the container crashed immediately, so checking previous logs is crucial for finding the actual error.
 
 **Expected Output:**
+
 ```bash
 # From kubectl describe - look for:
 Events:
@@ -219,7 +242,9 @@ panic: database connection failed
 ---
 
 ### Step 3: Investigate Cluster Events
+
 **Command/Action:**
+
 ```bash
 # Get recent events sorted by time
 kubectl get events --sort-by='.lastTimestamp' --all-namespaces
@@ -235,7 +260,8 @@ kubectl get events --sort-by='.lastTimestamp' | head -20
 Events provide cluster-wide context and can reveal issues like resource constraints, scheduling problems, or infrastructure issues that might not be obvious from pod logs alone.
 
 **Expected Output:**
-```
+
+```bash
 LAST SEEN   TYPE      REASON     OBJECT                               MESSAGE
 2m          Warning   Failed     pod/product-catalog-7d4b8f9c8d-abc12 Error: OOMKilled
 3m          Warning   BackOff    pod/product-catalog-7d4b8f9c8d-abc12 Back-off restarting failed container
@@ -246,6 +272,7 @@ LAST SEEN   TYPE      REASON     OBJECT                               MESSAGE
 ### Step 4: Implement Fix Based on Root Cause
 
 **For Memory Issues (OOMKilled):**
+
 ```bash
 # Edit the deployment to increase memory limits
 kubectl edit deployment product-catalog
@@ -255,6 +282,7 @@ kubectl patch deployment product-catalog -p='{"spec":{"template":{"spec":{"conta
 ```
 
 **For Configuration Issues:**
+
 ```bash
 # If it's a config issue, might need to restart deployment
 kubectl rollout restart deployment product-catalog
@@ -265,6 +293,7 @@ kubectl scale deployment product-catalog --replicas=3
 ```
 
 **Verification Commands:**
+
 ```bash
 # Watch pods come back online
 kubectl get pods -w
@@ -278,6 +307,7 @@ kubectl logs <new-pod-name>
 ```
 
 **Success Indicators:**
+
 - [ ] All pods show Status: Running and Ready: 1/1
 - [ ] Restart count stops increasing
 - [ ] No error messages in current logs
@@ -290,12 +320,14 @@ kubectl logs <new-pod-name>
 ## 🎓 Knowledge Check
 
 ### Understanding Questions
+
 1. **Log Analysis Strategy:** Why is it important to check `--previous` logs when troubleshooting crash loops?
 2. **Resource Management:** What's the difference between a pod being OOMKilled vs. failing due to insufficient CPU?
 3. **Event Correlation:** How do cluster events help you understand the broader context of pod failures?
 4. **Production Debugging:** In a time-critical incident, what's the most efficient order for troubleshooting steps?
 
 ### Hands-On Challenges
+
 - [ ] **Variation 1:** Simulate a memory limit issue and practice the fix
 - [ ] **Variation 2:** Create a pod with wrong image tag and troubleshoot
 - [ ] **Integration:** Practice this workflow with different types of application failures
@@ -305,6 +337,7 @@ kubectl logs <new-pod-name>
 ## 🔍 Common Pitfalls & Troubleshooting
 
 ### Frequent Mistakes
+
 1. **Only Checking Current Logs**
    - **Symptom:** Empty or minimal log output from failing pods
    - **Cause:** Container crashed before writing logs, or logs were from previous restart
@@ -321,6 +354,7 @@ kubectl logs <new-pod-name>
    - **Fix:** Always check cluster events for scheduling, resource, or infrastructure issues
 
 ### Debug Commands
+
 ```bash
 # Essential debugging commands for crash loops
 kubectl describe pod <pod-name>                    # Comprehensive pod info
@@ -335,11 +369,13 @@ kubectl get pods -o yaml <pod-name>               # Full pod specification
 ## 🌟 Real-World Applications
 
 ### Enterprise Scenarios
+
 - **Black Friday/Cyber Monday:** High-traffic events where quick resolution is critical for revenue
 - **Production Incidents:** Any crash loop during business hours affects customer experience and revenue
 - **Deployment Rollouts:** New releases sometimes introduce resource or configuration issues
 
 ### Best Practices Learned
+
 - 🏆 **Systematic Approach:** Always follow the same troubleshooting sequence for consistency
 - 🏆 **Previous Logs First:** In crash loops, previous container logs usually contain the real error
 - 🏆 **Resource Awareness:** Many production issues stem from inadequate resource allocation
@@ -350,11 +386,13 @@ kubectl get pods -o yaml <pod-name>               # Full pod specification
 ## 📚 Additional Resources
 
 ### Related CKA Topics
+
 - Monitor cluster and application resource usage
 - Manage and evaluate container output streams
 - Troubleshoot clusters and nodes
 
 ### Extended Learning
+
 - [ ] Practice with different types of application failures (startup, runtime, shutdown)
 - [ ] Learn about liveness and readiness probes for better failure detection
 - [ ] Explore monitoring tools like Prometheus for proactive issue detection
@@ -364,6 +402,7 @@ kubectl get pods -o yaml <pod-name>               # Full pod specification
 ## 📝 Lab Completion
 
 ### Self-Assessment
+
 - [ ] I can complete this lab within 15 minutes
 - [ ] I understand the systematic approach to crash loop debugging
 - [ ] I can explain why each troubleshooting step is necessary
@@ -371,11 +410,13 @@ kubectl get pods -o yaml <pod-name>               # Full pod specification
 - [ ] I'm confident in similar exam scenarios
 
 ### Notes & Reflections
+
 *Use this space for personal insights about troubleshooting patterns, command shortcuts you discovered, or connections to other Kubernetes concepts.*
 
 ---
 
 ### 🏁 Lab Status
+
 - [ ] **Started:** ___________
 - [ ] **Completed:** ___________  
 - [ ] **Reviewed:** ___________

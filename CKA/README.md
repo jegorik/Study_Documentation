@@ -11,6 +11,7 @@ Welcome to your comprehensive CKA exam preparation materials! This folder contai
 4. **Exam Day:** Review [Exam Day Checklist](99_EXAM_DAY_CHECKLIST.md) before the test
 
 ### Study Workflow
+
 ```
 📖 Master Index → 🎯 Topic Study → 💻 Hands-on Labs → 📝 Practice Tests → 🏆 Exam Day
 ```

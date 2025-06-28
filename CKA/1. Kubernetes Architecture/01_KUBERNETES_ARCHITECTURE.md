@@ -22,7 +22,7 @@
 
 ### Study Resources
 
-- Official Kubernetes Documentation: https://kubernetes.io/docs/concepts/overview/components/
+- Official Kubernetes Documentation: <https://kubernetes.io/docs/concepts/overview/components/>
 - CNCF Training Materials: Kubernetes Fundamentals
 - Practice Labs: Cluster setup and component management
 

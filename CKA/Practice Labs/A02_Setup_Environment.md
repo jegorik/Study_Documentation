@@ -304,14 +304,14 @@ kubectl get configmaps
 
 ### Setup Time: ~5 minutes
 
-### Prerequisites:
+### Prerequisites
 
 - Kubernetes cluster with RBAC enabled
 - kubectl with cluster-admin permissions
 - jq installed for JSON processing
 - openssl for certificate operations
 
-### Learning Objectives Alignment:
+### Learning Objectives Alignment
 
 This setup creates the exact security vulnerabilities that the A02 lab is designed to fix, providing realistic context for learning enterprise RBAC management.
 

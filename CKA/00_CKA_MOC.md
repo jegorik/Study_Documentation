@@ -4,7 +4,7 @@
 
 ## 📊 Study Path Overview
 
-```
+```text
 🎯 CKA CERTIFICATION JOURNEY
 │
 ├── 📚 PREPARATION PHASE (Weeks 1-7)
@@ -40,7 +40,8 @@
 ## 🎯 Exam Domain Breakdown
 
 ### Visual Weight Distribution
-```
+
+```text
      CKA EXAM DOMAINS (Total: 100%)
      
 🔧 Troubleshooting          ████████████████████████████████ 30%
@@ -53,7 +54,8 @@
 ## 📁 Content Organization Map
 
 ### 🗂️ Study Materials Structure
-```
+
+```text
 CKA/
 │
 ├── 📋 QUICK ACCESS FILES
@@ -80,7 +82,8 @@ CKA/
 ## 🎯 Learning Path by Experience Level
 
 ### 🌱 New to Kubernetes
-```
+
+```text
 Week 1-2: Foundation Building
 ├── Start → README.md (orientation)
 ├── Study → 1. Kubernetes Architecture/
@@ -107,7 +110,8 @@ Week 7-8: Exam Preparation
 ```
 
 ### 🔧 Experienced with Kubernetes
-```
+
+```text
 Week 1: Knowledge Gap Analysis
 ├── Review → 00_MASTER_INDEX.md (assess gaps)
 ├── Focus → Weak areas from self-assessment
@@ -128,7 +132,8 @@ Week 4: Final Preparation
 ## 📊 Topic Relationships & Dependencies
 
 ### 🔗 Content Flow Diagram
-```
+
+```text
                     KUBERNETES MASTERY PATH
                     
     🏗️ Architecture     →     ⚙️ Workloads     →     🌐 Services
@@ -148,6 +153,7 @@ Week 4: Final Preparation
 ```
 
 ### 📚 Cross-Topic Connections
+
 | Topic | Connects To | Why Important |
 |-------|------------|---------------|
 | **Architecture** | All topics | Foundation for everything |
@@ -159,7 +165,8 @@ Week 4: Final Preparation
 ## 🎯 Study Session Templates
 
 ### 📝 Daily Study Session (1-2 hours)
-```
+
+```text
 ┌─ SESSION STRUCTURE ─┐
 │ 1. Review (15 min)  │ ← Previous day concepts
 │ 2. Study (45 min)   │ ← New topic from plan
@@ -169,7 +176,8 @@ Week 4: Final Preparation
 ```
 
 ### 🔬 Practice Session (30-60 min)
-```
+
+```text
 ┌─ PRACTICE STRUCTURE ─┐
 │ 1. Warm-up (10 min)  │ ← Basic kubectl commands
 │ 2. Scenario (20 min) │ ← Lab from 00_Labs_and_Practice.md
@@ -179,7 +187,8 @@ Week 4: Final Preparation
 ```
 
 ### 🎯 Exam Prep Session (2 hours)
-```
+
+```text
 ┌─ EXAM PREP STRUCTURE ─┐
 │ 1. Mock Exam (90 min) │ ← Timed full exam simulation
 │ 2. Review (20 min)    │ ← Analyze mistakes
@@ -190,7 +199,8 @@ Week 4: Final Preparation
 ## 🎯 Focus Areas by Week
 
 ### 📅 8-Week Study Calendar
-```
+
+```text
 Week 1: 🏗️ FOUNDATION
 ├── Mon-Tue: Kubernetes Architecture basics
 ├── Wed-Thu: kubectl command mastery
@@ -243,42 +253,49 @@ Week 8: 🏆 EXAM WEEK
 ## 🔗 Quick Navigation Links
 
 ### 📚 Essential Study Files
+
 - **📖 Start Learning:** [Master Index](00_MASTER_INDEX.md)
 - **⚡ Quick Commands:** [Command Reference](00_Command_Reference.md)
 - **💻 Practice Labs:** [Labs & Practice](00_Labs_and_Practice.md)
 - **🔗 External Resources:** [Study Resources](00_Study_Resources.md)
 
 ### 📝 Progress Tracking
+
 - **✅ Detailed Checklist:** [Exam Topics Checklist](00_Exam_Topics_Checklist.md)
 - **🧠 Memory System:** [Spaced Repetition](00_Spaced_Repetition_Template.md)
 - **📊 Implementation Log:** [History](00_IMPLEMENTATION_HISTORY.md)
 
 ### 🏆 Exam Preparation
+
 - **🎯 Final Prep:** [Exam Day Checklist](99_EXAM_DAY_CHECKLIST.md)
 - **📋 Quick Reference:** [CKA Cheat Sheet](TEMPLATE_CKA_CHEAT_SHEET.md)
 
 ### 📖 Study Content (by priority)
+
 1. **🔧 [Troubleshooting](5.%20Troubleshooting/)** (30% - Highest Priority!)
 2. **🏗️ [Architecture](1.%20Kubernetes%20Architecture/)** (25% - Foundation)
-3. **⚙️ [Workloads](2.%20Workloads%20scheduling/)** (20% - Core Skills)
+3. **⚙️ [Workloads](2.%20Workloads%20scheduling/)** (15% - Core Skills)
 4. **🌐 [Services](3.%20Services%20networking/)** (20% - Networking)
 5. **💾 [Storage](4.%20Storage/)** (10% - Persistence)
 
 ## 💡 Success Tips
 
 ### 🎯 Study Strategy
+
 - **Focus on troubleshooting** - It's 30% of the exam!
 - **Practice daily kubectl** - Speed and muscle memory matter
 - **Time yourself** - Exam pressure is real
 - **Use official docs** - You can reference kubernetes.io during exam
 
 ### 🔧 Practical Tips
+
 - **Set up aliases** - `alias k=kubectl` saves time
 - **Master YAML generation** - `--dry-run=client -o yaml`
 - **Practice vim/nano** - Exam environment text editors
 - **Learn keyboard shortcuts** - Efficiency is key
 
 ### 🧠 Learning Tips
+
 - **Understand concepts** - Don't just memorize commands
 - **Practice scenarios** - Real-world troubleshooting
 - **Review mistakes** - Learn from errors
@@ -289,12 +306,14 @@ Week 8: 🏆 EXAM WEEK
 ## 🎉 Motivation & Milestones
 
 ### 🏆 Certification Benefits
+
 - **Career advancement** - Kubernetes expertise in high demand
 - **Salary increase** - CKA certification shows practical skills
 - **Industry recognition** - CNCF certification is globally respected
 - **Practical knowledge** - Real-world Kubernetes administration skills
 
 ### 🎯 Study Milestones
+
 - [ ] **Week 2:** Comfortable with basic kubectl commands
 - [ ] **Week 4:** Can deploy and manage applications
 - [ ] **Week 6:** Expert at troubleshooting common issues

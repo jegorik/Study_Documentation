@@ -14,6 +14,7 @@ You're the DevOps Lead at **CloudScale**, a fast-growing SaaS platform for proje
 **Your Mission:** The CEO is getting live updates on system performance during the launch event. You have 30 minutes to identify and resolve resource bottlenecks before the launch turns into a public relations disaster.
 
 **Business Impact:**
+
 - 💰 **$250,000** in pre-paid enterprise subscriptions at risk
 - 📰 **Tech press** covering the launch live with performance monitoring
 - 📈 **IPO roadshow** next month depends on successful scaling demonstration
@@ -37,9 +38,11 @@ By completing this lab, you will master:
 ## 🔧 Lab Tasks
 
 ### **Task 1: Emergency Resource Assessment (8 minutes)**
+
 The platform is experiencing widespread performance issues. Quickly assess the resource situation across the cluster.
 
 **Your Actions:**
+
 1. Check overall cluster resource utilization (CPU, memory, storage)
 2. Identify nodes experiencing resource pressure or exhaustion
 3. Examine pods that are failing, pending, or being evicted
@@ -47,6 +50,7 @@ The platform is experiencing widespread performance issues. Quickly assess the r
 5. Document the scope and severity of resource constraints
 
 **Expected CKA Skills:**
+
 - `kubectl top nodes`, `kubectl top pods`
 - `kubectl describe nodes` for resource pressure analysis
 - Pod resource analysis and utilization monitoring
@@ -56,9 +60,11 @@ The platform is experiencing widespread performance issues. Quickly assess the r
 ---
 
 ### **Task 2: Critical Pod Analysis (8 minutes)**
+
 Focus on identifying which applications are consuming excessive resources and which are being starved.
 
 **Your Actions:**
+
 1. Identify pods with highest resource consumption relative to requests
 2. Find pods that are being killed due to resource limits (OOMKilled)
 3. Examine pending pods and determine why they can't be scheduled
@@ -66,6 +72,7 @@ Focus on identifying which applications are consuming excessive resources and wh
 5. Prioritize which resource issues are most critical for business operations
 
 **Expected CKA Skills:**
+
 - Pod resource consumption analysis
 - OOM (Out of Memory) kill investigation
 - Pod scheduling failure troubleshooting
@@ -75,9 +82,11 @@ Focus on identifying which applications are consuming excessive resources and wh
 ---
 
 ### **Task 3: Node Resource Management (8 minutes)**
+
 Investigate node-level resource constraints and pressure indicators.
 
 **Your Actions:**
+
 1. Examine node conditions for memory pressure, disk pressure, and PID pressure
 2. Calculate actual vs. allocatable resources on each node
 3. Identify nodes approaching resource thresholds
@@ -85,6 +94,7 @@ Investigate node-level resource constraints and pressure indicators.
 5. Determine if additional nodes are needed or if resource rebalancing can help
 
 **Expected CKA Skills:**
+
 - Node condition monitoring and interpretation
 - Resource allocatable vs. capacity understanding
 - Kubelet eviction policy configuration
@@ -94,9 +104,11 @@ Investigate node-level resource constraints and pressure indicators.
 ---
 
 ### **Task 4: Immediate Resolution Implementation (6 minutes)**
+
 Implement quick fixes to restore service performance and prevent further degradation.
 
 **Your Actions:**
+
 1. Apply appropriate resource requests and limits to resource-hungry pods
 2. Scale down non-critical workloads to free up resources
 3. Implement pod priorities to ensure critical services get resources first
@@ -104,6 +116,7 @@ Implement quick fixes to restore service performance and prevent further degrada
 5. Document emergency resource management procedures for future incidents
 
 **Expected CKA Skills:**
+
 - Resource request/limit configuration and application
 - Workload scaling and priority management
 - Pod priority class configuration
@@ -118,6 +131,7 @@ Implement quick fixes to restore service performance and prevent further degrada
 <summary>🆘 <strong>Can't see resource usage?</strong> Click for monitoring guidance...</summary>
 
 **Resource Monitoring Commands:**
+
 ```bash
 # Check cluster-wide resource usage
 kubectl top nodes
@@ -132,16 +146,19 @@ kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.c
 ```
 
 **Key Concepts:**
+
 - `kubectl top` requires metrics-server to be running
 - Node conditions indicate resource pressure states
 - Allocatable resources = Total capacity - System reserved
 - Resource requests affect scheduling decisions
+
 </details>
 
 <details>
 <summary>🔍 <strong>Pods failing or pending?</strong> Click for scheduling analysis...</summary>
 
 **Pod Scheduling Troubleshooting:**
+
 ```bash
 # Check pending pods and reasons
 kubectl get pods --all-namespaces --field-selector=status.phase=Pending
@@ -157,16 +174,19 @@ kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.name}
 ```
 
 **Common Resource Issues:**
+
 - Insufficient CPU/memory for pod requests
 - Node resource exhaustion preventing scheduling
 - Missing resource limits causing resource contention
 - OOM kills from containers exceeding memory limits
+
 </details>
 
 <details>
 <summary>⚙️ <strong>Need to configure resources?</strong> Click for resource management patterns...</summary>
 
 **Resource Configuration Examples:**
+
 ```yaml
 # Pod with proper resource configuration
 apiVersion: v1
@@ -187,6 +207,7 @@ spec:
 ```
 
 **Emergency Resource Management:**
+
 ```bash
 # Quick resource limit application
 kubectl patch deployment webapp --patch='
@@ -209,6 +230,7 @@ kubectl scale deployment background-jobs --replicas=1
 # Check resource usage after changes
 kubectl top pods -l app=webapp
 ```
+
 </details>
 
 ---
@@ -251,12 +273,14 @@ Ready for more resource management challenges? Try these related labs:
 ## 📚 Additional Resources
 
 **CKA Exam Topics Covered:**
+
 - Resource monitoring and troubleshooting
 - Pod resource management and QoS
 - Node capacity planning and management
 - Performance optimization techniques
 
 **Documentation Links:**
+
 - [Resource Management](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
 - [Resource Quotas](https://kubernetes.io/docs/concepts/policy/resource-quotas/)
 - [Node Conditions](https://kubernetes.io/docs/concepts/architecture/nodes/#condition)

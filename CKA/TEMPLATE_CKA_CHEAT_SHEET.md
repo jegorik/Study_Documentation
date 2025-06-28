@@ -28,7 +28,7 @@
 
 ## Section 2: ASCII Drawing with Explanation
 
-```
+```text
 [ASCII DIAGRAM HERE]
 ┌─────────────────┐
 │                 │

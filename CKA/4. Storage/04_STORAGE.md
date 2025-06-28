@@ -24,7 +24,7 @@
 
 ### Study Resources
 
-- Official Kubernetes Documentation: https://kubernetes.io/docs/concepts/storage/
+- Official Kubernetes Documentation: <https://kubernetes.io/docs/concepts/storage/>
 - CNCF Training Materials: Storage and Persistent Volumes
 - Practice Labs: Storage configuration and troubleshooting
 

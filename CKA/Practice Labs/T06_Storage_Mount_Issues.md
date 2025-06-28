@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 You're the Platform Engineer at **DataFlow Inc**, a data analytics company processing terabytes of customer data daily. The morning deployment of a critical data pipeline has failed - pods are stuck in `Pending` status with storage mount failures. The data science team is blocked from their quarterly reporting deadline, and management is demanding immediate resolution.
 
 **Your Role:** Platform Engineer (Storage Specialist)  
@@ -17,6 +18,7 @@ You're the Platform Engineer at **DataFlow Inc**, a data analytics company proce
 **Urgency:** $200K quarterly report deadline in 4 hours  
 
 ### The Challenge
+
 Multiple pods cannot mount persistent volumes due to various storage configuration issues. You must diagnose and resolve storage mounting problems across different scenarios to restore the data pipeline.
 
 ---
@@ -24,6 +26,7 @@ Multiple pods cannot mount persistent volumes due to various storage configurati
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Diagnose and resolve storage mounting failures
 - [ ] **Secondary Skills:** PV/PVC troubleshooting, storage class issues, node storage problems
 - [ ] **Real-world Application:** Production storage troubleshooting workflows
@@ -34,6 +37,7 @@ By completing this lab, you will:
 ## 🏗️ Lab Environment Setup
 
 ### Initial Cluster State
+
 ```bash
 # BROKEN - Multiple storage mount failures
 SYMPTOMS:
@@ -67,14 +71,17 @@ AFFECTED WORKLOADS:
 ## 🔍 Task 1: Storage Mount Failure Assessment (4 minutes)
 
 ### Objective
+
 Rapidly identify the root causes of storage mounting failures across different workloads.
 
 ### Your Mission
+
 Diagnose storage mount issues and categorize failure types.
 
 ### Step-by-Step Instructions
 
 #### 1.1 Pod Storage Status Analysis
+
 ```bash
 # Check pods with storage issues
 kubectl get pods -A | grep -E "(Pending|ContainerCreating)"
@@ -90,6 +97,7 @@ kubectl get pv
 ```
 
 #### 1.2 Storage Events Investigation
+
 ```bash
 # Check cluster-wide storage events
 kubectl get events -A --field-selector type=Warning | grep -i storage
@@ -103,6 +111,7 @@ kubectl get events -A --field-selector reason=ProvisioningFailed
 ```
 
 #### 1.3 Node Storage Capacity Assessment
+
 ```bash
 # Check node storage capacity
 kubectl top nodes
@@ -118,6 +127,7 @@ kubectl describe nodes | grep -A 10 "Conditions"
 ### Lab Environment Setup (Create Broken Scenarios)
 
 #### Create Failing Storage Scenarios
+
 ```yaml
 # broken-storage-scenarios.yaml
 apiVersion: v1
@@ -197,14 +207,17 @@ kubectl get pvc -n data-pipeline
 ## 📦 Task 2: PV/PVC Binding Resolution (6 minutes)
 
 ### Objective
+
 Resolve PersistentVolume and PersistentVolumeClaim binding failures.
 
 ### Your Mission
+
 Fix PV/PVC binding issues and restore storage connectivity.
 
 ### Step-by-Step Instructions
 
 #### 2.1 Create Missing StorageClass
+
 ```yaml
 # fixed-storage-class.yaml
 apiVersion: storage.k8s.io/v1
@@ -226,6 +239,7 @@ kubectl get storageclass
 ```
 
 #### 2.2 Create Appropriately Sized PV
+
 ```yaml
 # working-persistent-volume.yaml
 apiVersion: v1
@@ -266,6 +280,7 @@ kubectl get pv
 ```
 
 #### 2.3 Fix PVC Configuration
+
 ```bash
 # Delete broken PVC
 kubectl delete pvc data-processor-pvc -n data-pipeline
@@ -292,6 +307,7 @@ kubectl describe pvc data-processor-pvc-fixed -n data-pipeline
 ```
 
 #### 2.4 Update StatefulSet with Fixed Storage
+
 ```bash
 # Delete broken StatefulSet
 kubectl delete statefulset data-processor -n data-pipeline
@@ -342,14 +358,17 @@ kubectl get pods -n data-pipeline -w
 ## 🖥️ Task 3: Node Storage Issues Recovery (5 minutes)
 
 ### Objective
+
 Resolve node-level storage problems affecting pod scheduling and mounting.
 
 ### Your Mission
+
 Fix node storage capacity and permission issues.
 
 ### Step-by-Step Instructions
 
 #### 3.1 Node Storage Cleanup
+
 ```bash
 # Check current node storage usage
 kubectl describe nodes | grep -A 5 "Allocated resources"
@@ -366,6 +385,7 @@ kubectl describe nodes | grep -A 2 -B 2 "DiskPressure"
 ```
 
 #### 3.2 Fix Storage Permissions
+
 ```bash
 # Create directories with proper permissions (simulate node access)
 sudo mkdir -p /tmp/data-processor /tmp/database /tmp/backup-storage
@@ -379,6 +399,7 @@ ls -la /tmp/ | grep -E "(data-processor|database|backup-storage)"
 ```
 
 #### 3.3 Create Database Pod with Fixed Storage
+
 ```yaml
 # database-with-storage.yaml
 apiVersion: v1
@@ -456,14 +477,17 @@ kubectl get pods -n database -w
 ## ⚙️ Task 4: StorageClass Configuration Fix (3 minutes)
 
 ### Objective
+
 Resolve StorageClass configuration issues and validate dynamic provisioning.
 
 ### Your Mission
+
 Fix StorageClass parameters and test dynamic volume provisioning.
 
 ### Step-by-Step Instructions
 
 #### 4.1 Create Backup Service with Dynamic Storage
+
 ```yaml
 # backup-service-storage.yaml
 apiVersion: v1
@@ -518,6 +542,7 @@ kubectl get pvc -n backup
 ```
 
 #### 4.2 Test Storage Class Functionality
+
 ```bash
 # Create test PVC to validate storage class
 cat << EOF | kubectl apply -f -
@@ -548,14 +573,17 @@ kubectl delete pvc test-dynamic-pvc
 ## ✅ Task 5: Storage Health Validation (2 minutes)
 
 ### Objective
+
 Confirm all storage issues are resolved and implement monitoring.
 
 ### Your Mission
+
 Validate storage health across all workloads and set up monitoring.
 
 ### Step-by-Step Instructions
 
 #### 5.1 Comprehensive Storage Health Check
+
 ```bash
 # Check all PVCs are bound
 kubectl get pvc -A
@@ -570,6 +598,7 @@ kubectl exec -n backup backup-service-$(kubectl get pods -n backup -o name | cut
 ```
 
 #### 5.2 Storage Performance Validation
+
 ```bash
 # Test write operations
 kubectl exec -n data-pipeline data-processor-fixed-0 -- sh -c "echo 'Storage test' > /data/test.txt && cat /data/test.txt"
@@ -582,6 +611,7 @@ kubectl describe nodes | grep -A 5 "Allocated resources"
 ```
 
 #### 5.3 Create Storage Monitoring Script
+
 ```bash
 # Create storage monitoring script
 cat << 'EOF' | tee /tmp/check-storage-health.sh
@@ -613,6 +643,7 @@ chmod +x /tmp/check-storage-health.sh
 ## 🎯 Expected Outcomes
 
 Upon completion, you should have:
+
 - ✅ All PVCs successfully bound to PVs
 - ✅ Pods running with mounted storage volumes
 - ✅ Node storage capacity within healthy limits
@@ -625,6 +656,7 @@ Upon completion, you should have:
 ## 🚨 Common Storage Issues & Quick Fixes
 
 ### Issue: Pod stuck in Pending due to PVC
+
 ```bash
 # Check PVC status and events
 kubectl describe pvc <pvc-name> -n <namespace>
@@ -632,6 +664,7 @@ kubectl get events -n <namespace> --field-selector involvedObject.name=<pvc-name
 ```
 
 ### Issue: Mount permission denied
+
 ```bash
 # Fix storage permissions on node
 sudo chown -R 1000:1000 /path/to/volume
@@ -639,6 +672,7 @@ sudo chmod -R 755 /path/to/volume
 ```
 
 ### Issue: StorageClass not found
+
 ```bash
 # List available storage classes
 kubectl get storageclass
@@ -646,6 +680,7 @@ kubectl get storageclass
 ```
 
 ### Issue: Node storage pressure
+
 ```bash
 # Clean up unused resources
 kubectl get pods -A --field-selector=status.phase=Failed -o name | xargs kubectl delete
@@ -657,11 +692,13 @@ docker system prune -f  # On nodes
 ## 📚 Knowledge Check
 
 ### Critical Understanding Questions
+
 1. **PV vs PVC:** What's the difference and how do they bind?
 2. **Storage Classes:** How does dynamic provisioning work?
 3. **Mount Issues:** What are common causes of mount failures?
 
 ### Advanced Scenarios
+
 - How would you handle storage expansion for running pods?
 - What's the impact of changing storage class parameters?
 - How do you troubleshoot CSI driver issues?
@@ -671,6 +708,7 @@ docker system prune -f  # On nodes
 ## 🔄 Production Best Practices
 
 ### Storage Monitoring Setup
+
 ```bash
 # Set up regular storage health checks
 echo "0 */6 * * * /usr/local/bin/check-storage-health.sh | mail -s 'K8s Storage Health' admin@company.com" | crontab -

@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 You're a Senior Platform Engineer at **DataFlow Solutions**, a fast-growing SaaS company that provides analytics dashboards for e-commerce businesses. The company is migrating their monolithic PostgreSQL database to a cloud-native, highly available database cluster running on Kubernetes. The migration must be completed with zero data loss and minimal downtime during business hours.
 
 **Your Role:** Lead Database Migration Engineer responsible for Kubernetes storage infrastructure  
@@ -17,7 +18,9 @@ You're a Senior Platform Engineer at **DataFlow Solutions**, a fast-growing SaaS
 **Urgency:** **HIGH PRIORITY** - Major client onboarding scheduled in 3 days, system must be resilient and performant
 
 ### The Challenge
+
 The current database setup is a single VM-based PostgreSQL instance that's becoming a bottleneck. You need to migrate to a StatefulSet-based PostgreSQL cluster with:
+
 - **Persistent storage** that survives pod restarts and node failures
 - **Backup and restore** capabilities for data protection
 - **Storage classes** optimized for database workloads
@@ -25,6 +28,7 @@ The current database setup is a single VM-based PostgreSQL instance that's becom
 - **Disaster recovery** procedures tested and documented
 
 **Critical Business Requirements:**
+
 - 💾 **Zero Data Loss:** All customer analytics data must be preserved during migration
 - ⚡ **Performance:** Database I/O must meet SLA requirements (sub-100ms query response)
 - 🔄 **High Availability:** Database cluster must survive single node failures
@@ -35,6 +39,7 @@ The current database setup is a single VM-based PostgreSQL instance that's becom
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Master StatefulSets with persistent storage for stateful applications
 - [ ] **Secondary Skills:** Configure storage classes, manage PVCs, implement backup strategies
 - [ ] **Real-world Application:** Execute database migration with storage optimization and disaster recovery
@@ -45,12 +50,14 @@ By completing this lab, you will:
 ## 🔧 Prerequisites
 
 ### Knowledge Requirements
+
 - [ ] Understanding of Kubernetes storage concepts (PV, PVC, StorageClass)
 - [ ] Basic knowledge of StatefulSets vs Deployments
 - [ ] Familiarity with PostgreSQL and database operations
 - [ ] Experience with YAML manifests and kubectl commands
 
 ### Environment Setup
+
 ```bash
 # Cluster requirements
 - Kubernetes cluster with dynamic storage provisioning
@@ -69,6 +76,7 @@ kubectl get pods -n kube-system | grep storage
 ## 📚 Quick Reference
 
 ### Key Commands for This Lab
+
 ```bash
 kubectl get statefulsets                                      # List StatefulSets
 kubectl describe statefulset <name>                          # StatefulSet details
@@ -79,6 +87,7 @@ kubectl delete pod <statefulset-pod-name>                   # Test pod recreatio
 ```
 
 ### Important Concepts
+
 - **StatefulSet:** Manages deployment/scaling of stateful applications with stable identities
 - **Persistent Volume (PV):** Storage resource in cluster, independent of pod lifecycle
 - **Persistent Volume Claim (PVC):** Request for storage by a pod
@@ -90,6 +99,7 @@ kubectl delete pod <statefulset-pod-name>                   # Test pod recreatio
 ## 🚀 Lab Tasks
 
 ### Task 1: Create Storage Infrastructure
+
 **Objective:** Set up storage classes and prepare persistent volume infrastructure for database workloads
 
 **Your Mission:**
@@ -99,6 +109,7 @@ Create a high-performance storage class optimized for database workloads. Config
 Storage class configured with database-optimized parameters, ready for StatefulSet volume claims.
 
 **Hints:**
+
 - 💡 Consider using SSD-based storage for database workloads
 - 💡 Configure appropriate volume binding mode and reclaim policy
 - 💡 Test storage class with a simple PVC before using with StatefulSet
@@ -106,6 +117,7 @@ Storage class configured with database-optimized parameters, ready for StatefulS
 ---
 
 ### Task 2: Deploy PostgreSQL StatefulSet with Persistent Storage
+
 **Objective:** Create a PostgreSQL StatefulSet with persistent volume claims and proper configuration
 
 **Your Mission:**
@@ -115,6 +127,7 @@ Deploy a PostgreSQL StatefulSet with 3 replicas, each with its own persistent vo
 PostgreSQL StatefulSet running with 3 pods, each with persistent storage and stable network identities.
 
 **Hints:**
+
 - 💡 Use volumeClaimTemplates in StatefulSet for automatic PVC creation
 - 💡 Configure PostgreSQL for replication (primary/replica setup)
 - 💡 Set appropriate CPU and memory limits for database workloads
@@ -122,6 +135,7 @@ PostgreSQL StatefulSet running with 3 pods, each with persistent storage and sta
 ---
 
 ### Task 3: Implement Data Migration and Backup Strategy
+
 **Objective:** Migrate existing data to the new StatefulSet and implement backup procedures
 
 **Your Mission:**
@@ -131,6 +145,7 @@ Create a data migration job that populates the new PostgreSQL cluster with sampl
 Data successfully migrated to StatefulSet, automated backup system operational, restore procedure verified.
 
 **Hints:**
+
 - 💡 Use Kubernetes Jobs for one-time migration tasks
 - 💡 Create separate PVC for backup storage
 - 💡 Test backup integrity by restoring to a test environment
@@ -138,6 +153,7 @@ Data successfully migrated to StatefulSet, automated backup system operational, 
 ---
 
 ### Task 4: Test High Availability and Storage Resilience
+
 **Objective:** Verify that the database cluster survives pod failures, node failures, and storage scenarios
 
 **Your Mission:**
@@ -147,6 +163,7 @@ Test the resilience of your StatefulSet by simulating various failure scenarios:
 Database cluster demonstrates high availability with persistent storage surviving all failure scenarios.
 
 **Hints:**
+
 - 💡 Delete pods and verify automatic recreation with same storage
 - 💡 Drain a node and verify pod rescheduling maintains data
 - 💡 Monitor PVC binding and storage attachment during failures
@@ -154,6 +171,7 @@ Database cluster demonstrates high availability with persistent storage survivin
 ---
 
 ### Task 5: Configure Storage Monitoring and Alerting
+
 **Objective:** Implement monitoring for storage metrics, database performance, and capacity planning
 
 **Your Mission:**
@@ -163,6 +181,7 @@ Set up monitoring for storage utilization, IOPS, latency, and database-specific 
 Comprehensive storage and database monitoring in place with actionable alerts and scaling procedures.
 
 **Hints:**
+
 - 💡 Monitor PVC usage, storage class performance metrics
 - 💡 Set up PostgreSQL-specific monitoring (connections, query performance)
 - 💡 Create runbooks for storage expansion and performance tuning
@@ -170,6 +189,7 @@ Comprehensive storage and database monitoring in place with actionable alerts an
 ---
 
 ### Task 6: Implement Rolling Updates and Disaster Recovery
+
 **Objective:** Test StatefulSet rolling updates and implement disaster recovery procedures
 
 **Your Mission:**
@@ -179,6 +199,7 @@ Perform a rolling update of the PostgreSQL StatefulSet (image version upgrade) w
 Successful rolling update with zero data loss, tested disaster recovery procedures documented and verified.
 
 **Hints:**
+
 - 💡 Use partition-based rolling updates for controlled deployment
 - 💡 Test backup restoration to a completely new cluster
 - 💡 Document RTO/RPO requirements and validate against procedures
@@ -186,6 +207,7 @@ Successful rolling update with zero data loss, tested disaster recovery procedur
 ---
 
 ### Task 7: Storage Performance Optimization and Scaling
+
 **Objective:** Optimize storage performance and demonstrate horizontal and vertical scaling capabilities
 
 **Your Mission:**
@@ -195,6 +217,7 @@ Benchmark storage performance under load, optimize configuration for your worklo
 Storage performance optimized for database workloads, scaling procedures tested and documented for production use.
 
 **Hints:**
+
 - 💡 Use tools like pgbench for database load testing
 - 💡 Test PVC expansion (if supported by storage class)
 - 💡 Document performance baselines and scaling triggers
@@ -204,6 +227,7 @@ Storage performance optimized for database workloads, scaling procedures tested 
 ## ⏰ Time Management
 
 **Exam Pace Training:**
+
 - [ ] Task 1: 4 minutes (Storage infrastructure)
 - [ ] Task 2: 8 minutes (StatefulSet deployment)
 - [ ] Task 3: 6 minutes (Migration and backup)
@@ -223,7 +247,9 @@ Storage performance optimized for database workloads, scaling procedures tested 
 <summary><strong>📖 Click to reveal detailed solution (try solving first!)</strong></summary>
 
 ### Step 1: Create Storage Infrastructure
+
 **Command/Action:**
+
 ```bash
 # Create namespace for database workloads
 kubectl create namespace dataflow-db
@@ -273,7 +299,8 @@ kubectl describe pvc storage-test -n dataflow-db
 We create a storage class optimized for database workloads with high IOPS and throughput. The `WaitForFirstConsumer` binding mode ensures volumes are created in the same zone as the pod. `Retain` reclaim policy prevents accidental data loss.
 
 **Expected Output:**
-```
+
+```bash
 NAME          PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION
 fast-ssd-db   kubernetes.io/aws-ebs   Retain          WaitForFirstConsumer   true
 
@@ -284,7 +311,9 @@ storage-test   Pending                                      fast-ssd-db    30s
 ---
 
 ### Step 2: Deploy PostgreSQL StatefulSet
+
 **Command/Action:**
+
 ```bash
 # Create headless service for StatefulSet
 kubectl apply -f - <<EOF
@@ -455,7 +484,8 @@ kubectl get pvc -n dataflow-db
 The StatefulSet creates PostgreSQL pods with stable identities (postgres-cluster-0, postgres-cluster-1, etc.). Each pod gets its own PVC created from the volumeClaimTemplate. The headless service provides stable DNS names for each pod.
 
 **Expected Output:**
-```
+
+```bash
 NAME               READY   AGE
 postgres-cluster   3/3     2m
 
@@ -473,7 +503,9 @@ postgres-storage-postgres-cluster-2      Bound    pvc-ghi789                 20G
 ---
 
 ### Step 3: Implement Data Migration and Backup Strategy
+
 **Command/Action:**
+
 ```bash
 # Create sample data migration job
 kubectl apply -f - <<EOF
@@ -627,7 +659,8 @@ kubectl create job --from=cronjob/postgres-backup postgres-backup-manual -n data
 The migration job populates the database with sample data representing a real analytics platform. The backup CronJob runs daily and creates compressed PostgreSQL dumps, maintaining only the last 7 backups for space efficiency.
 
 **Expected Output:**
-```
+
+```text
 job.batch/data-migration condition met
 
  count 
@@ -644,7 +677,9 @@ job.batch/postgres-backup-manual created
 ---
 
 ### Step 4: Test High Availability and Storage Resilience
+
 **Command/Action:**
+
 ```bash
 # Test 1: Pod deletion and recreation
 echo "=== Test 1: Pod Deletion Resilience ==="
@@ -705,7 +740,8 @@ kubectl get pvc -n dataflow-db | grep postgres-cluster-3
 These tests verify that StatefulSets maintain data persistence across pod failures, node failures, and scaling operations. PVCs remain bound to their respective pods and storage persists independent of pod lifecycle.
 
 **Expected Output:**
-```
+
+```text
 === Test 1: Pod Deletion Resilience ===
 pod "postgres-cluster-1" deleted
 pod/postgres-cluster-1 condition met
@@ -728,7 +764,9 @@ postgres-storage-postgres-cluster-3   Bound    pvc-xyz789   20Gi   RWO   fast-ss
 ---
 
 ### Step 5: Configure Storage Monitoring
+
 **Command/Action:**
+
 ```bash
 # Create ServiceMonitor for Prometheus (if using Prometheus Operator)
 kubectl apply -f - <<EOF
@@ -885,7 +923,8 @@ kubectl logs -n dataflow-db job/storage-monitoring-manual
 This sets up comprehensive monitoring for PostgreSQL storage including PVC utilization, database sizes, and connection metrics. The PostgreSQL exporter provides Prometheus metrics, while the monitoring job provides regular health checks.
 
 **Expected Output:**
-```
+
+```text
 === PostgreSQL Storage Monitoring ===
 Timestamp: Wed May 29 10:30:00 UTC 2025
 
@@ -904,7 +943,9 @@ Database Sizes:
 ---
 
 ### Step 6: Rolling Updates and Disaster Recovery
+
 **Command/Action:**
+
 ```bash
 # Test rolling update with PostgreSQL version upgrade
 echo "=== Rolling Update Test ==="
@@ -1098,7 +1139,8 @@ kubectl logs -n dataflow-dr-test job/disaster-recovery-restore-test
 Rolling updates are performed in a controlled manner, updating pods one at a time while maintaining service availability. The disaster recovery test validates that backups can successfully restore data to a new environment.
 
 **Expected Output:**
-```
+
+```text
 === Rolling Update Test ===
 statefulset.apps/postgres-cluster patched
 deployment "postgres-cluster" successfully rolled out
@@ -1118,7 +1160,9 @@ Disaster recovery restore completed successfully
 ---
 
 ### Step 7: Performance Optimization and Scaling
+
 **Command/Action:**
+
 ```bash
 # Install pgbench for performance testing
 kubectl apply -f - <<EOF
@@ -1328,7 +1372,8 @@ kubectl logs -n dataflow-db job/performance-report
 Performance testing includes pgbench benchmarks to measure database throughput and latency. PVC expansion demonstrates storage scalability, while horizontal scaling shows how StatefulSets handle increased replicas with persistent storage.
 
 **Expected Output:**
-```
+
+```text
 === PostgreSQL Performance Benchmark ===
 pgbench (15.2)
 transaction type: <builtin: TPC-B (sort of)>
@@ -1354,6 +1399,7 @@ tps = 221.654321 (without initial connection time)
 ```
 
 **Success Indicators:**
+
 - [ ] All StatefulSet pods running with persistent storage
 - [ ] Data migration completed successfully
 - [ ] Backup and restore procedures tested and working
@@ -1370,12 +1416,14 @@ tps = 221.654321 (without initial connection time)
 ## 🎓 Knowledge Check
 
 ### Understanding Questions
+
 1. **StatefulSets vs Deployments:** When should you use StatefulSets instead of Deployments for database workloads?
 2. **Persistent Storage:** How do volumeClaimTemplates differ from regular volumes in terms of data persistence?
 3. **Storage Classes:** What parameters should you consider when designing storage classes for database workloads?
 4. **Backup Strategies:** How does Kubernetes-native backup differ from traditional database backup approaches?
 
 ### Hands-On Challenges
+
 - [ ] **Variation 1:** Implement database replication with primary/replica configuration
 - [ ] **Variation 2:** Set up cross-region backup storage with object storage
 - [ ] **Integration:** Configure network policies to secure database cluster access
@@ -1385,6 +1433,7 @@ tps = 221.654321 (without initial connection time)
 ## 🔍 Common Pitfalls & Troubleshooting
 
 ### Frequent Mistakes
+
 1. **PVC Binding Issues**
    - **Symptom:** Pods stuck in Pending state, PVC showing "Pending" status
    - **Cause:** Storage class not available or insufficient resources
@@ -1401,6 +1450,7 @@ tps = 221.654321 (without initial connection time)
    - **Fix:** Verify PVC retention policy and volume mount paths
 
 ### Debug Commands
+
 ```bash
 # Essential debugging commands for StatefulSets and storage
 kubectl get statefulsets -o wide                    # StatefulSet status
@@ -1416,12 +1466,14 @@ kubectl exec <pod> -- df -h                        # Check storage usage
 ## 🌟 Real-World Applications
 
 ### Enterprise Scenarios
+
 - **Database Migration:** Moving legacy databases to Kubernetes with zero downtime
 - **Multi-Cloud Storage:** Using storage classes for different performance tiers
 - **Disaster Recovery:** Implementing automated backup and restore procedures
 - **Compliance:** Meeting data retention and backup requirements for regulated industries
 
 ### Best Practices Learned
+
 - 🏆 **Storage Design:** Choose appropriate storage classes based on workload requirements
 - 🏆 **Backup Strategy:** Implement automated, tested backup and restore procedures
 - 🏆 **Monitoring:** Monitor both Kubernetes storage metrics and application-specific metrics
@@ -1432,12 +1484,14 @@ kubectl exec <pod> -- df -h                        # Check storage usage
 ## 📚 Additional Resources
 
 ### Related CKA Topics
+
 - Understand storage classes, persistent volumes
 - Use persistent volume claims
 - Configure applications with persistent storage
 - Understand StatefulSets vs Deployments
 
 ### Extended Learning
+
 - [ ] Explore Container Storage Interface (CSI) drivers
 - [ ] Study multi-zone storage replication strategies
 - [ ] Learn about storage performance optimization
@@ -1448,6 +1502,7 @@ kubectl exec <pod> -- df -h                        # Check storage usage
 ## 📝 Lab Completion
 
 ### Self-Assessment
+
 - [ ] I can complete this lab within 35 minutes
 - [ ] I understand StatefulSets and their use cases for stateful applications
 - [ ] I can configure persistent storage with appropriate storage classes
@@ -1455,11 +1510,13 @@ kubectl exec <pod> -- df -h                        # Check storage usage
 - [ ] I'm confident troubleshooting storage and StatefulSet issues
 
 ### Notes & Reflections
+
 *Record insights about StatefulSet design decisions, storage performance considerations, or backup strategies you discovered.*
 
 ---
 
 ### 🏁 Lab Status
+
 - [ ] **Started:** ___________
 - [ ] **Completed:** ___________  
 - [ ] **Reviewed:** ___________

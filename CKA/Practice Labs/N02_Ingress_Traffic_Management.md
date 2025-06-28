@@ -20,6 +20,7 @@
 ### The Challenge
 
 You must implement a comprehensive Ingress strategy that:
+
 - Consolidates all services under professional domain names
 - Implements SSL/TLS termination with automatic certificate management
 - Provides intelligent load balancing and traffic routing

@@ -5,6 +5,7 @@ This file contains the necessary resources to set up the crash loop scenario for
 ## 🚀 Quick Setup
 
 ### Option 1: Memory Limit Crash Loop (Recommended)
+
 ```yaml
 # t01-crash-loop-setup.yaml
 apiVersion: apps/v1
@@ -61,6 +62,7 @@ spec:
 ```
 
 ### Option 2: Application Error Crash Loop
+
 ```yaml
 # t01-app-error-setup.yaml
 apiVersion: apps/v1
@@ -104,6 +106,7 @@ spec:
 ## 🔧 Setup Instructions
 
 ### Deploy the Crash Loop Scenario:
+
 ```bash
 # Create the problematic deployment
 kubectl apply -f - <<EOF
@@ -154,17 +157,19 @@ kubectl get pods
 ```
 
 ### Verify the Problem:
+
 ```bash
 # You should see something like:
-# NAME                               READY   STATUS             RESTARTS   AGE
-# product-catalog-7d4b8f9c8d-abc12   0/1     CrashLoopBackOff   3          5m
-# product-catalog-7d4b8f9c8d-def34   0/1     CrashLoopBackOff   2          5m
-# product-catalog-7d4b8f9c8d-ghi56   0/1     CrashLoopBackOff   4          5m
+NAME                               READY   STATUS             RESTARTS   AGE
+product-catalog-7d4b8f9c8d-abc12   0/1     CrashLoopBackOff   3          5m
+product-catalog-7d4b8f9c8d-def34   0/1     CrashLoopBackOff   2          5m
+product-catalog-7d4b8f9c8d-ghi56   0/1     CrashLoopBackOff   4          5m
 ```
 
 ## 🎯 Lab Exercise
 
 Now follow the T01 lab steps to:
+
 1. Assess the situation
 2. Analyze pod details and logs
 3. Investigate cluster events
@@ -202,6 +207,7 @@ kubectl delete service product-catalog-service
 ## 📝 Lab Validation Notes
 
 This setup creates a realistic crash loop scenario that:
+
 - ✅ Simulates real-world memory pressure issues
 - ✅ Provides clear troubleshooting steps
 - ✅ Has a definitive fix that can be verified

@@ -9,6 +9,7 @@
 ## 🎮 Scenario Context
 
 This setup creates a **GameTech Studios** production environment where:
+
 - A working game server API is running successfully
 - A new deployment will be pushed that introduces critical failures  
 - Students must emergency rollback during "peak gaming hours"
@@ -217,6 +218,7 @@ echo "⏰ Students have 25 minutes to resolve the crisis..."
 ## 🔍 Verification Commands
 
 ### **Environment Health Check**
+
 ```bash
 # Quick status overview
 kubectl get deployments,rs,pods,services -n gametech-prod
@@ -235,6 +237,7 @@ kubectl get endpoints -n gametech-prod
 ```
 
 ### **Simulated Production Monitoring**
+
 ```bash
 # Simulate monitoring alerts
 echo "🚨 ALERT: GameServer API Response Time: 15.2s (SLA: <2s)"
@@ -287,23 +290,27 @@ kubectl config set-context --current --namespace=default
 ## 🔧 Instructor Notes
 
 ### **Timing Setup:**
+
 1. **Pre-lab (5 min):** Execute Steps 1-2 to establish stable environment
 2. **Lab Start:** Execute Step 3 to trigger the crisis scenario  
 3. **During Lab:** Monitor student progress and provide hints if needed
 
 ### **Common Student Challenges:**
+
 - **Panic Response:** Students may try complex solutions instead of simple rollback
 - **Wrong Commands:** May attempt manual scaling instead of `rollout undo`
 - **Incomplete Verification:** Not confirming service restoration after rollback
 - **Investigation Skills:** Difficulty correlating pod failures to resource constraints
 
 ### **Success Indicators:**
+
 - Fast rollback execution (< 8 minutes from crisis start)
 - Proper use of `kubectl rollout` commands
 - Systematic troubleshooting approach for root cause analysis
 - Understanding of deployment strategy parameters
 
 ### **Extension Scenarios:**
+
 - Add network policies for additional complexity
 - Introduce multiple microservices with dependency failures
 - Include database connection issues for deeper troubleshooting

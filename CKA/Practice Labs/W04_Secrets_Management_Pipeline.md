@@ -17,6 +17,7 @@
 Your banking application's deployment pipeline has been flagged by security auditors for storing sensitive information (API keys, database passwords, certificates) in plain text. The current deployment process violates PCI DSS and SOX compliance requirements.
 
 You must implement a comprehensive secrets management strategy that includes:
+
 - Encrypted secret storage and rotation
 - Role-based access controls for secrets
 - Secure secret injection into workloads
@@ -40,12 +41,14 @@ The regulators are conducting an audit in 30 minutes - failure means immediate s
 ## 📋 Pre-Lab Setup
 
 ### Environment Requirements
+
 - Kubernetes cluster (v1.26+)
 - kubectl configured with admin privileges
 - OpenSSL for certificate generation
 - Base64 encoding utilities
 
 ### Security Compliance Context
+
 ```bash
 # Create secure namespace for banking application
 kubectl create namespace secure-banking
@@ -62,15 +65,18 @@ kubectl label namespace secure-banking \
 ## 🔧 Mission Tasks
 
 ### **Task 1: Comprehensive Secret Creation and Management** ⏱️ *6-8 minutes*
+
 **Difficulty:** Intermediate  
 **Objective:** Create various types of secrets using multiple methods and implement proper secret hygiene
 
 #### Your Mission:
+
 Establish a secure secret management foundation by creating different types of secrets (generic, TLS, registry) using various creation methods while following security best practices.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Create database connection secrets using imperative commands:**
+
 ```bash
 # Create database secrets for banking application
 kubectl create secret generic database-credentials \
@@ -107,6 +113,7 @@ kubectl label secret api-keys \
 ```
 
 2. **Create TLS certificates and secrets for secure communication:**
+
 ```bash
 # Generate banking application TLS certificates
 openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
@@ -149,6 +156,7 @@ kubectl label secret database-client-cert \
 ```
 
 3. **Create container registry secrets for secure image pulls:**
+
 ```bash
 # Create Docker registry secret for private banking images
 kubectl create secret docker-registry banking-registry \
@@ -167,6 +175,7 @@ kubectl label secret banking-registry \
 ```
 
 4. **Create secrets from files and implement secret encryption at rest:**
+
 ```bash
 # Create configuration files with sensitive data
 cat > /tmp/app-config.properties << 'EOF'
@@ -221,6 +230,7 @@ rm -f /tmp/banking-app.key /tmp/banking-app.crt \
 ```
 
 5. **Verify secret creation and implement secret validation:**
+
 ```bash
 # List all secrets with labels
 kubectl get secrets -n secure-banking --show-labels
@@ -238,6 +248,7 @@ AGE:.metadata.creationTimestamp
 ```
 
 #### Expected Outcome:
+
 - Multiple types of secrets created (generic, TLS, docker-registry)
 - Proper labeling for compliance and organization
 - Secrets created using various methods (imperative, from files)
@@ -246,15 +257,18 @@ AGE:.metadata.creationTimestamp
 ---
 
 ### **Task 2: RBAC and Service Account Security Integration** ⏱️ *6-8 minutes*
+
 **Difficulty:** Advanced  
 **Objective:** Implement role-based access control for secrets with dedicated service accounts
 
-#### Your Mission:
+#### Your Mission
+
 Create a comprehensive RBAC system that controls access to secrets based on application roles and service requirements. Implement the principle of least privilege for secret access.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Create specialized service accounts for different banking components:**
+
 ```bash
 # Create service accounts for different application tiers
 kubectl create serviceaccount banking-frontend-sa -n secure-banking
@@ -293,6 +307,7 @@ kubectl label serviceaccount banking-monitoring-sa \
 ```
 
 2. **Create granular roles for secret access control:**
+
 ```bash
 # Create role for frontend components (limited secret access)
 cat > /tmp/frontend-secrets-role.yaml << 'EOF'
@@ -389,6 +404,7 @@ kubectl apply -f /tmp/monitoring-secrets-role.yaml
 ```
 
 3. **Create role bindings to connect service accounts with roles:**
+
 ```bash
 # Bind frontend service account to frontend role
 kubectl create rolebinding frontend-secrets-binding \
@@ -426,6 +442,7 @@ kubectl label rolebinding monitoring-secrets-binding \
 ```
 
 4. **Test RBAC permissions to ensure proper access control:**
+
 ```bash
 # Test frontend service account permissions
 echo "Testing frontend SA secret access:"
@@ -481,6 +498,7 @@ cat /tmp/rbac-validation-report.txt
 ```
 
 #### Expected Outcome:
+
 - Service accounts created for each application tier
 - Granular roles defined with specific secret access permissions
 - Role bindings connecting service accounts to appropriate roles
@@ -489,15 +507,19 @@ cat /tmp/rbac-validation-report.txt
 ---
 
 ### **Task 3: Secure Workload Deployment with Secret Integration** ⏱️ *7-9 minutes*
+
 **Difficulty:** Advanced  
 **Objective:** Deploy banking applications with proper secret injection and security contexts
 
-#### Your Mission:
+#### Your Mission
+
 Deploy the banking application components using the service accounts and secrets created earlier. Implement security contexts and proper secret mounting strategies.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
+
 
 1. **Deploy frontend application with TLS and registry secrets:**
+
 ```bash
 # Create frontend deployment with security context
 cat > /tmp/frontend-deployment.yaml << 'EOF'
@@ -624,6 +646,7 @@ kubectl apply -f /tmp/frontend-deployment.yaml
 ```
 
 2. **Deploy API gateway with comprehensive secret integration:**
+
 ```bash
 # Create API deployment with multiple secret types
 cat > /tmp/api-deployment.yaml << 'EOF'
@@ -770,6 +793,7 @@ kubectl apply -f /tmp/api-deployment.yaml
 ```
 
 3. **Deploy database application with client certificates and credentials:**
+
 ```bash
 # Create database deployment with comprehensive security
 cat > /tmp/database-deployment.yaml << 'EOF'
@@ -916,6 +940,7 @@ kubectl apply -f /tmp/database-deployment.yaml
 ```
 
 4. **Verify deployments and secret integration:**
+
 ```bash
 # Wait for all deployments to be ready
 kubectl wait --for=condition=available deployment/banking-frontend -n secure-banking --timeout=120s
@@ -935,7 +960,8 @@ kubectl describe pod -l app=banking,tier=api -n secure-banking | grep -A10 -B5 -
 kubectl exec -n secure-banking deployment/banking-api -- env | grep -E "(PAYMENT_|CREDIT_|FRAUD_)" || echo "Secrets loaded as environment variables"
 ```
 
-#### Expected Outcome:
+#### Expected Outcome
+
 - All banking application components deployed successfully
 - Secrets properly mounted and accessible to authorized containers
 - Security contexts implemented with non-root users and restricted capabilities
@@ -945,15 +971,18 @@ kubectl exec -n secure-banking deployment/banking-api -- env | grep -E "(PAYMENT
 ---
 
 ### **Task 4: Secret Rotation and External Integration** ⏱️ *5-7 minutes*
+
 **Difficulty:** Expert  
 **Objective:** Implement secret rotation mechanisms and integrate with external secret management
 
-#### Your Mission:
+#### Your Mission
+
 Implement automated secret rotation capabilities and demonstrate integration with external secret management systems to ensure compliance with banking security requirements.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Create secret rotation automation with CronJob:**
+
 ```bash
 # Create secret rotation CronJob
 cat > /tmp/secret-rotation-job.yaml << 'EOF'
@@ -1054,6 +1083,7 @@ kubectl apply -f /tmp/secret-rotation-job.yaml
 ```
 
 2. **Create external secret management integration simulation:**
+
 ```bash
 # Create external secret manager simulation
 cat > /tmp/external-secret-manager.yaml << 'EOF'
@@ -1161,6 +1191,7 @@ kubectl apply -f /tmp/external-secret-manager.yaml
 ```
 
 3. **Test secret rotation manually and verify functionality:**
+
 ```bash
 # Trigger manual secret rotation for testing
 kubectl create job secret-rotation-manual \
@@ -1182,6 +1213,7 @@ kubectl rollout status deployment/banking-api -n secure-banking
 ```
 
 4. **Implement secret backup and disaster recovery:**
+
 ```bash
 # Create secret backup script
 cat > /tmp/secret-backup.yaml << 'EOF'
@@ -1260,7 +1292,8 @@ EOF
 kubectl apply -f /tmp/secret-backup.yaml
 ```
 
-#### Expected Outcome:
+#### Expected Outcome
+
 - Automated secret rotation CronJob configured and tested
 - External secret management integration simulated
 - Manual secret rotation successfully executed
@@ -1270,15 +1303,18 @@ kubectl apply -f /tmp/secret-backup.yaml
 ---
 
 ### **Task 5: Compliance Monitoring and Audit Trail Implementation** ⏱️ *5-7 minutes*
+
 **Difficulty:** Expert  
 **Objective:** Implement comprehensive monitoring and audit capabilities for secret management compliance
 
-#### Your Mission:
+#### Your Mission
+
 Establish monitoring, logging, and audit systems to ensure full compliance with banking regulations and provide complete traceability of secret access and modifications.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Create comprehensive monitoring and alerting system:**
+
 ```bash
 # Create monitoring deployment for secret access
 cat > /tmp/secret-monitor.yaml << 'EOF'
@@ -1361,6 +1397,7 @@ kubectl apply -f /tmp/secret-monitor.yaml
 ```
 
 2. **Create compliance dashboard and reporting:**
+
 ```bash
 # Create compliance reporting ConfigMap
 cat > /tmp/compliance-dashboard.yaml << 'EOF'
@@ -1516,6 +1553,7 @@ kubectl apply -f /tmp/compliance-service.yaml
 ```
 
 3. **Generate comprehensive audit report:**
+
 ```bash
 # Create final audit and compliance report
 cat > /tmp/secrets-compliance-audit.sh << 'EOF'
@@ -1582,6 +1620,7 @@ cat /tmp/final-audit-report.txt
 ```
 
 4. **Verify complete system functionality:**
+
 ```bash
 # Final system verification
 echo "=== FINAL SYSTEM VERIFICATION ==="
@@ -1608,6 +1647,7 @@ echo "=== SYSTEM STATUS: READY FOR REGULATORY AUDIT ==="
 ```
 
 #### Expected Outcome:
+
 - Comprehensive monitoring system for secret access deployed
 - Compliance dashboard providing real-time status information
 - Detailed audit report generated showing full compliance
@@ -1621,6 +1661,7 @@ echo "=== SYSTEM STATUS: READY FOR REGULATORY AUDIT ==="
 ### Common Issues and Solutions
 
 #### **Issue: "Secret not found in pod"**
+
 ```bash
 # Check secret mounting
 kubectl describe pod <pod-name> -n secure-banking | grep -A10 -B5 Volume
@@ -1631,6 +1672,7 @@ kubectl get secret <secret-name> -n secure-banking
 ```
 
 #### **Issue: "RBAC permission denied"**
+
 ```bash
 # Check service account permissions
 kubectl auth can-i get secrets --as=system:serviceaccount:secure-banking:<sa-name> -n secure-banking
@@ -1639,6 +1681,7 @@ kubectl get roles -n secure-banking -o yaml
 ```
 
 #### **Issue: "Secret rotation failing"**
+
 ```bash
 # Check CronJob status
 kubectl get cronjobs -n secure-banking
@@ -1649,6 +1692,7 @@ kubectl auth can-i patch secrets --as=system:serviceaccount:secure-banking:banki
 ```
 
 #### **Issue: "Security context violations"**
+
 ```bash
 # Check pod security context
 kubectl describe pod <pod-name> -n secure-banking | grep -A10 "Security Context"
@@ -1697,6 +1741,7 @@ kubectl exec -n secure-banking <pod-name> -- ps aux
 ## 🏆 Success Criteria
 
 ### Task Completion Checklist
+
 - [ ] **Task 1:** Comprehensive secret creation using multiple methods
 - [ ] **Task 2:** RBAC integration with granular permission control
 - [ ] **Task 3:** Secure workload deployment with proper secret integration
@@ -1704,6 +1749,7 @@ kubectl exec -n secure-banking <pod-name> -- ps aux
 - [ ] **Task 5:** Compliance monitoring and comprehensive audit trail
 
 ### Security Validation
+
 - [ ] All secrets encrypted and properly labeled
 - [ ] RBAC enforcing least privilege access
 - [ ] Security contexts preventing privilege escalation
@@ -1711,6 +1757,7 @@ kubectl exec -n secure-banking <pod-name> -- ps aux
 - [ ] Compliance requirements fully satisfied
 
 ### Time Benchmarks
+
 - **Basic proficiency:** Complete in 35 minutes
 - **Intermediate:** Complete in 30 minutes  
 - **Advanced:** Complete in 25 minutes
@@ -1721,18 +1768,21 @@ kubectl exec -n secure-banking <pod-name> -- ps aux
 ## 🚀 Extensions & Real-World Applications
 
 ### Production Scenarios
+
 - **HashiCorp Vault Integration:** External secret management with Vault
 - **AWS Secrets Manager:** Cloud-native secret management integration
 - **Certificate Management:** Automated TLS certificate lifecycle
 - **Zero-Trust Security:** Comprehensive secret-based authentication
 
 ### Advanced Techniques
+
 - **Secret Encryption Providers:** Custom KMS integration
 - **Sealed Secrets:** GitOps-friendly encrypted secrets
 - **External Secrets Operator:** Automated external secret synchronization
 - **Pod Security Standards:** Advanced security policy enforcement
 
 ### Integration Points
+
 - **CI/CD Pipelines:** Secure secret injection in deployment pipelines
 - **Monitoring Integration:** Secret access metrics and alerting
 - **Backup Solutions:** Encrypted secret backup and recovery
