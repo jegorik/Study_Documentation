@@ -5,6 +5,7 @@ Use this checklist to track your progress through all the official CCNA exam top
 ## 1.0 Network Fundamentals (20%)
 
 ### 1.1 Explain the role and function of network components
+
 - [ ] 1.1.a Routers
 - [ ] 1.1.b Layer 2 and Layer 3 switches
 - [ ] 1.1.c Next-generation firewalls and IPS
@@ -14,6 +15,7 @@ Use this checklist to track your progress through all the official CCNA exam top
 - [ ] 1.1.g Servers
 
 ### 1.2 Describe characteristics of network topology architectures
+
 - [ ] 1.2.a 2-tier
 - [ ] 1.2.b 3-tier
 - [ ] 1.2.c Spine-leaf
@@ -22,6 +24,7 @@ Use this checklist to track your progress through all the official CCNA exam top
 - [ ] 1.2.f On-premises and cloud
 
 ### 1.3 Compare physical interface and cabling types
+
 - [ ] 1.3.a Single-mode fiber, multimode fiber, copper
 - [ ] 1.3.b Connections (Ethernet shared media and point-to-point)
 - [ ] 1.3.c Concepts of PoE
@@ -37,6 +40,7 @@ Use this checklist to track your progress through all the official CCNA exam top
 ### 1.8 Verify IP parameters for Client OS (Windows, Mac OS, Linux)
 
 ### 1.9 Describe wireless principles
+
 - [ ] 1.9.a Nonoverlapping Wi-Fi channels
 - [ ] 1.9.b SSID
 - [ ] 1.9.c RF
@@ -45,6 +49,7 @@ Use this checklist to track your progress through all the official CCNA exam top
 ### 1.10 Explain virtualization fundamentals (virtual machines)
 
 ### 1.11 Describe switching concepts
+
 - [ ] 1.11.a MAC learning and aging
 - [ ] 1.11.b Frame switching
 - [ ] 1.11.c Frame flooding
@@ -53,11 +58,13 @@ Use this checklist to track your progress through all the official CCNA exam top
 ## 2.0 Network Access (20%)
 
 ### 2.1 Configure and verify VLANs (normal range) spanning multiple switches
+
 - [ ] 2.1.a Access ports (data and voice)
 - [ ] 2.1.b Default VLAN
 - [ ] 2.1.c Connectivity
 
 ### 2.2 Configure and verify interswitch connectivity
+
 - [ ] 2.2.a Trunk ports
 - [ ] 2.2.b 802.1Q
 - [ ] 2.2.c Native VLAN
@@ -67,6 +74,7 @@ Use this checklist to track your progress through all the official CCNA exam top
 ### 2.4 Configure and verify (Layer 2/Layer 3) EtherChannel (LACP)
 
 ### 2.5 Describe the need for and basic operations of Rapid PVST+ Spanning Tree Protocol and identify basic operations
+
 - [ ] 2.5.a Root port, root bridge (primary/secondary), and other port names
 - [ ] 2.5.b Port states (forwarding/blocking)
 - [ ] 2.5.c PortFast benefits
@@ -82,6 +90,7 @@ Use this checklist to track your progress through all the official CCNA exam top
 ## 3.0 IP Connectivity (25%)
 
 ### 3.1 Interpret the components of routing table
+
 - [ ] 3.1.a Routing protocol code
 - [ ] 3.1.b Prefix
 - [ ] 3.1.c Network mask
@@ -91,17 +100,20 @@ Use this checklist to track your progress through all the official CCNA exam top
 - [ ] 3.1.g Gateway of last resort
 
 ### 3.2 Determine how a router makes a forwarding decision by default
+
 - [ ] 3.2.a Longest match
 - [ ] 3.2.b Administrative distance
 - [ ] 3.2.c Routing protocol metric
 
 ### 3.3 Configure and verify IPv4 and IPv6 static routing
+
 - [ ] 3.3.a Default route
 - [ ] 3.3.b Network route
 - [ ] 3.3.c Host route
 - [ ] 3.3.d Floating static
 
 ### 3.4 Configure and verify single area OSPFv2
+
 - [ ] 3.4.a Neighbor adjacencies
 - [ ] 3.4.b Point-to-point
 - [ ] 3.4.c Broadcast (DR/BDR selection)
@@ -158,6 +170,7 @@ Use this checklist to track your progress through all the official CCNA exam top
 ### 6.2 Compare traditional networks with controller-based networking
 
 ### 6.3 Describe controller-based and software defined architectures (overlay, underlay, and fabric)
+
 - [ ] 6.3.a Separation of control plane and data plane
 - [ ] 6.3.b North-bound and south-bound APIs
 
@@ -170,6 +183,7 @@ Use this checklist to track your progress through all the official CCNA exam top
 ### 6.7 Interpret JSON encoded data
 
 ## Study Progress Tracking
+
 - [ ] Network Fundamentals (0/11)
 - [ ] Network Access (0/9)
 - [ ] IP Connectivity (0/5)

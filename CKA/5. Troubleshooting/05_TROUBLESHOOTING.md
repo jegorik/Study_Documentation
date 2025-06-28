@@ -5,6 +5,7 @@
 ## Section 1: Exam Topic Overview
 
 ### Key Concepts
+
 - **Cluster Component Failures:** API server, etcd, scheduler, controller manager issues
 - **Worker Node Issues:** kubelet, kube-proxy, container runtime problems
 - **Application Troubleshooting:** Pod startup, networking, resource issues
@@ -13,6 +14,7 @@
 - **Network Debugging:** Service discovery, connectivity, DNS issues
 
 ### Exam Objectives
+
 - [ ] Evaluate cluster and node logging
 - [ ] Understand how to monitor applications
 - [ ] Manage container stdout & stderr logs
@@ -21,18 +23,20 @@
 - [ ] Troubleshoot networking
 
 ### Study Resources
+
 - Official Kubernetes Documentation: https://kubernetes.io/docs/tasks/debug-application-cluster/
 - CNCF Training Materials: Troubleshooting and Monitoring
 - Practice Labs: Failure scenarios and debugging
 
 ### Exam Weight
+
 **30%** of total exam score (HIGHEST WEIGHT!)
 
 ---
 
 ## Section 2: ASCII Drawing with Explanation
 
-```
+```text
                         KUBERNETES TROUBLESHOOTING FLOW
     
     ┌─────────────────────────────────────────────────────────────────┐
@@ -119,9 +123,9 @@
          └─────────────┘
                 │
                 ▼
-         ┌─────────────┐
+         ┌──────────────┐
          │3. HYPOTHESIZE│ ──▶ Form theories about root cause
-         └─────────────┘
+         └──────────────┘
                 │
                 ▼
          ┌─────────────┐
@@ -135,14 +139,15 @@
 ```
 
 ### Symbol Legend
-- **[X]** = Critical failure/error state
-- **[!]** = Warning/degraded performance 
-- **[~]** = Restart/retry in progress
 
+- **[X]** = Critical failure/error state
+- **[!]** = Warning/degraded performance
+- **[~]** = Restart/retry in progress
 
 ### Troubleshooting Layers Breakdown
 
 #### Application Layer Issues
+
 1. **Pod Problems:**
    - Failed containers due to image issues, resource limits, or configuration errors
    - Pending pods due to scheduling constraints or resource unavailability
@@ -159,6 +164,7 @@
    - Environment variable issues
 
 #### Networking Layer Issues
+
 1. **DNS Problems:**
    - CoreDNS pod failures
    - DNS resolution timeouts
@@ -175,6 +181,7 @@
    - Missing ingress/egress rules
 
 #### Node Layer Issues
+
 1. **kubelet Problems:**
    - Service not running or misconfigured
    - Certificate or authentication issues
@@ -191,6 +198,7 @@
    - Storage capacity issues
 
 #### Control Plane Issues
+
 1. **API Server Problems:**
    - Service unavailable or high latency
    - Authentication/authorization failures
@@ -217,12 +225,15 @@
 **Solution Steps:**
 
 #### Step 1: Check Pod Status and Events
+
 ```bash
 kubectl get pods
 kubectl describe pod my-app-pod
 ```
+
 **Expected Output:**
-```
+
+```bash
 Events:
   Type     Reason            Age   From               Message
   ----     ------            ----  ----               -------
@@ -230,6 +241,7 @@ Events:
 ```
 
 #### Step 2: Analyze Node Resources
+
 ```bash
 kubectl get nodes -o wide
 kubectl describe nodes
@@ -237,11 +249,13 @@ kubectl top nodes
 ```
 
 #### Step 3: Check Resource Requirements
+
 ```bash
 kubectl get pod my-app-pod -o yaml | grep -A 10 resources
 ```
 
 #### Step 4: Identify and Fix the Issue
+
 ```bash
 # Option 1: Reduce resource requests
 kubectl edit pod my-app-pod
@@ -260,6 +274,7 @@ kubectl delete pod resource-heavy-pod
 **Solution Steps:**
 
 #### Step 1: Verify Service and Endpoints
+
 ```bash
 kubectl get services
 kubectl get endpoints backend-service
@@ -267,11 +282,13 @@ kubectl describe service backend-service
 ```
 
 #### Step 2: Test DNS Resolution
+
 ```bash
 kubectl run debug --image=busybox --rm -it --restart=Never -- nslookup backend-service.default.svc.cluster.local
 ```
 
 #### Step 3: Test Direct Connectivity
+
 ```bash
 # Get service ClusterIP
 kubectl get service backend-service -o jsonpath='{.spec.clusterIP}'
@@ -281,6 +298,7 @@ kubectl run debug --image=busybox --rm -it --restart=Never -- wget -qO- http://1
 ```
 
 #### Step 4: Check Network Policies
+
 ```bash
 kubectl get networkpolicies
 kubectl describe networkpolicy backend-netpol
@@ -293,12 +311,14 @@ kubectl describe networkpolicy backend-netpol
 **Solution Steps:**
 
 #### Step 1: Check Node Status and Conditions
+
 ```bash
 kubectl get nodes
 kubectl describe node worker-node-1
 ```
 
 #### Step 2: Check kubelet Status on the Node
+
 ```bash
 # SSH to the node or use kubectl node-shell
 systemctl status kubelet
@@ -306,6 +326,7 @@ journalctl -u kubelet -f
 ```
 
 #### Step 3: Check Container Runtime
+
 ```bash
 systemctl status docker
 # or
@@ -316,6 +337,7 @@ crictl ps
 ```
 
 #### Step 4: Check Node Resources
+
 ```bash
 kubectl top node worker-node-1
 df -h  # Check disk space
@@ -335,6 +357,7 @@ free -h  # Check memory
 | `kubectl top` | Resource usage statistics | `nodes`, `pods` | `kubectl top nodes` |
 
 ### Debugging Commands
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl get pods --all-namespaces` | List all pods | `kubectl get pods -A -o wide` |
@@ -343,6 +366,7 @@ free -h  # Check memory
 | `kubectl port-forward` | Port forwarding for testing | `kubectl port-forward nginx-pod 8080:80` |
 
 ### Node Debugging
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl get nodes -o wide` | Node status with details | `kubectl get nodes -o wide` |
@@ -351,6 +375,7 @@ free -h  # Check memory
 | `kubectl drain` | Safely evict pods from node | `kubectl drain worker-1 --ignore-daemonsets` |
 
 ### Service and Network Debugging
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl get endpoints` | Service endpoint information | `kubectl get endpoints my-service` |
@@ -359,6 +384,7 @@ free -h  # Check memory
 | `curl` | HTTP connectivity testing | `curl -v http://my-service:80` |
 
 ### Log Analysis
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl logs -l app=nginx` | Logs from labeled pods | `kubectl logs -l app=nginx --tail=100` |
@@ -370,6 +396,7 @@ free -h  # Check memory
 ## Section 5: Best Practices
 
 ### Systematic Troubleshooting Approach
+
 1. **Start with High-Level Overview:**
    - Check cluster-wide status: `kubectl get nodes`
    - Review recent events: `kubectl get events --sort-by=.metadata.creationTimestamp`
@@ -383,6 +410,7 @@ free -h  # Check memory
    - Check logs and metrics at each component
 
 3. **Use the Debugging Hierarchy:**
+
    ```bash
    # 1. Check if resources exist
    kubectl get pods,services,deployments
@@ -401,6 +429,7 @@ free -h  # Check memory
    ```
 
 ### Application Troubleshooting
+
 1. **Pod Lifecycle Issues:**
    - **ImagePullBackOff:** Verify image exists and registry access
    - **CrashLoopBackOff:** Check application logs and configuration
@@ -420,6 +449,7 @@ free -h  # Check memory
    - Use debugging containers for investigation
 
 ### Network Troubleshooting
+
 1. **Service Discovery Issues:**
    - Verify service exists and has valid endpoints
    - Check label selectors match pod labels
@@ -433,6 +463,7 @@ free -h  # Check memory
    - Validate ingress controller and rules
 
 3. **DNS Debugging:**
+
    ```bash
    # Check CoreDNS pods
    kubectl get pods -n kube-system -l k8s-app=kube-dns
@@ -445,6 +476,7 @@ free -h  # Check memory
    ```
 
 ### Node and Cluster Troubleshooting
+
 1. **Node Issues:**
    - Check kubelet status and logs: `systemctl status kubelet`
    - Verify container runtime: `systemctl status docker`
@@ -464,6 +496,7 @@ free -h  # Check memory
    - Check service account and token configuration
 
 ### Performance Troubleshooting
+
 1. **Resource Monitoring:**
    - Use `kubectl top` for real-time resource usage
    - Implement proper monitoring with Prometheus/Grafana
@@ -477,6 +510,7 @@ free -h  # Check memory
    - Optimize resource requests and limits
 
 ### Log Management and Analysis
+
 1. **Centralized Logging:**
    - Implement cluster-wide logging solution (ELK, Fluentd)
    - Structure application logs for better parsing
@@ -490,7 +524,9 @@ free -h  # Check memory
    - Regular log review and analysis
 
 ### Common Issues and Solutions
+
 1. **Pod Issues:**
+
    ```bash
    # Pod stuck in Pending
    kubectl describe pod <pod-name>  # Check events for scheduling issues
@@ -503,6 +539,7 @@ free -h  # Check memory
    ```
 
 2. **Service Issues:**
+
    ```bash
    # Service has no endpoints
    kubectl get pods -l <service-selector>  # Check if pods match selector
@@ -512,6 +549,7 @@ free -h  # Check memory
    ```
 
 3. **Node Issues:**
+
    ```bash
    # Node NotReady
    kubectl describe node <node-name>  # Check node conditions
@@ -519,6 +557,7 @@ free -h  # Check memory
    ```
 
 ### Exam-Specific Tips
+
 - **Time Management:** Practice common troubleshooting scenarios for speed
 - **Command Efficiency:** Master kubectl shortcuts and debugging commands
 - **Systematic Approach:** Always follow logical troubleshooting steps
@@ -530,6 +569,7 @@ free -h  # Check memory
 ## Quick Reference Card
 
 ### Essential Troubleshooting Commands
+
 ```bash
 kubectl get events --sort-by=.metadata.creationTimestamp
 kubectl describe pod <pod-name>
@@ -539,6 +579,7 @@ kubectl top nodes,pods
 ```
 
 ### Quick Debugging Workflow
+
 ```bash
 # 1. Check overall status
 kubectl get nodes,pods -o wide
@@ -557,6 +598,7 @@ kubectl run debug --image=busybox --rm -it -- sh
 ```
 
 ### Network Debugging
+
 ```bash
 # DNS test
 nslookup <service-name>.<namespace>.svc.cluster.local
@@ -569,6 +611,7 @@ kubectl get endpoints <service-name>
 ```
 
 ### Common Issues Quick Fixes
+
 - **Pending Pod:** Check node resources and scheduling constraints
 - **CrashLoopBackOff:** Check previous logs and resource limits
 - **Service No Endpoints:** Verify label selectors and pod status
@@ -578,6 +621,7 @@ kubectl get endpoints <service-name>
 ---
 
 ## Related Topics
+
 - [Kubernetes Architecture]
 - [Workloads & Scheduling]
 - [Services & Networking]

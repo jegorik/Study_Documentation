@@ -5,6 +5,7 @@
 ## Section 1: Exam Topic Overview
 
 ### Key Concepts
+
 - **Persistent Volumes (PV):** Cluster-wide storage resources
 - **Persistent Volume Claims (PVC):** User requests for storage
 - **Storage Classes:** Dynamic provisioning templates
@@ -13,6 +14,7 @@
 - **Dynamic Provisioning:** Automatic PV creation based on PVC requests
 
 ### Exam Objectives
+
 - [ ] Create and configure persistent volumes and claims
 - [ ] Implement storage classes for dynamic provisioning
 - [ ] Configure volume mounts in pods and deployments
@@ -21,18 +23,20 @@
 - [ ] Manage storage capacity and access modes
 
 ### Study Resources
+
 - Official Kubernetes Documentation: https://kubernetes.io/docs/concepts/storage/
 - CNCF Training Materials: Storage and Persistent Volumes
 - Practice Labs: Storage configuration and troubleshooting
 
 ### Exam Weight
+
 **10%** of total exam score
 
 ---
 
 ## Section 2: ASCII Drawing with Explanation
 
-```
+```text
                         KUBERNETES STORAGE ARCHITECTURE
     
     ┌─────────────────────────────────────────────────────────────────┐
@@ -120,6 +124,7 @@
 ### Component Breakdown
 
 #### Storage Resources
+
 1. **Persistent Volume (PV):**
    - Purpose: Cluster-level storage resource provisioned by administrator
    - Key features: Capacity, access modes, reclaim policy, storage class
@@ -136,6 +141,7 @@
    - Interactions: Used by PVC to create PV automatically
 
 #### Volume Types
+
 1. **hostPath:**
    - Purpose: Mount file/directory from host node
    - Key features: Direct access to node filesystem
@@ -152,6 +158,7 @@
    - Use cases: Shared application data, distributed systems
 
 #### Access Modes
+
 1. **ReadWriteOnce (RWO):**
    - Single node can mount volume for read-write
    - Most common for database storage
@@ -178,6 +185,7 @@
 **Solution Steps:**
 
 #### Step 1: Create Storage Class (if not exists)
+
 ```bash
 cat <<EOF | kubectl apply -f -
 apiVersion: storage.k8s.io/v1
@@ -194,6 +202,7 @@ EOF
 ```
 
 #### Step 2: Create Persistent Volume Claim
+
 ```bash
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
@@ -211,16 +220,20 @@ EOF
 ```
 
 #### Step 3: Verify PVC Status
+
 ```bash
 kubectl get pvc mysql-pvc
 ```
+
 **Expected Output:**
-```
+
+```bash
 NAME        STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 mysql-pvc   Pending   -        -          -              fast-ssd       30s
 ```
 
 #### Step 4: Deploy MySQL with Persistent Volume
+
 ```bash
 cat <<EOF | kubectl apply -f -
 apiVersion: apps/v1
@@ -255,11 +268,14 @@ EOF
 ```
 
 #### Step 5: Verify PV Creation and Binding
+
 ```bash
 kubectl get pv,pvc
 ```
+
 **Expected Output:**
-```
+
+```bash
 NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM               STORAGECLASS
 persistentvolume/pvc-abc123-def456-ghi789  10Gi       RWO            Delete           Bound    default/mysql-pvc   fast-ssd
 
@@ -268,6 +284,7 @@ persistentvolumeclaim/mysql-pvc   Bound    pvc-abc123-def456-ghi789   10Gi      
 ```
 
 #### Step 6: Test Data Persistence
+
 ```bash
 # Connect to MySQL and create test data
 kubectl exec -it mysql-xxx -- mysql -uroot -ppassword123 -e "CREATE DATABASE testdb; USE testdb; CREATE TABLE test (id INT, name VARCHAR(50)); INSERT INTO test VALUES (1, 'persistent data');"
@@ -281,6 +298,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
 ```
 
 ### Additional Scenarios
+
 - **Scenario 2:** Creating static PV for existing storage and manual binding
 - **Scenario 3:** Configuring multi-container pod with shared volume storage
 
@@ -297,6 +315,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
 | `kubectl get storageclass` | List storage classes | `-o yaml` | `kubectl get sc -o yaml` |
 
 ### Storage Class Management
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl create -f` | Create storage class | `kubectl create -f storageclass.yaml` |
@@ -304,6 +323,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
 | `kubectl get sc` | List storage classes | `kubectl get storageclass` |
 
 ### Volume Operations
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl apply -f` | Create PV/PVC from YAML | `kubectl apply -f pvc.yaml` |
@@ -311,23 +331,26 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
 | `kubectl patch pv` | Update PV reclaim policy | `kubectl patch pv pvc-123 -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'` |
 
 ### Troubleshooting Storage
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl get events` | Check storage events | `kubectl get events --field-selector involvedObject.kind=PersistentVolume` |
 | `kubectl logs` | Check provisioner logs | `kubectl logs -n kube-system -l app=gce-pd-driver` |
-| `kubectl describe node` | Check node storage | `kubectl describe node worker-1 | grep -A 10 "Allocated resources"` |
+| `kubectl describe node` | Check node storage | `kubectl describe node worker-1 \| grep -A 10 "Allocated resources"` |
 
 ---
 
 ## Section 5: Best Practices
 
 ### Storage Design
+
 1. **Storage Class Strategy:**
    - Create environment-specific storage classes (dev, staging, prod)
    - Use appropriate storage types for workload requirements
    - Set reasonable default storage class
    - Configure proper reclaim policies
    - Example production storage class:
+
    ```yaml
    apiVersion: storage.k8s.io/v1
    kind: StorageClass
@@ -356,6 +379,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
    - Understand storage backend limitations
 
 ### Performance Optimization
+
 1. **Storage Performance:**
    - Choose appropriate storage type for IOPS requirements
    - Use SSD for high-performance workloads
@@ -369,6 +393,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
    - Plan for multi-zone deployments
 
 ### Security Considerations
+
 1. **Data Protection:**
    - Enable encryption at rest and in transit
    - Implement proper backup strategies
@@ -382,12 +407,14 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
    - Audit storage access patterns
 
 ### Backup and Recovery
+
 1. **Backup Strategies:**
    - Implement automated backup schedules
    - Test backup and restore procedures
    - Use volume snapshots when available
    - Document recovery procedures
    - Example backup using volume snapshots:
+
    ```yaml
    apiVersion: snapshot.storage.k8s.io/v1
    kind: VolumeSnapshot
@@ -406,6 +433,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
    - Regular disaster recovery testing
 
 ### Troubleshooting Best Practices
+
 1. **Common Storage Issues:**
    - PVC stuck in Pending state
    - Check storage class availability and parameters
@@ -414,6 +442,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
    - Validate access modes compatibility
 
 2. **Debugging Steps:**
+
    ```bash
    # Check PVC status and events
    kubectl describe pvc mysql-pvc
@@ -435,6 +464,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
    - Consider storage optimization
 
 ### Cost Management
+
 1. **Storage Optimization:**
    - Right-size storage requests
    - Implement storage lifecycle policies
@@ -448,6 +478,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
    - Regular cost analysis and optimization
 
 ### Exam-Specific Tips
+
 - **Time Management:** Practice creating PV/PVC scenarios quickly
 - **Command Shortcuts:** Master kubectl commands for storage resources
 - **Verification:** Always verify storage binding and mounting
@@ -458,6 +489,7 @@ kubectl exec -it mysql-yyy -- mysql -uroot -ppassword123 -e "USE testdb; SELECT 
 ## Quick Reference Card
 
 ### Essential Commands for Storage
+
 ```bash
 kubectl get pv,pvc -o wide                    # List storage resources
 kubectl describe pvc mysql-pvc                # PVC details and events
@@ -467,6 +499,7 @@ kubectl delete pvc mysql-pvc                  # Delete PVC
 ```
 
 ### Quick PVC Creation
+
 ```bash
 # Create PVC with specific storage class
 kubectl create -f - <<EOF
@@ -484,6 +517,7 @@ EOF
 ```
 
 ### Volume Mount in Pod
+
 ```yaml
 spec:
   containers:
@@ -499,6 +533,7 @@ spec:
 ```
 
 ### Troubleshooting Commands
+
 ```bash
 kubectl get events --field-selector involvedObject.kind=PersistentVolume
 kubectl describe storageclass fast-ssd
@@ -506,6 +541,7 @@ kubectl logs -n kube-system -l app=provisioner
 ```
 
 ### Key Storage Facts
+
 - **RWO:** Single node read-write (most common)
 - **ROX:** Multiple nodes read-only
 - **RWX:** Multiple nodes read-write (limited support)
@@ -514,6 +550,7 @@ kubectl logs -n kube-system -l app=provisioner
 ---
 
 ## Related Topics
+
 - [Kubernetes Architecture]
 - [Workloads & Scheduling]
 - [Security and RBAC]

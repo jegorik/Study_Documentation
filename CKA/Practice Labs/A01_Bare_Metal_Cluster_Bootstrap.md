@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 You're a Senior Platform Engineer at **CloudNative Dynamics**, a fast-growing fintech startup that's outgrown their managed Kubernetes service costs. The company is spending $45,000/month on managed clusters and wants to move to self-managed infrastructure to reduce costs by 70% while gaining more control.
 
 **Your Role:** Lead Platform Engineer responsible for infrastructure architecture  
@@ -17,9 +18,11 @@ You're a Senior Platform Engineer at **CloudNative Dynamics**, a fast-growing fi
 **Urgency:** **HIGH PRIORITY** - Need production-ready cluster in 2 weeks for new product launch, development teams are blocked
 
 ### The Challenge
+
 You've been tasked with setting up the company's first self-managed Kubernetes cluster on bare metal servers. This will become the template for all future production clusters. The infrastructure team has already provisioned three Ubuntu 22.04 servers, and you need to bootstrap a working Kubernetes cluster using kubeadm.
 
 **Critical Business Requirements:**
+
 - 💰 **Cost Savings:** Target 70% reduction in infrastructure costs
 - 🚀 **Performance:** Better control over compute resources and networking  
 - 🔒 **Security:** Full control over cluster configuration and compliance
@@ -30,6 +33,7 @@ You've been tasked with setting up the company's first self-managed Kubernetes c
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Master kubeadm cluster initialization and worker node joining process
 - [ ] **Secondary Skills:** Infrastructure preparation, container runtime setup, networking configuration
 - [ ] **Real-world Application:** Build production-ready Kubernetes clusters from scratch
@@ -40,12 +44,14 @@ By completing this lab, you will:
 ## 🔧 Prerequisites
 
 ### Knowledge Requirements
+
 - [ ] Basic understanding of Linux system administration
 - [ ] Familiarity with container concepts and Docker/containerd
 - [ ] Understanding of Kubernetes architecture (control plane, worker nodes)
 - [ ] Basic networking concepts (IP addressing, routing)
 
 ### Environment Setup
+
 ```bash
 # Infrastructure requirements
 - 3 Ubuntu 22.04 servers (can be VMs)
@@ -65,6 +71,7 @@ ssh user@worker-node-2 "sudo ls -la"
 ## 📚 Quick Reference
 
 ### Key Commands for This Lab
+
 ```bash
 kubeadm init --pod-network-cidr=192.168.0.0/16  # Initialize control plane
 kubeadm join <endpoint> --token <token>         # Join worker nodes
@@ -73,6 +80,7 @@ kubectl get nodes                               # Verify cluster status
 ```
 
 ### Important Concepts
+
 - **kubeadm:** Tool for bootstrapping Kubernetes clusters following best practices
 - **Container Runtime:** containerd/Docker - runs containers on each node
 - **CNI Plugin:** Container Network Interface - enables pod networking
@@ -83,6 +91,7 @@ kubectl get nodes                               # Verify cluster status
 ## 🚀 Lab Tasks
 
 ### Task 1: Infrastructure Preparation and Container Runtime Setup
+
 **Objective:** Prepare all three nodes with required dependencies and container runtime
 
 **Your Mission:**
@@ -92,6 +101,7 @@ Set up the foundation for your Kubernetes cluster by installing and configuring 
 All three nodes have containerd running, swap disabled, required kernel modules loaded, and Kubernetes tools installed and ready for cluster initialization.
 
 **Hints:**
+
 - 💡 Swap must be completely disabled on all nodes for kubelet to work properly
 - 💡 Certain kernel modules like br_netfilter are required for networking
 - 💡 Use the official Kubernetes apt repository for the most current packages
@@ -99,6 +109,7 @@ All three nodes have containerd running, swap disabled, required kernel modules 
 ---
 
 ### Task 2: Control Plane Initialization
+
 **Objective:** Initialize the Kubernetes control plane using kubeadm
 
 **Your Mission:**
@@ -108,6 +119,7 @@ Use kubeadm to initialize the control plane node, configure kubectl for the admi
 Control plane is running with all components healthy, kubectl is configured for cluster access, and you have the join command ready for worker nodes.
 
 **Hints:**
+
 - 💡 Save the kubeadm join command output - you'll need it for worker nodes
 - 💡 Configure kubectl immediately after initialization to verify the control plane
 - 💡 The pod network CIDR should not overlap with your node network
@@ -115,6 +127,7 @@ Control plane is running with all components healthy, kubectl is configured for 
 ---
 
 ### Task 3: Container Network Interface (CNI) Installation
+
 **Objective:** Install and configure pod networking using a CNI plugin
 
 **Your Mission:**
@@ -124,6 +137,7 @@ Install a CNI plugin (Calico recommended) to enable pod-to-pod communication acr
 Pod networking is functional, control plane node shows Ready status, and kube-system pods are all running successfully.
 
 **Hints:**
+
 - 💡 The control plane node will remain NotReady until CNI is installed
 - 💡 Calico is a popular choice that works well with kubeadm
 - 💡 Watch the kube-system pods to ensure they all start successfully
@@ -131,6 +145,7 @@ Pod networking is functional, control plane node shows Ready status, and kube-sy
 ---
 
 ### Task 4: Worker Node Joining and Cluster Verification
+
 **Objective:** Join both worker nodes to the cluster and verify full cluster functionality
 
 **Your Mission:**
@@ -140,6 +155,7 @@ Use the kubeadm join command on both worker nodes to add them to the cluster. Ve
 Three-node cluster with all nodes in Ready state, system pods distributed across nodes, and ability to schedule test workloads successfully.
 
 **Hints:**
+
 - 💡 Run the exact join command from the kubeadm init output on each worker
 - 💡 Worker nodes may take a few minutes to show Ready status
 - 💡 Test with a simple deployment to verify scheduling works across nodes
@@ -149,6 +165,7 @@ Three-node cluster with all nodes in Ready state, system pods distributed across
 ## ⏰ Time Management
 
 **Exam Pace Training:**
+
 - [ ] Task 1: 6 minutes (Infrastructure prep)
 - [ ] Task 2: 5 minutes (Control plane init)
 - [ ] Task 3: 4 minutes (CNI installation)
@@ -165,7 +182,9 @@ Three-node cluster with all nodes in Ready state, system pods distributed across
 <summary><strong>📖 Click to reveal detailed solution (try solving first!)</strong></summary>
 
 ### Step 1: Infrastructure Preparation (Run on ALL nodes)
+
 **Command/Action:**
+
 ```bash
 # Update system packages
 sudo apt update && sudo apt upgrade -y
@@ -223,7 +242,8 @@ sudo apt-mark hold kubelet kubeadm kubectl
 This comprehensive setup prepares each node with all required components. Disabling swap is critical as kubelet won't start with swap enabled. The kernel modules and sysctl parameters enable proper networking functionality.
 
 **Expected Output:**
-```
+
+```bash
 containerd.service is active and running
 kubelet.service is active and running
 All packages installed successfully
@@ -232,7 +252,9 @@ All packages installed successfully
 ---
 
 ### Step 2: Control Plane Initialization (Control plane node only)
+
 **Command/Action:**
+
 ```bash
 # Initialize the control plane
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --control-plane-endpoint=$(hostname -I | awk '{print $1}')
@@ -252,7 +274,8 @@ kubectl get pods -n kube-system
 kubeadm init sets up the control plane components (API server, etcd, scheduler, controller manager). The pod network CIDR defines the IP range for pod networking. Copying the admin config enables kubectl access.
 
 **Expected Output:**
-```
+
+```bash
 Your Kubernetes control-plane has initialized successfully!
 
 To start using your cluster, you need to run the following as a regular user:
@@ -269,7 +292,9 @@ kubeadm join 10.0.0.10:6443 --token abcd12.1234567890abcdef \
 ---
 
 ### Step 3: CNI Installation (Control plane node)
+
 **Command/Action:**
+
 ```bash
 # Install Calico CNI
 kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.0/manifests/calico.yaml
@@ -286,7 +311,8 @@ kubectl get pods -n kube-system
 Calico provides pod-to-pod networking across the cluster. Without a CNI plugin, nodes remain NotReady and pods cannot communicate. Calico is production-ready and works well with kubeadm.
 
 **Expected Output:**
-```
+
+```bash
 configmap/calico-config created
 customresourcedefinition.apiextensions.k8s.io/bgpconfigurations.crd.projectcalico.org created
 daemonset.apps/calico-node created
@@ -299,7 +325,9 @@ control-plane    Ready    control-plane   5m    v1.30.0
 ---
 
 ### Step 4: Worker Node Joining (Worker nodes)
+
 **Command/Action:**
+
 ```bash
 # On each worker node, run the join command from kubeadm init output
 sudo kubeadm join 10.0.0.10:6443 --token abcd12.1234567890abcdef \
@@ -321,7 +349,8 @@ kubectl get services
 The join command connects worker nodes to the control plane. Each worker gets the necessary certificates and joins the cluster. Testing with a deployment verifies that scheduling works across all nodes.
 
 **Expected Output:**
-```
+
+```bash
 This node has joined the cluster:
 * Certificate signing request was sent to apiserver and a response was received.
 * The Kubelet was informed of the new secure connection details.
@@ -337,6 +366,7 @@ nginx-deployment-def   1/1     Running   0          30s   192.168.1.12   control
 ```
 
 **Success Indicators:**
+
 - [ ] All nodes show Ready status
 - [ ] All kube-system pods are running
 - [ ] Test deployment pods are distributed across nodes
@@ -349,12 +379,14 @@ nginx-deployment-def   1/1     Running   0          30s   192.168.1.12   control
 ## 🎓 Knowledge Check
 
 ### Understanding Questions
+
 1. **kubeadm vs Manual Setup:** Why is kubeadm preferred over manual component installation for production clusters?
 2. **CNI Requirement:** Why do nodes remain NotReady until a CNI plugin is installed?
 3. **Token Security:** How long are kubeadm join tokens valid, and how would you regenerate them?
 4. **Container Runtime:** What's the difference between containerd and Docker for Kubernetes?
 
 ### Hands-On Challenges
+
 - [ ] **Variation 1:** Bootstrap a cluster with different CNI (Flannel or Weave)
 - [ ] **Variation 2:** Add a new worker node to existing cluster
 - [ ] **Integration:** Configure cluster with specific Kubernetes version
@@ -364,6 +396,7 @@ nginx-deployment-def   1/1     Running   0          30s   192.168.1.12   control
 ## 🔍 Common Pitfalls & Troubleshooting
 
 ### Frequent Mistakes
+
 1. **Swap Not Disabled**
    - **Symptom:** kubelet fails to start with swap enabled error
    - **Cause:** Kubernetes requires swap to be completely disabled
@@ -380,6 +413,7 @@ nginx-deployment-def   1/1     Running   0          30s   192.168.1.12   control
    - **Fix:** Enable SystemdCgroup in containerd config and restart service
 
 ### Debug Commands
+
 ```bash
 # Essential debugging commands for cluster setup
 sudo systemctl status kubelet                    # Check kubelet service
@@ -394,12 +428,14 @@ sudo kubeadm token list                         # View available tokens
 ## 🌟 Real-World Applications
 
 ### Enterprise Scenarios
+
 - **Cost Optimization:** Moving from managed services to self-managed clusters
 - **Compliance Requirements:** Full control over cluster configuration for regulatory needs
 - **Performance Tuning:** Custom kernel parameters and networking configurations
 - **Multi-Environment Setup:** Consistent cluster deployment across dev/staging/prod
 
 ### Best Practices Learned
+
 - 🏆 **Infrastructure Preparation:** Always prepare all nodes before cluster initialization
 - 🏆 **Version Consistency:** Use same Kubernetes version across all cluster components
 - 🏆 **Network Planning:** Choose pod CIDR that doesn't conflict with infrastructure
@@ -410,12 +446,14 @@ sudo kubeadm token list                         # View available tokens
 ## 📚 Additional Resources
 
 ### Related CKA Topics
+
 - Prepare underlying infrastructure for installing a Kubernetes cluster
 - Create and manage Kubernetes clusters using kubeadm
 - Manage the lifecycle of Kubernetes clusters
 - Understand extension interfaces (CNI, CSI, CRI)
 
 ### Extended Learning
+
 - [ ] Explore different CNI plugins (Flannel, Weave, Cilium)
 - [ ] Learn about kubeadm configuration files for advanced setups
 - [ ] Study high availability control plane configurations
@@ -425,6 +463,7 @@ sudo kubeadm token list                         # View available tokens
 ## 📝 Lab Completion
 
 ### Self-Assessment
+
 - [ ] I can complete this lab within 20 minutes
 - [ ] I understand each step of the cluster bootstrap process
 - [ ] I can troubleshoot common kubeadm issues independently
@@ -432,11 +471,13 @@ sudo kubeadm token list                         # View available tokens
 - [ ] I'm confident with cluster lifecycle management
 
 ### Notes & Reflections
+
 *Record insights about cluster architecture, networking decisions, or automation opportunities you identified during this lab.*
 
 ---
 
 ### 🏁 Lab Status
+
 - [ ] **Started:** ___________
 - [ ] **Completed:** ___________  
 - [ ] **Reviewed:** ___________

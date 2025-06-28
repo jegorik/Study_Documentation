@@ -5,6 +5,7 @@
 ## Section 1: Exam Topic Overview
 
 ### Key Concepts
+
 - **Services:** Stable network endpoints for accessing pods
 - **Endpoints:** Backend pods that services route traffic to
 - **Ingress:** HTTP/HTTPS routing and load balancing
@@ -13,6 +14,7 @@
 - **CNI:** Container Network Interface for cluster networking
 
 ### Exam Objectives
+
 - [ ] Create and configure different service types
 - [ ] Implement ingress controllers and rules
 - [ ] Configure network policies for security
@@ -21,18 +23,20 @@
 - [ ] Manage network communication between pods
 
 ### Study Resources
+
 - Official Kubernetes Documentation: https://kubernetes.io/docs/concepts/services-networking/
 - CNCF Training Materials: Services and Networking
 - Practice Labs: Network configuration and troubleshooting
 
 ### Exam Weight
+
 **15%** of total exam score
 
 ---
 
 ## Section 2: ASCII Drawing with Explanation
 
-```
+```text
                         KUBERNETES NETWORKING ARCHITECTURE
     
     ┌─────────────────────────────────────────────────────────────────┐
@@ -74,11 +78,11 @@
     │                                                                 │
     │        Service Selector ──> Label Matching ──> Pod IPs          │
     │                                                                 │
-    │   app=frontend     ┌─────────┐  ┌─────────┐  ┌─────────┐        │
-    │        │           │  Pod 1  │  │  Pod 2  │  │  Pod 3  │        │
-    │        └──────────>│10.244.1.│  │10.244.2.│  │10.244.1.│        │
-    │                    │   .10   │  │   .15   │  │   .20   │        │
-    │                    └─────────┘  └─────────┘  └─────────┘        │
+    │   app=frontend     ┌───────────┐  ┌───────────┐  ┌───────────┐  │
+    │        │           │  Pod 1    │  │  Pod 2    │  │  Pod 3    │  │
+    │        └──────────>│10.244.1.10│  │10.244.2.15│  │10.244.1.20│  │
+    │                    │           │  │           │  │           │  │
+    │                    └───────────┘  └───────────┘  └───────────┘  │
     └─────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
@@ -114,6 +118,7 @@
 ### Component Breakdown
 
 #### Service Types
+
 1. **ClusterIP:**
    - Purpose: Internal cluster communication only
    - Key features: Virtual IP accessible within cluster, default type
@@ -135,6 +140,7 @@
    - Interactions: DNS resolution to external FQDN
 
 #### Ingress Components
+
 1. **Ingress Controller:**
    - Purpose: Implements ingress rules (nginx, traefik, istio)
    - Key features: HTTP/HTTPS routing, SSL termination, path-based routing
@@ -146,6 +152,7 @@
    - Interactions: Configure how ingress controller routes traffic
 
 #### Network Policy
+
 1. **Ingress Rules:**
    - Purpose: Control incoming traffic to pods
    - Key features: Source selection, port specification, protocol filtering
@@ -167,6 +174,7 @@
 **Solution Steps:**
 
 #### Step 1: Create Namespaces and Deployments
+
 ```bash
 # Create namespaces
 kubectl create namespace frontend
@@ -184,6 +192,7 @@ kubectl create deployment db-app --image=mysql:8.0 --replicas=1 -n database
 ```
 
 #### Step 2: Create Services for Each Tier
+
 ```bash
 # Frontend service (LoadBalancer for external access)
 kubectl expose deployment web-app --port=80 --type=LoadBalancer -n frontend
@@ -196,11 +205,14 @@ kubectl expose deployment db-app --port=3306 --type=ClusterIP -n database
 ```
 
 #### Step 3: Verify Service Creation and Endpoints
+
 ```bash
 kubectl get services --all-namespaces
 ```
+
 **Expected Output:**
-```
+
+```bash
 NAMESPACE   NAME      TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
 frontend    web-app   LoadBalancer   10.96.100.10   <pending>     80:30080/TCP   2m
 backend     api-app   ClusterIP      10.96.100.20   <none>        3000/TCP       2m
@@ -208,6 +220,7 @@ database    db-app    ClusterIP      10.96.100.30   <none>        3306/TCP      
 ```
 
 #### Step 4: Configure Ingress for HTTP Routing
+
 ```bash
 # Create ingress resource
 cat <<EOF | kubectl apply -f -
@@ -241,6 +254,7 @@ EOF
 ```
 
 #### Step 5: Implement Network Policies
+
 ```bash
 # Create network policy for backend (only allow frontend access)
 cat <<EOF | kubectl apply -f -
@@ -267,6 +281,7 @@ EOF
 ```
 
 #### Step 6: Test Connectivity and DNS Resolution
+
 ```bash
 # Test service DNS resolution
 kubectl run test-pod --image=busybox --rm -it --restart=Never -- nslookup api-app.backend.svc.cluster.local
@@ -276,6 +291,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
 ```
 
 ### Additional Scenarios
+
 - **Scenario 2:** Troubleshooting service connectivity issues with endpoint verification
 - **Scenario 3:** Configuring SSL termination and certificate management with ingress
 
@@ -292,6 +308,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
 | `kubectl get ingress` | List ingress resources | `-o yaml` | `kubectl get ingress -o yaml` |
 
 ### Service Management
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl create service` | Create service directly | `kubectl create service clusterip my-svc --tcp=80:8080` |
@@ -299,6 +316,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
 | `kubectl port-forward service` | Forward local port to service | `kubectl port-forward svc/my-svc 8080:80` |
 
 ### Network Policy Management
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl get networkpolicies` | List network policies | `kubectl get netpol -A` |
@@ -306,6 +324,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
 | `kubectl apply -f` | Apply network policy | `kubectl apply -f networkpolicy.yaml` |
 
 ### DNS and Connectivity Testing
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl run debug` | Create debug pod | `kubectl run debug --image=busybox --rm -it` |
@@ -314,6 +333,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
 | `wget` | Download test | `wget -qO- http://my-service:80` |
 
 ### Ingress Management
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl get ingress` | List ingress resources | `kubectl get ing -A` |
@@ -325,12 +345,14 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
 ## Section 5: Best Practices
 
 ### Service Design
+
 1. **Service Type Selection:**
    - Use ClusterIP for internal communication (default and most secure)
    - Use NodePort only when LoadBalancer is not available
    - Use LoadBalancer for production external services
    - Use ExternalName for external service integration
    - Example service manifest:
+
    ```yaml
    apiVersion: v1
    kind: Service
@@ -359,6 +381,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
    - Consider security implications of exposed ports
 
 ### Ingress Configuration
+
 1. **Ingress Controller Selection:**
    - Choose based on requirements (nginx, traefik, istio)
    - Consider cloud provider offerings (ALB, GCE)
@@ -378,12 +401,14 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
    - Consider canary deployment strategies
 
 ### Network Security
+
 1. **Network Policy Implementation:**
    - Start with deny-all default policy
    - Implement least privilege access
    - Use namespace-based isolation
    - Regular policy review and updates
    - Example deny-all policy:
+
    ```yaml
    apiVersion: networking.k8s.io/v1
    kind: NetworkPolicy
@@ -403,6 +428,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
    - Monitor network traffic and anomalies
 
 ### DNS and Service Discovery
+
 1. **DNS Configuration:**
    - Understand cluster DNS hierarchy
    - Use fully qualified service names when needed
@@ -416,6 +442,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
    - Use headless services when needed
 
 ### Performance Optimization
+
 1. **Service Performance:**
    - Monitor service response times and errors
    - Implement proper load balancing algorithms
@@ -429,12 +456,14 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
    - Consider network topology and locality
 
 ### Troubleshooting Strategies
+
 1. **Service Connectivity Issues:**
    - Verify service and endpoint existence
    - Check pod labels and service selectors
    - Test DNS resolution
    - Validate network policies
    - Example debugging:
+
    ```bash
    # Check service details
    kubectl describe service my-service
@@ -462,6 +491,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
    - Use network policy tools for validation
 
 ### Exam-Specific Tips
+
 - **Time Management:** Practice creating services with both imperative and declarative methods
 - **Command Shortcuts:** Master kubectl expose command with various options
 - **Verification:** Always test service connectivity after creation
@@ -472,6 +502,7 @@ kubectl exec -it -n frontend web-app-xxx -- curl http://api-app.backend.svc.clus
 ## Quick Reference Card
 
 ### Essential Commands for Services & Networking
+
 ```bash
 kubectl expose deployment app --port=80 --type=ClusterIP
 kubectl get services,endpoints -o wide
@@ -481,6 +512,7 @@ kubectl apply -f networkpolicy.yaml
 ```
 
 ### Service Creation Shortcuts
+
 ```bash
 # Create ClusterIP service
 kubectl expose deployment app --port=80
@@ -496,6 +528,7 @@ kubectl expose deployment app --port=80 --target-port=8080
 ```
 
 ### Network Troubleshooting Commands
+
 ```bash
 kubectl run debug --image=busybox --rm -it -- sh
 nslookup my-service.default.svc.cluster.local
@@ -504,6 +537,7 @@ ping my-service
 ```
 
 ### Key DNS Names
+
 - Service: `my-service.namespace.svc.cluster.local`
 - Pod: `pod-ip.namespace.pod.cluster.local`
 - Default namespace: `my-service` (short name)
@@ -511,6 +545,7 @@ ping my-service
 ---
 
 ## Related Topics
+
 - [Kubernetes Architecture]
 - [Workloads & Scheduling]
 - [Security and RBAC]

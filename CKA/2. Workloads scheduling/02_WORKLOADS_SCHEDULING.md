@@ -5,6 +5,7 @@
 ## Section 1: Exam Topic Overview
 
 ### Key Concepts
+
 - **Pods:** Smallest deployable units in Kubernetes
 - **ReplicaSets:** Ensures desired number of pod replicas
 - **Deployments:** Declarative way to manage ReplicaSets and Pods
@@ -13,6 +14,7 @@
 - **Resource Management:** CPU, memory limits and requests
 
 ### Exam Objectives
+
 - [ ] Create and manage pods, ReplicaSets, and deployments
 - [ ] Configure services for different access patterns
 - [ ] Implement resource quotas and limits
@@ -21,18 +23,20 @@
 - [ ] Manage application lifecycle and rolling updates
 
 ### Study Resources
+
 - Official Kubernetes Documentation: https://kubernetes.io/docs/concepts/workloads/
 - CNCF Training Materials: Application Lifecycle Management
 - Practice Labs: Workload deployment and management
 
 ### Exam Weight
+
 **20%** of total exam score
 
 ---
 
 ## Section 2: ASCII Drawing with Explanation
 
-```
+```text
                         KUBERNETES WORKLOADS HIERARCHY
     
     ┌─────────────────────────────────────────────────────────────────┐
@@ -96,6 +100,7 @@
 ### Component Breakdown
 
 #### Workload Resources
+
 1. **Pod:**
    - Purpose: Smallest deployable unit, contains one or more containers
    - Key features: Shared network, storage, lifecycle
@@ -112,6 +117,7 @@
    - Interactions: Manages ReplicaSets which manage Pods
 
 #### Service Types
+
 1. **ClusterIP:**
    - Purpose: Internal cluster communication
    - Key features: Virtual IP, only accessible within cluster
@@ -138,29 +144,38 @@
 **Solution Steps:**
 
 #### Step 1: Create Initial Deployment
+
 ```bash
 kubectl create deployment nginx-app --image=nginx:1.20 --replicas=3
 ```
+
 **Expected Output:**
-```
+
+```bash
 deployment.apps/nginx-app created
 ```
 
 #### Step 2: Expose with Service
+
 ```bash
 kubectl expose deployment nginx-app --port=80 --target-port=80 --type=ClusterIP
 ```
+
 **Expected Output:**
-```
+
+```bash
 service/nginx-app exposed
 ```
 
 #### Step 3: Verify Initial Deployment
+
 ```bash
 kubectl get deployments,pods,services -l app=nginx-app
 ```
+
 **Expected Output:**
-```
+
+```bash
 NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/nginx-app   3/3     3            3           2m
 
@@ -174,26 +189,33 @@ service/nginx-app   ClusterIP   10.96.100.50   <none>        80/TCP    1m
 ```
 
 #### Step 4: Perform Rolling Update
+
 ```bash
 kubectl set image deployment/nginx-app nginx=nginx:1.21 --record
 ```
+
 **Expected Output:**
-```
+
+```bash
 deployment.apps/nginx-app image updated
 ```
 
 #### Step 5: Monitor Rolling Update
+
 ```bash
 kubectl rollout status deployment/nginx-app
 ```
+
 **Expected Output:**
-```
+
+```bash
 Waiting for deployment "nginx-app" rollout to finish: 1 of 3 updated replicas are available...
 Waiting for deployment "nginx-app" rollout to finish: 2 of 3 updated replicas are available...
 deployment "nginx-app" successfully rolled out
 ```
 
 #### Step 6: Verify Update and Rollback if Needed
+
 ```bash
 # Check rollout history
 kubectl rollout history deployment/nginx-app
@@ -203,6 +225,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
 ```
 
 ### Additional Scenarios
+
 - **Scenario 2:** Configuring resource limits and requests for optimal scheduling
 - **Scenario 3:** Using ConfigMaps and Secrets for application configuration
 
@@ -219,6 +242,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
 | `kubectl rollout undo` | Rollback deployment | `--to-revision=N` | `kubectl rollout undo deployment/app` |
 
 ### Pod Management
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl run` | Create pod | `kubectl run nginx --image=nginx` |
@@ -227,6 +251,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
 | `kubectl port-forward` | Forward local port to pod | `kubectl port-forward nginx 8080:80` |
 
 ### Configuration Management
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl create configmap` | Create ConfigMap | `kubectl create configmap app-config --from-file=config.yaml` |
@@ -235,6 +260,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
 | `kubectl get secrets` | List Secrets | `kubectl get secrets -o yaml` |
 
 ### Resource Management
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl top pods` | Pod resource usage | `kubectl top pods --sort-by=cpu` |
@@ -246,11 +272,13 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
 ## Section 5: Best Practices
 
 ### Deployment Best Practices
+
 1. **Resource Management:**
    - Always set resource requests and limits
    - Use appropriate CPU and memory values
    - Monitor resource utilization regularly
    - Example:
+
    ```yaml
    resources:
      requests:
@@ -266,6 +294,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
    - Use appropriate probe settings
    - Configure proper timeouts and intervals
    - Example:
+
    ```yaml
    livenessProbe:
      httpGet:
@@ -282,6 +311,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
    - Consider pod disruption budgets
 
 ### Configuration Management
+
 1. **ConfigMaps:**
    - Use for non-sensitive configuration data
    - Version configuration changes
@@ -300,6 +330,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
    - Environment-specific resource quotas
 
 ### Service and Networking
+
 1. **Service Design:**
    - Use ClusterIP for internal communication
    - NodePort only when necessary
@@ -312,6 +343,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
    - Secure external traffic flows
 
 ### Security Considerations
+
 1. **Pod Security:**
    - Run containers as non-root user
    - Use security contexts appropriately
@@ -324,6 +356,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
    - Regular access reviews
 
 ### Performance Optimization
+
 1. **Resource Efficiency:**
    - Right-size resource requests/limits
    - Use node affinity for optimal placement
@@ -336,6 +369,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
    - Consider topology spread constraints
 
 ### Troubleshooting Tips
+
 1. **Pod Issues:**
    - Check events: `kubectl describe pod`
    - Review logs: `kubectl logs pod-name`
@@ -355,6 +389,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
    - Examine replica set events
 
 ### Exam-Specific Tips
+
 - **Time Management:** Practice creating resources with YAML files
 - **Command Shortcuts:** Use imperative commands for quick creation
 - **Verification:** Always verify deployments and services work correctly
@@ -365,6 +400,7 @@ kubectl rollout undo deployment/nginx-app --to-revision=1
 ## Quick Reference Card
 
 ### Essential Commands for Workloads & Scheduling
+
 ```bash
 kubectl create deployment app --image=nginx --replicas=3
 kubectl expose deployment app --port=80 --type=ClusterIP
@@ -374,6 +410,7 @@ kubectl rollout status deployment/app
 ```
 
 ### Quick Pod Creation and Management
+
 ```bash
 kubectl run nginx --image=nginx --restart=Never              # Create pod
 kubectl run nginx --image=nginx --dry-run=client -o yaml     # Generate YAML
@@ -383,6 +420,7 @@ kubectl delete pod nginx                                     # Delete pod
 ```
 
 ### ConfigMap and Secret Quick Commands
+
 ```bash
 kubectl create configmap app-config --from-literal=key=value
 kubectl create secret generic app-secret --from-literal=password=secret
@@ -390,6 +428,7 @@ kubectl get configmaps,secrets
 ```
 
 ### Key Files and Paths
+
 - Pod specs: `/etc/kubernetes/manifests/` (static pods)
 - Container logs: `/var/log/containers/`
 - kubelet config: `/var/lib/kubelet/config.yaml`
@@ -397,8 +436,9 @@ kubectl get configmaps,secrets
 ---
 
 ## Related Topics
+
 - [Kubernetes Architecture]
-- [Services and Networking] 
+- [Services and Networking]
 - [Storage and Volumes]
 - [Security and RBAC]
 

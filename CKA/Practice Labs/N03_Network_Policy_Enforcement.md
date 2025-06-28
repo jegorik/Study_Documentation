@@ -12,6 +12,7 @@
 You're the Senior DevOps Engineer at **SecureBank Digital**, a cloud-native financial institution that hosts multiple client applications on a shared Kubernetes platform. Due to new regulatory compliance requirements (PCI DSS, SOX, GDPR), you must implement strict network segmentation between different tenant applications, ensure payment processing systems are isolated, and prevent unauthorized cross-namespace communication while maintaining necessary service connectivity.
 
 **Business Critical Requirements:**
+
 - 🔒 **PCI Compliance:** Payment processing must be completely isolated
 - 🏛️ **Regulatory Separation:** Client A and Client B cannot access each other's data
 - 🌐 **API Gateway Access:** Controlled external connectivity for customer portals
@@ -25,6 +26,7 @@ You're the Senior DevOps Engineer at **SecureBank Digital**, a cloud-native fina
 ## 🏗️ Lab Environment Setup
 
 ### Initial Cluster State
+
 ```bash
 # Expected cluster topology
 NAMESPACES:
@@ -37,6 +39,7 @@ NAMESPACES:
 ```
 
 ### Prerequisites
+
 - Multi-namespace cluster setup
 - Various applications requiring different connectivity patterns
 - CNI plugin supporting NetworkPolicies (Calico, Cilium, or Weave)
@@ -60,12 +63,15 @@ NAMESPACES:
 ## 🔍 Task 1: Network Policy Audit & Assessment (5 minutes)
 
 ### Objective
+
 Analyze the current network security posture and identify communication patterns that need policy enforcement.
 
 ### Current Situation
+
 The platform currently has no network policies in place, meaning all pods can communicate with each other freely. You need to understand the current traffic flows before implementing restrictions.
 
 ### Your Mission
+
 1. **Audit existing network policies across all namespaces**
 2. **Map current inter-namespace communication patterns**
 3. **Identify critical service dependencies**
@@ -74,6 +80,7 @@ The platform currently has no network policies in place, meaning all pods can co
 ### Step-by-Step Instructions
 
 #### 1.1 Current Network Policy Assessment
+
 ```bash
 # Check existing network policies across all namespaces
 kubectl get networkpolicies -A
@@ -91,6 +98,7 @@ kubectl get services -A
 ```
 
 #### 1.2 Traffic Flow Analysis
+
 ```bash
 # Check current service endpoints and connectivity
 kubectl get endpoints -A
@@ -104,6 +112,7 @@ kubectl get services -A --field-selector spec.type=LoadBalancer
 ```
 
 #### 1.3 Compliance Requirements Mapping
+
 ```bash
 # Document current pod-to-pod connectivity (simulate with test pods)
 # This would typically involve network monitoring tools in production
@@ -116,6 +125,7 @@ kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"\t"}{.m
 ### Lab Environment Setup
 
 #### Create Multi-Tenant Environment
+
 ```yaml
 # multi-tenant-setup.yaml
 # Create namespaces with labels for policy targeting
@@ -169,6 +179,7 @@ metadata:
 ```
 
 #### Deploy Sample Applications
+
 ```yaml
 # client-a-app.yaml
 apiVersion: apps/v1
@@ -290,12 +301,14 @@ kubectl get services -A
 ```
 
 ### Expected Findings
+
 - No existing network policies (unrestricted communication)
 - Multiple namespaces with different compliance requirements
 - Cross-namespace service dependencies that need careful management
 - External access requirements for API gateway
 
 ### 🚨 Troubleshooting Tips
+
 - **CNI compatibility** is crucial - not all CNI plugins support NetworkPolicies
 - **Label consistency** helps with policy targeting
 - **Service discovery** patterns affect policy design
@@ -306,12 +319,15 @@ kubectl get services -A
 ## 🛡️ Task 2: Default Deny-All Implementation (6 minutes)
 
 ### Objective
+
 Implement a default deny-all network policy across all namespaces to establish a zero-trust network foundation.
 
 ### Current Situation
+
 With no network policies in place, all pods can communicate freely. You need to implement a "default deny" stance and then selectively allow required traffic.
 
 ### Your Mission
+
 1. **Create default deny-all ingress policies for each namespace**
 2. **Implement default deny-all egress policies**
 3. **Verify that unauthorized communication is blocked**
@@ -320,6 +336,7 @@ With no network policies in place, all pods can communicate freely. You need to 
 ### Step-by-Step Instructions
 
 #### 2.1 Default Deny-All Ingress Policies
+
 ```yaml
 # default-deny-ingress.yaml
 # Apply to all production namespaces
@@ -375,6 +392,7 @@ spec:
 ```
 
 #### 2.2 Default Deny-All Egress Policies
+
 ```yaml
 # default-deny-egress.yaml
 apiVersion: networking.k8s.io/v1
@@ -429,6 +447,7 @@ spec:
 ```
 
 #### 2.3 Essential DNS Access Policy
+
 ```yaml
 # dns-access-policy.yaml
 # Allow DNS resolution for all pods (essential for service discovery)
@@ -519,6 +538,7 @@ spec:
 ```
 
 #### 2.4 Apply Default Policies
+
 ```bash
 # Apply all default deny policies
 kubectl apply -f default-deny-ingress.yaml
@@ -535,12 +555,14 @@ curl banking-frontend-svc.production-client-a.svc.cluster.local
 ```
 
 ### Expected Outcomes
+
 - All namespaces have default deny-all policies
 - DNS resolution is still functional
 - Inter-pod communication is blocked by default
 - Foundation is set for selective policy implementation
 
 ### 🚨 Troubleshooting Tips
+
 - **DNS access** is critical - pods need it for service discovery
 - **Policy order** matters - default deny should be applied first
 - **Testing approach** - use temporary pods to verify blocking
@@ -551,12 +573,15 @@ curl banking-frontend-svc.production-client-a.svc.cluster.local
 ## 🔒 Task 3: Namespace Isolation Enforcement (8 minutes)
 
 ### Objective
+
 Implement strict namespace isolation to ensure tenants cannot access each other's resources while allowing necessary intra-namespace communication.
 
 ### Current Situation
+
 Default deny policies are in place, but legitimate intra-namespace communication is also blocked. You need to restore necessary communication within namespaces while maintaining strict inter-namespace isolation.
 
 ### Your Mission
+
 1. **Allow intra-namespace communication for each tenant**
 2. **Ensure complete isolation between Client A and Client B**
 3. **Implement special isolation for payment processing**
@@ -565,6 +590,7 @@ Default deny policies are in place, but legitimate intra-namespace communication
 ### Step-by-Step Instructions
 
 #### 3.1 Intra-Namespace Communication Policies
+
 ```yaml
 # intra-namespace-communication.yaml
 # Allow communication within Client A namespace
@@ -625,6 +651,7 @@ spec:
 ```
 
 #### 3.2 Payment Processing Strict Isolation
+
 ```yaml
 # payment-processing-isolation.yaml
 apiVersion: networking.k8s.io/v1
@@ -675,6 +702,7 @@ spec:
 ```
 
 #### 3.3 API Gateway Connectivity Policies
+
 ```yaml
 # api-gateway-policies.yaml
 apiVersion: networking.k8s.io/v1
@@ -739,6 +767,7 @@ spec:
 ```
 
 #### 3.4 Monitoring Access Policies
+
 ```yaml
 # monitoring-access-policies.yaml
 apiVersion: networking.k8s.io/v1
@@ -780,6 +809,7 @@ spec:
 ```
 
 #### 3.5 Apply Namespace Isolation Policies
+
 ```bash
 # Apply all namespace isolation policies
 kubectl apply -f intra-namespace-communication.yaml
@@ -800,6 +830,7 @@ kubectl describe networkpolicy -n production-client-a
 ```
 
 ### Expected Outcomes
+
 - Intra-namespace communication is restored
 - Inter-namespace communication is blocked except for explicit rules
 - Payment processing has strict isolation with controlled access
@@ -810,12 +841,15 @@ kubectl describe networkpolicy -n production-client-a
 ## 🔗 Task 4: Service-to-Service Communication Rules (8 minutes)
 
 ### Objective
+
 Implement fine-grained service-to-service communication rules based on application requirements and security principles.
 
 ### Current Situation
+
 Basic namespace isolation is in place, but you need to implement specific service-to-service communication patterns for complex application workflows.
 
 ### Your Mission
+
 1. **Define frontend-to-backend communication rules**
 2. **Implement database access restrictions**
 3. **Create API gateway routing policies**
@@ -824,6 +858,7 @@ Basic namespace isolation is in place, but you need to implement specific servic
 ### Step-by-Step Instructions
 
 #### 4.1 Frontend-to-Backend Communication
+
 ```yaml
 # frontend-backend-rules.yaml
 # Client A: Banking frontend to backend communication
@@ -882,6 +917,7 @@ spec:
 ```
 
 #### 4.2 Database Access Restrictions
+
 ```yaml
 # database-access-rules.yaml
 # Assume database pods exist with specific labels
@@ -918,6 +954,7 @@ spec:
 ```
 
 #### 4.3 Payment Processing Service Rules
+
 ```yaml
 # payment-service-rules.yaml
 apiVersion: networking.k8s.io/v1
@@ -967,6 +1004,7 @@ spec:
 ```
 
 #### 4.4 Cross-Namespace Business Logic Rules
+
 ```yaml
 # cross-namespace-business-rules.yaml
 # Allow Client A to access shared payment processing
@@ -1020,6 +1058,7 @@ spec:
 ```
 
 #### 4.5 Security Scanning and Compliance Access
+
 ```yaml
 # compliance-access-rules.yaml
 apiVersion: networking.k8s.io/v1
@@ -1048,6 +1087,7 @@ spec:
 ```
 
 #### 4.6 Apply Service-to-Service Rules
+
 ```bash
 # Apply all service-to-service policies
 kubectl apply -f frontend-backend-rules.yaml
@@ -1067,6 +1107,7 @@ kubectl describe networkpolicy -n payment-processing payment-processor-access
 ```
 
 ### Expected Outcomes
+
 - Frontend services can communicate with their backends
 - Database access is restricted to authorized services
 - Payment processing has controlled external access
@@ -1077,12 +1118,15 @@ kubectl describe networkpolicy -n payment-processing payment-processor-access
 ## 🌐 Task 5: External Traffic Management (5 minutes)
 
 ### Objective
+
 Configure network policies to properly handle external traffic flows while maintaining security boundaries.
 
 ### Current Situation
+
 Internal service-to-service communication is properly secured, but external traffic patterns need specific policy handling for ingress controllers, load balancers, and external API access.
 
 ### Your Mission
+
 1. **Configure ingress controller access policies**
 2. **Implement external API access controls**
 3. **Set up load balancer traffic rules**
@@ -1091,6 +1135,7 @@ Internal service-to-service communication is properly secured, but external traf
 ### Step-by-Step Instructions
 
 #### 5.1 Ingress Controller Access Policies
+
 ```yaml
 # ingress-controller-policies.yaml
 apiVersion: networking.k8s.io/v1
@@ -1132,6 +1177,7 @@ spec:
 ```
 
 #### 5.2 External API Access Controls
+
 ```yaml
 # external-api-access.yaml
 apiVersion: networking.k8s.io/v1
@@ -1188,6 +1234,7 @@ spec:
 ```
 
 #### 5.3 Load Balancer and NodePort Access
+
 ```yaml
 # loadbalancer-access.yaml
 apiVersion: networking.k8s.io/v1
@@ -1219,6 +1266,7 @@ spec:
 ```
 
 #### 5.4 Monitoring External Access
+
 ```yaml
 # monitoring-external-access.yaml
 apiVersion: networking.k8s.io/v1
@@ -1247,6 +1295,7 @@ spec:
 ```
 
 #### 5.5 Apply External Traffic Policies
+
 ```bash
 # Apply external traffic management policies
 kubectl apply -f ingress-controller-policies.yaml
@@ -1263,6 +1312,7 @@ curl -H "Host: api.securebank.com" http://<ingress-ip>/health
 ```
 
 ### Expected Outcomes
+
 - Ingress controllers can reach application services
 - External API access is controlled and limited
 - Load balancer traffic flows correctly
@@ -1273,12 +1323,15 @@ curl -H "Host: api.securebank.com" http://<ingress-ip>/health
 ## ✅ Task 6: Policy Testing & Validation (3 minutes)
 
 ### Objective
+
 Systematically test all network policies to ensure they work as intended and meet compliance requirements.
 
 ### Current Situation
+
 All network policies are implemented. You need to validate that they correctly allow intended traffic while blocking unauthorized communication.
 
 ### Your Mission
+
 1. **Test authorized communication paths**
 2. **Verify unauthorized access is blocked**
 3. **Validate compliance requirements**
@@ -1287,6 +1340,7 @@ All network policies are implemented. You need to validate that they correctly a
 ### Step-by-Step Instructions
 
 #### 6.1 Authorized Communication Testing
+
 ```bash
 # Test intra-namespace communication (should work)
 kubectl run test-client-a --image=curlimages/curl --rm -it --restart=Never -n production-client-a -- sh
@@ -1306,6 +1360,7 @@ curl payment-processor-svc.payment-processing.svc.cluster.local:9090
 ```
 
 #### 6.2 Unauthorized Access Testing
+
 ```bash
 # Test cross-tenant access (should be blocked)
 kubectl run test-cross-tenant --image=curlimages/curl --rm -it --restart=Never -n production-client-a -- sh
@@ -1324,6 +1379,7 @@ curl postgres-svc.production-client-a.svc.cluster.local:5432
 ```
 
 #### 6.3 Network Policy Validation Commands
+
 ```bash
 # Review all applied network policies
 kubectl get networkpolicies -A -o wide
@@ -1339,6 +1395,7 @@ kubectl get pods -A | grep -E "(Error|CrashLoopBackOff|ImagePullBackOff)"
 ```
 
 #### 6.4 Compliance Validation
+
 ```bash
 # Generate compliance report
 echo "Network Policy Compliance Report" > network_compliance_report.txt
@@ -1367,6 +1424,7 @@ cat network_compliance_report.txt
 ```
 
 ### Expected Outcomes
+
 - Authorized communication flows work correctly
 - Unauthorized access is properly blocked
 - DNS resolution functions normally
@@ -1377,6 +1435,7 @@ cat network_compliance_report.txt
 ## 🎯 Success Criteria
 
 ### ✅ Must Complete (Pass)
+
 - [ ] Implemented default deny-all policies across all namespaces
 - [ ] Established complete namespace isolation between tenants
 - [ ] Configured proper service-to-service communication rules
@@ -1385,6 +1444,7 @@ cat network_compliance_report.txt
 - [ ] Generated compliance documentation
 
 ### 🌟 Excellence Indicators (Distinction)
+
 - [ ] Zero unauthorized cross-namespace communication
 - [ ] Minimal disruption to legitimate application traffic
 - [ ] Comprehensive policy coverage for all scenarios
@@ -1393,6 +1453,7 @@ cat network_compliance_report.txt
 - [ ] Performance optimization of network policies
 
 ### ⚡ Speed Benchmarks
+
 - **Target Time:** 30 minutes
 - **Expert Time:** 25 minutes
 - **Policy Implementation:** < 20 minutes
@@ -1403,12 +1464,14 @@ cat network_compliance_report.txt
 ## 🔍 Post-Lab Review
 
 ### Key Learning Outcomes
+
 1. **Zero Trust Networking:** Implementing default deny with selective allow policies
 2. **Multi-Tenant Isolation:** Securing shared clusters for different clients
 3. **Service Mesh Preparation:** Understanding traffic control fundamentals
 4. **Compliance Implementation:** Meeting regulatory requirements through network policies
 
 ### Real-World Applications
+
 - **Financial Services:** PCI DSS compliance and data isolation
 - **Healthcare:** HIPAA compliance and patient data protection
 - **SaaS Platforms:** Multi-tenant security and resource isolation
@@ -1426,6 +1489,7 @@ cat network_compliance_report.txt
 ### Advanced Network Policy Patterns
 
 #### 1. Time-Based Access Control
+
 ```yaml
 # This would require custom admission controllers or operators
 # Example concept for maintenance windows
@@ -1442,6 +1506,7 @@ spec:
 ```
 
 #### 2. Geo-Location Based Policies
+
 ```yaml
 # Block traffic from specific geographical regions
 apiVersion: networking.k8s.io/v1
@@ -1464,6 +1529,7 @@ spec:
 ```
 
 ### Exam Tips
+
 - **Practice label selectors** - they're crucial for policy targeting
 - **Understand CIDR notation** for IP-based policies
 - **Know the difference** between ingress and egress rules
@@ -1475,16 +1541,19 @@ spec:
 ## 📚 Additional Resources
 
 ### Kubernetes Documentation
+
 - [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
 - [Network Policy Recipes](https://github.com/ahmetb/kubernetes-network-policy-recipes)
 - [CNI Specification](https://github.com/containernetworking/cni/blob/master/SPEC.md)
 
 ### CNI-Specific Documentation
+
 - [Calico Network Policies](https://docs.projectcalico.org/security/kubernetes-network-policy)
 - [Cilium Network Policies](https://docs.cilium.io/en/stable/policy/)
 - [Weave Network Policies](https://www.weave.works/docs/net/latest/kubernetes/kube-addon/)
 
 ### Compliance and Security
+
 - [PCI DSS Requirements](https://www.pcisecuritystandards.org/)
 - [Zero Trust Architecture](https://csrc.nist.gov/publications/detail/sp/800-207/final)
 - [Kubernetes Security Best Practices](https://kubernetes.io/docs/concepts/security/)
@@ -1494,18 +1563,21 @@ spec:
 ## 🚀 Next Steps
 
 ### Immediate Actions
+
 1. **Practice with different CNI providers** to understand implementation differences
 2. **Create policy templates** for common scenarios in your environment
 3. **Develop testing procedures** for policy validation
 4. **Document your organization's** network policy standards
 
 ### Advanced Scenarios to Explore
+
 - **Service Mesh Integration:** Combine NetworkPolicies with Istio/Linkerd
 - **Multi-Cluster Policies:** Cross-cluster communication control
 - **Dynamic Policy Management:** Policy automation based on labels/annotations
 - **Performance Optimization:** Minimizing policy evaluation overhead
 
 ### Production Preparation
+
 - Implement **gradual policy rollout** procedures
 - Create **policy monitoring and alerting**
 - Establish **emergency policy bypass** procedures

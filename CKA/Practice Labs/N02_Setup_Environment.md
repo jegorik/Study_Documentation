@@ -20,6 +20,7 @@ curl -sSL https://raw.githubusercontent.com/cka-labs/setups/main/N02-setup.sh | 
 ## 📋 Manual Environment Setup
 
 ### Step 1: Create Multiple NodePort Services (The Problem)
+
 ```yaml
 # Deploy multiple applications with inefficient NodePort services
 cat << 'EOF' | kubectl apply -f -
@@ -234,6 +235,7 @@ EOF
 ```
 
 ### Step 2: Create Additional Chaos with LoadBalancer Services
+
 ```yaml
 # Add some LoadBalancer services that may not work properly
 cat << 'EOF' | kubectl apply -f -
@@ -317,6 +319,7 @@ EOF
 ```
 
 ### Step 3: Create Staging Environment Without Proper Separation
+
 ```bash
 # Create staging namespace but without proper isolation
 kubectl create namespace staging
@@ -330,6 +333,7 @@ kubectl create configmap staging-config --from-literal=environment=staging --fro
 ```
 
 ### Step 4: Simulate DNS and Certificate Issues
+
 ```bash
 # Create some fake certificates and DNS entries that will cause problems
 kubectl create secret tls fake-tls-cert \
@@ -364,6 +368,7 @@ EOF
 ```
 
 ### Step 5: Create Resource Constraints and Performance Issues
+
 ```yaml
 # Deploy resource-hungry applications that will compete
 cat << 'EOF' | kubectl apply -f -
@@ -415,6 +420,7 @@ EOF
 ```
 
 ### Step 6: Verify Chaotic State
+
 ```bash
 # Create verification script
 cat << 'EOF' > check-chaos.sh
@@ -488,6 +494,7 @@ chmod +x check-chaos.sh
 Before starting the lab, verify these chaotic conditions exist:
 
 ### Expected Problems ✅
+
 - [ ] Multiple NodePort services with random port numbers
 - [ ] Internal services exposed via LoadBalancer
 - [ ] No HTTPS/SSL termination anywhere
@@ -498,6 +505,7 @@ Before starting the lab, verify these chaotic conditions exist:
 - [ ] Poor customer experience with port-based access
 
 ### Quick Validation Commands
+
 ```bash
 # Check service types
 kubectl get services --all-namespaces
@@ -552,6 +560,7 @@ echo "✅ N02 environment cleanup complete"
 ### Common Setup Issues
 
 **Issue:** "NodePort services not accessible"
+
 ```bash
 # Check node IPs and firewall rules
 kubectl get nodes -o wide
@@ -563,6 +572,7 @@ curl http://localhost:8080
 ```
 
 **Issue:** "LoadBalancer external IP pending"
+
 ```bash
 # This is expected in many test environments
 kubectl get services -o wide
@@ -570,6 +580,7 @@ kubectl get services -o wide
 ```
 
 **Issue:** "High CPU usage from test workloads"
+
 ```bash
 # This is intentional to simulate resource pressure
 kubectl top pods
@@ -577,6 +588,7 @@ kubectl delete deployment cpu-hog memory-leak  # if it becomes problematic
 ```
 
 ### Environment Requirements
+
 ```bash
 # Verify cluster resources
 kubectl describe nodes | grep -A 5 "Allocated resources"
@@ -592,16 +604,20 @@ kubectl get pv
 ## 📝 Notes for Lab Facilitators
 
 ### Setup Time: ~5 minutes
-### Prerequisites:
+
+### Prerequisites
+
 - Kubernetes cluster with at least 3 worker nodes
 - kubectl access with cluster-admin permissions
 - No existing Ingress controller (will be installed during lab)
 - Sufficient cluster resources for multiple deployments
 
-### Learning Objectives Alignment:
+### Learning Objectives Alignment
+
 This setup creates the exact traffic management chaos that N02 lab is designed to solve, providing realistic context for learning enterprise Ingress management.
 
-### Resource Usage:
+### Resource Usage
+
 - **CPU:** Moderate (test workloads will create some pressure)
 - **Memory:** Low to moderate
 - **Storage:** Minimal (only for container images)

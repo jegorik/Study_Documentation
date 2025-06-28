@@ -5,6 +5,7 @@
 ## Section 1: Exam Topic Overview
 
 ### Key Concepts
+
 - **Control Plane Components:** Master node components that manage the cluster
 - **Worker Node Components:** Components that run on each worker node
 - **Cluster Networking:** How components communicate within the cluster
@@ -12,6 +13,7 @@
 - **Container Runtime:** Software responsible for running containers
 
 ### Exam Objectives
+
 - [ ] Understand cluster architecture and component responsibilities
 - [ ] Configure and manage control plane components
 - [ ] Understand worker node architecture and components
@@ -19,18 +21,20 @@
 - [ ] Manage cluster networking and service discovery
 
 ### Study Resources
+
 - Official Kubernetes Documentation: https://kubernetes.io/docs/concepts/overview/components/
 - CNCF Training Materials: Kubernetes Fundamentals
 - Practice Labs: Cluster setup and component management
 
 ### Exam Weight
+
 **25%** of total exam score
 
 ---
 
 ## Section 2: ASCII Drawing with Explanation
 
-```
+```text
                     KUBERNETES CLUSTER ARCHITECTURE
     ┌─────────────────────────────────────────────────────────────────┐
     │                        CONTROL PLANE                            │
@@ -79,6 +83,7 @@
 ### Component Breakdown
 
 #### Control Plane Components
+
 1. **API Server (kube-apiserver):**
    - Purpose: Frontend for the Kubernetes control plane
    - Key features: REST API, authentication, authorization, admission control
@@ -100,6 +105,7 @@
    - Interactions: Watches for unscheduled pods and selects appropriate nodes
 
 #### Worker Node Components
+
 1. **kubelet:**
    - Purpose: Node agent that manages pod lifecycle
    - Key features: Pod creation, health checks, resource monitoring
@@ -126,21 +132,27 @@
 **Solution Steps:**
 
 #### Step 1: Check Pod Status
+
 ```bash
 kubectl get pods -o wide
 ```
+
 **Expected Output:**
-```
+
+```bash
 NAME        READY   STATUS    RESTARTS   AGE   IP       NODE
 my-app-pod  0/1     Pending   0          5m    <none>   <none>
 ```
 
 #### Step 2: Investigate Pod Events
+
 ```bash
 kubectl describe pod my-app-pod
 ```
+
 **Expected Output:**
-```
+
+```bash
 Events:
   Type     Reason            Age   From               Message
   ----     ------            ----  ----               -------
@@ -148,11 +160,14 @@ Events:
 ```
 
 #### Step 3: Check Node Resources
+
 ```bash
 kubectl describe nodes
 ```
+
 **Expected Output:**
-```
+
+```bash
 Name:               worker-node-1
 Capacity:
   cpu:                2
@@ -166,11 +181,14 @@ Allocated resources:
 ```
 
 #### Step 4: Check Pod Resource Requirements
+
 ```bash
 kubectl get pod my-app-pod -o yaml | grep -A 5 resources
 ```
+
 **Expected Output:**
-```
+
+```bash
 resources:
   requests:
     cpu: 500m
@@ -178,6 +196,7 @@ resources:
 ```
 
 #### Step 5: Solution Implementation
+
 ```bash
 # Option 1: Reduce pod resource requests
 kubectl edit pod my-app-pod
@@ -188,6 +207,7 @@ kubectl get nodes -o wide
 ```
 
 ### Additional Scenarios
+
 - **Scenario 2:** API Server connectivity issues - Check certificates and network policies
 - **Scenario 3:** etcd backup and restore - Verify cluster state persistence
 
@@ -206,6 +226,7 @@ kubectl get nodes -o wide
 ### Control Plane Specific Commands
 
 #### API Server
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl api-resources` | List available API resources | `kubectl api-resources --verbs=list` |
@@ -213,6 +234,7 @@ kubectl get nodes -o wide
 | `kubectl proxy` | Create proxy to API server | `kubectl proxy --port=8080` |
 
 #### etcd Management
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `ETCDCTL_API=3 etcdctl get` | Query etcd directly | `etcdctl get --prefix /registry/pods` |
@@ -220,6 +242,7 @@ kubectl get nodes -o wide
 | `ETCDCTL_API=3 etcdctl snapshot restore` | Restore etcd backup | `etcdctl snapshot restore backup.db` |
 
 #### Node Management
+
 | Command | Description | Example |
 |---------|-------------|---------|
 | `kubectl cordon` | Mark node unschedulable | `kubectl cordon worker-1` |
@@ -231,6 +254,7 @@ kubectl get nodes -o wide
 ## Section 5: Best Practices
 
 ### Management Best Practices
+
 1. **High Availability Control Plane:**
    - Run multiple API server instances
    - Use external load balancer for API server access
@@ -247,6 +271,7 @@ kubectl get nodes -o wide
    - Monitor cluster growth and capacity
 
 ### Security Considerations
+
 1. **API Server Security:**
    - Enable TLS encryption for all communications
    - Implement proper authentication (certificates, tokens)
@@ -265,6 +290,7 @@ kubectl get nodes -o wide
    - Regular certificate rotation
 
 ### Performance Optimization
+
 1. **API Server Optimization:**
    - Configure appropriate request limits
    - Enable API priority and fairness
@@ -283,6 +309,7 @@ kubectl get nodes -o wide
    - Implement resource quotas
 
 ### Troubleshooting Tips
+
 1. **Control Plane Issues:**
    - Check component logs: `journalctl -u kubelet`
    - Verify certificates: `openssl x509 -in cert.pem -text -noout`
@@ -299,6 +326,7 @@ kubectl get nodes -o wide
    - Check CNI plugin status
 
 ### Exam-Specific Tips
+
 - **Time Management:** Practice component troubleshooting scenarios
 - **Command Shortcuts:** Alias frequently used commands
 - **Verification:** Always check cluster state after changes
@@ -309,6 +337,7 @@ kubectl get nodes -o wide
 ## Quick Reference Card
 
 ### Essential Commands for Kubernetes Architecture
+
 ```bash
 kubectl cluster-info                   # Cluster information
 kubectl get nodes -o wide              # Node status and details
@@ -318,6 +347,7 @@ kubectl top nodes                      # Node resource usage
 ```
 
 ### Key Files and Paths
+
 - Kubelet config: `/var/lib/kubelet/config.yaml`
 - Kubeconfig: `~/.kube/config` or `/etc/kubernetes/admin.conf`
 - Static pod manifests: `/etc/kubernetes/manifests/`
@@ -325,14 +355,16 @@ kubectl top nodes                      # Node resource usage
 - etcd data: `/var/lib/etcd/`
 
 ### Critical Control Plane Pods
+
 - `kube-apiserver`
-- `kube-controller-manager` 
+- `kube-controller-manager`
 - `kube-scheduler`
 - `etcd`
 
 ---
 
 ## Related Topics
+
 - [Cluster Installation and Configuration]
 - [Networking and Service Discovery]
 - [Security and RBAC]

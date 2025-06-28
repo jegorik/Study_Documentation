@@ -1,9 +1,11 @@
 # A04 - Operator Deployment Pipeline
 
 ## 🎯 Lab Overview
+
 **Scenario:** You're the platform engineer for **FinTech Innovations**, a digital banking platform serving 2.3M customers globally. The company is implementing a new **automated trading algorithm** that requires real-time market data processing. Your team has decided to deploy a **Kubernetes Operator** to manage the complex lifecycle of trading algorithm instances, including automatic scaling, configuration updates, and failover handling. The operator must be production-ready before the NYSE market opens in 6 hours.
 
 **Business Impact:** 
+
 - **$50M+ daily trading volume** depends on algorithm availability
 - Regulatory compliance requires zero data loss and audit trails
 - Millisecond-level latency requirements for trading decisions
@@ -11,6 +13,7 @@
 **Your Mission:** Design, deploy, and validate a complete Kubernetes Operator deployment pipeline that can manage trading algorithm instances with enterprise-grade reliability.
 
 ## 📋 Lab Details
+
 - **Difficulty:** Advanced
 - **Category:** Cluster Architecture & Installation (25% of CKA Exam)
 - **Time Estimate:** 30-35 minutes
@@ -19,41 +22,51 @@
 ## 🚨 Tasks Overview
 
 ### Task 1: Custom Resource Definition (CRD) Creation (6 minutes)
+
 **Situation:** Define the custom resource schema for trading algorithm instances.
 
 **Your Actions:**
+
 - Create CRD for TradingAlgorithm custom resource
 - Define resource validation and status fields
 - Implement proper versioning and schema evolution
 
 ### Task 2: Operator Service Account & RBAC Setup (7 minutes)
+
 **Situation:** Configure secure access permissions for the operator.
 
 **Your Actions:**
+
 - Create service account with minimal required permissions
 - Implement ClusterRole and RoleBinding for operator functionality
 - Set up RBAC for custom resource management
 
 ### Task 3: Operator Controller Deployment (8 minutes)
+
 **Situation:** Deploy the operator controller with proper configuration.
 
 **Your Actions:**
+
 - Deploy operator controller with leader election
 - Configure resource watching and event handling
 - Implement health checks and monitoring
 
 ### Task 4: Custom Resource Lifecycle Management (7 minutes)
+
 **Situation:** Test the operator's ability to manage custom resource instances.
 
 **Your Actions:**
+
 - Create TradingAlgorithm custom resource instances
 - Validate operator reconciliation and scaling behavior
 - Test update and deletion scenarios
 
 ### Task 5: Production Hardening & Monitoring (7 minutes)
+
 **Situation:** Implement production-grade monitoring and failure handling.
 
 **Your Actions:**
+
 - Configure operator metrics and logging
 - Implement proper backup and disaster recovery
 - Create operational runbooks and alerting
@@ -63,11 +76,13 @@
 ## 🛠 Task 1: Custom Resource Definition (CRD) Creation
 
 ### Context
+
 The trading algorithm operator needs to manage complex configurations including market data sources, risk parameters, and scaling policies. The CRD must support enterprise requirements for validation and auditability.
 
 ### Instructions
 
-**Step 1: Create the TradingAlgorithm CRD**
+**Step 1: Create the TradingAlgorithm CRD:**
+
 ```bash
 # Create namespace for the trading platform
 kubectl create namespace trading-platform
@@ -223,7 +238,8 @@ spec:
 EOF
 ```
 
-**Step 2: Create validation webhook (optional but production-ready)**
+**Step 2: Create validation webhook (optional but production-ready):**
+
 ```bash
 # Create a validating webhook configuration
 kubectl apply -f - <<EOF
@@ -249,7 +265,8 @@ webhooks:
 EOF
 ```
 
-**Step 3: Verify CRD installation**
+**Step 3: Verify CRD installation:**
+
 ```bash
 # Check CRD is properly installed
 kubectl get crd tradingalgorithms.fintech.io
@@ -290,6 +307,7 @@ kubectl describe tradingalgorithm sample-momentum-algo -n trading-platform
 ```
 
 **Verification:**
+
 - ✅ CRD should be successfully installed with proper validation schema
 - ✅ Sample TradingAlgorithm resource should be created without errors
 - ✅ Custom columns should display relevant information
@@ -299,11 +317,13 @@ kubectl describe tradingalgorithm sample-momentum-algo -n trading-platform
 ## 🛠 Task 2: Operator Service Account & RBAC Setup
 
 ### Context
+
 The operator needs appropriate permissions to manage TradingAlgorithm resources, deployments, services, and other Kubernetes objects while following the principle of least privilege.
 
 ### Instructions
 
-**Step 1: Create service account for the operator**
+**Step 1: Create service account for the operator:**
+
 ```bash
 # Create service account
 kubectl apply -f - <<EOF
@@ -318,7 +338,8 @@ automountServiceAccountToken: true
 EOF
 ```
 
-**Step 2: Create ClusterRole with required permissions**
+**Step 2: Create ClusterRole with required permissions:**
+
 ```bash
 # Create ClusterRole for operator permissions
 kubectl apply -f - <<EOF
@@ -381,7 +402,8 @@ rules:
 EOF
 ```
 
-**Step 3: Create ClusterRoleBinding**
+**Step 3: Create ClusterRoleBinding:**
+
 ```bash
 # Bind ClusterRole to service account
 kubectl apply -f - <<EOF
@@ -400,7 +422,8 @@ subjects:
 EOF
 ```
 
-**Step 4: Create additional Role for namespace-specific permissions**
+**Step 4: Create additional Role for namespace-specific permissions:**
+
 ```bash
 # Create Role for namespace-specific operations
 kubectl apply -f - <<EOF
@@ -439,7 +462,8 @@ subjects:
 EOF
 ```
 
-**Step 5: Verify RBAC configuration**
+**Step 5: Verify RBAC configuration:**
+
 ```bash
 # Verify service account
 kubectl get serviceaccount trading-operator -n trading-platform
@@ -455,6 +479,7 @@ kubectl auth can-i update tradingalgorithms/status --as=system:serviceaccount:tr
 ```
 
 **Verification:**
+
 - ✅ Service account should be created with proper annotations
 - ✅ ClusterRole should have appropriate permissions for operator functionality
 - ✅ RBAC auth can-i tests should return "yes" for required permissions
@@ -464,11 +489,13 @@ kubectl auth can-i update tradingalgorithms/status --as=system:serviceaccount:tr
 ## 🛠 Task 3: Operator Controller Deployment
 
 ### Context
+
 Deploy the actual operator controller that will watch for TradingAlgorithm resources and manage their lifecycle, including creation of deployments, services, and scaling policies.
 
 ### Instructions
 
-**Step 1: Create operator configuration**
+**Step 1: Create operator configuration:**
+
 ```bash
 # Create ConfigMap for operator configuration
 kubectl apply -f - <<EOF
@@ -507,7 +534,8 @@ data:
 EOF
 ```
 
-**Step 2: Deploy the operator controller**
+**Step 2: Deploy the operator controller:**
+
 ```bash
 # Deploy operator controller
 kubectl apply -f - <<EOF
@@ -612,7 +640,8 @@ spec:
 EOF
 ```
 
-**Step 3: Create health check endpoints (simulated)**
+**Step 3: Create health check endpoints (simulated):**
+
 ```bash
 # Create a simple health check service
 kubectl apply -f - <<EOF
@@ -641,7 +670,8 @@ spec:
 EOF
 ```
 
-**Step 4: Implement leader election ConfigMap**
+**Step 4: Implement leader election ConfigMap:**
+
 ```bash
 # Create leader election lease
 kubectl apply -f - <<EOF
@@ -658,7 +688,8 @@ spec:
 EOF
 ```
 
-**Step 5: Verify operator deployment**
+**Step 5: Verify operator deployment:**
+
 ```bash
 # Check operator deployment status
 kubectl get deployment trading-operator-controller -n trading-platform
@@ -676,6 +707,7 @@ kubectl exec -n trading-platform deployment/trading-operator-controller -- ls -l
 ```
 
 **Verification:**
+
 - ✅ Operator deployment should be running successfully
 - ✅ Pods should be ready with health checks passing
 - ✅ Service account token should be mounted correctly
@@ -686,11 +718,13 @@ kubectl exec -n trading-platform deployment/trading-operator-controller -- ls -l
 ## 🛠 Task 4: Custom Resource Lifecycle Management
 
 ### Context
+
 Test the operator's functionality by creating, updating, and managing TradingAlgorithm custom resources to ensure the complete lifecycle is working properly.
 
 ### Instructions
 
-**Step 1: Create production trading algorithm instances**
+**Step 1: Create production trading algorithm instances:**
+
 ```bash
 # Create momentum trading algorithm
 kubectl apply -f - <<EOF
@@ -759,7 +793,8 @@ spec:
 EOF
 ```
 
-**Step 2: Create mock deployments that operator would manage**
+**Step 2: Create mock deployments that operator would manage:**
+
 ```bash
 # Simulate what the operator would create for momentum trader
 kubectl apply -f - <<EOF
@@ -845,7 +880,8 @@ spec:
 EOF
 ```
 
-**Step 3: Test resource updates and scaling**
+**Step 3: Test resource updates and scaling:**
+
 ```bash
 # Update trading algorithm configuration
 kubectl patch tradingalgorithm momentum-trader-prod -n trading-platform --type='merge' -p='
@@ -884,7 +920,8 @@ kubectl patch tradingalgorithm momentum-trader-prod -n trading-platform --type='
 }'
 ```
 
-**Step 4: Test deletion and cleanup**
+**Step 4: Test deletion and cleanup:**
+
 ```bash
 # Create a test algorithm for deletion
 kubectl apply -f - <<EOF
@@ -935,7 +972,8 @@ kubectl patch tradingalgorithm test-deletion-algo -n trading-platform --type='me
 }'
 ```
 
-**Step 5: Verify complete lifecycle management**
+**Step 5: Verify complete lifecycle management:**
+
 ```bash
 # List all trading algorithms
 kubectl get tradingalgorithms -n trading-platform -o wide
@@ -954,6 +992,7 @@ kubectl logs -n trading-platform -l app=trading-operator --tail=30
 ```
 
 **Verification:**
+
 - ✅ TradingAlgorithm resources should be created and updated successfully
 - ✅ Status fields should be populated with realistic values
 - ✅ Managed deployments, services, and HPAs should exist
@@ -968,7 +1007,8 @@ Implement production-grade monitoring, logging, and operational procedures for t
 
 ### Instructions
 
-**Step 1: Set up operator metrics and monitoring**
+**Step 1: Set up operator metrics and monitoring:**
+
 ```bash
 # Create ServiceMonitor for Prometheus scraping
 kubectl apply -f - <<EOF
@@ -1036,7 +1076,8 @@ data:
 EOF
 ```
 
-**Step 2: Implement logging and audit trail**
+**Step 2: Implement logging and audit trail:**
+
 ```bash
 # Create logging configuration
 kubectl apply -f - <<EOF
@@ -1095,7 +1136,8 @@ data:
 EOF
 ```
 
-**Step 3: Create backup and disaster recovery procedures**
+**Step 3: Create backup and disaster recovery procedures:**
+
 ```bash
 # Create backup script for trading algorithms
 kubectl apply -f - <<EOF
@@ -1163,7 +1205,8 @@ spec:
 EOF
 ```
 
-**Step 4: Create operational runbooks**
+**Step 4: Create operational runbooks:**
+
 ```bash
 # Create operational runbook
 kubectl apply -f - <<EOF
@@ -1232,7 +1275,8 @@ data:
 EOF
 ```
 
-**Step 5: Set up alerting and health checks**
+**Step 5: Set up alerting and health checks:**
+
 ```bash
 # Create alerting rules
 kubectl apply -f - <<EOF
@@ -1283,6 +1327,7 @@ kubectl run operator-metrics-check --image=curlimages/curl --rm -it --restart=Ne
 ```
 
 **Verification:**
+
 - ✅ Monitoring and metrics should be properly configured
 - ✅ Backup procedures should be automated with CronJob
 - ✅ Operational runbook should provide clear troubleshooting steps
@@ -1294,7 +1339,8 @@ kubectl run operator-metrics-check --image=curlimages/curl --rm -it --restart=Ne
 
 ### Common Issues and Solutions
 
-**Issue 1: CRD validation errors**
+**Issue 1: CRD validation errors:**
+
 ```bash
 # Check CRD schema validation
 kubectl get crd tradingalgorithms.fintech.io -o yaml | grep -A 20 openAPIV3Schema
@@ -1311,7 +1357,8 @@ spec:
 EOF
 ```
 
-**Issue 2: RBAC permission denied**
+**Issue 2: RBAC permission denied:**
+
 ```bash
 # Test specific permissions
 kubectl auth can-i get tradingalgorithms --as=system:serviceaccount:trading-platform:trading-operator -n trading-platform
@@ -1321,7 +1368,8 @@ kubectl auth can-i create deployments --as=system:serviceaccount:trading-platfor
 kubectl describe clusterrolebinding trading-operator-manager-binding
 ```
 
-**Issue 3: Operator reconciliation issues**
+**Issue 3: Operator reconciliation issues:**
+
 ```bash
 # Check operator logs for errors
 kubectl logs -n trading-platform -l app=trading-operator --tail=50
@@ -1334,6 +1382,7 @@ kubectl get tradingalgorithms -n trading-platform -o yaml
 ```
 
 ### Performance Optimization
+
 - Monitor reconcile time and adjust worker count
 - Implement caching for frequently accessed resources
 - Use resource version for efficient watches
@@ -1344,6 +1393,7 @@ kubectl get tradingalgorithms -n trading-platform -o yaml
 ## 📚 Knowledge Check
 
 ### Key Concepts Tested
+
 1. **Custom Resource Definitions (CRDs)**
    - Schema validation and versioning
    - OpenAPI v3 schema design
@@ -1365,12 +1415,14 @@ kubectl get tradingalgorithms -n trading-platform -o yaml
    - Operational runbooks and troubleshooting
 
 ### CKA Exam Relevance
+
 - **Cluster Architecture:** Understanding operator deployment patterns
 - **Security:** RBAC configuration for operators
 - **Troubleshooting:** Debugging operator and custom resource issues
 - **Resource Management:** CRD lifecycle and validation
 
 ### Time Benchmarks
+
 - **Beginner:** 40-45 minutes
 - **Intermediate:** 30-35 minutes  
 - **Advanced:** 25-30 minutes
@@ -1380,6 +1432,7 @@ kubectl get tradingalgorithms -n trading-platform -o yaml
 ## 🎯 Success Criteria
 
 ### Task Completion Checklist
+
 - [ ] **Task 1:** TradingAlgorithm CRD created with proper validation schema
 - [ ] **Task 2:** RBAC configured with minimal required permissions
 - [ ] **Task 3:** Operator controller deployed with leader election and health checks
@@ -1387,6 +1440,7 @@ kubectl get tradingalgorithms -n trading-platform -o yaml
 - [ ] **Task 5:** Production monitoring, backup, and operational procedures implemented
 
 ### Production Readiness Validation
+
 - [ ] CRD supports all required trading algorithm configurations
 - [ ] Operator has appropriate permissions for resource management
 - [ ] Controller implements proper reconciliation and error handling
@@ -1394,6 +1448,7 @@ kubectl get tradingalgorithms -n trading-platform -o yaml
 - [ ] Monitoring and alerting provide operational visibility
 
 ### Business Impact Achievement
+
 - [ ] **Trading Platform Ready:** Operator can manage algorithm instances at scale
 - [ ] **Regulatory Compliance:** Audit trails and backup procedures implemented
 - [ ] **Operational Excellence:** Monitoring and runbooks enable 24/7 operations

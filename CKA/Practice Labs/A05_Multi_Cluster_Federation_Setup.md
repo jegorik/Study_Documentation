@@ -1,14 +1,17 @@
 # A05 - Multi-Cluster Federation Setup
 
 ## 🎯 Lab Overview
+
 **Scenario:** You're the platform architect for **GlobalTech Solutions**, managing a distributed microservices platform across 3 regions (US-East, EU-West, Asia-Pacific). The company needs to implement cross-cluster service discovery, unified resource management, and disaster recovery capabilities. Your mission is to establish cluster federation for seamless multi-region operations.
 
-**Business Impact:** 
+**Business Impact:**
+
 - **$5M+** infrastructure consolidation savings
 - **99.99%** availability through multi-region redundancy
 - Global service mesh enabling worldwide customer expansion
 
 ## 📋 Lab Details
+
 - **Difficulty:** Advanced
 - **Category:** Cluster Architecture (25% of CKA Exam)
 - **Time Estimate:** 30-35 minutes
@@ -17,26 +20,31 @@
 ## 🚨 Tasks Overview
 
 ### Task 1: Multi-Cluster Environment Setup (8 minutes)
+
 - Create simulated multi-cluster environment
 - Configure cluster contexts and connectivity
 - Establish cross-cluster networking foundation
 
 ### Task 2: Federation Control Plane Deployment (7 minutes)
+
 - Deploy federation control plane components
 - Configure cluster registration and discovery
 - Validate federation API server functionality
 
 ### Task 3: Cross-Cluster Service Discovery (8 minutes)
+
 - Implement federated service discovery
 - Configure DNS for cross-cluster resolution
 - Test service communication across clusters
 
 ### Task 4: Federated Resource Management (7 minutes)
+
 - Deploy federated deployments and services
 - Configure resource placement policies
 - Implement cross-cluster load balancing
 
 ### Task 5: Disaster Recovery & Monitoring (5 minutes)
+
 - Configure cluster failover mechanisms
 - Implement federation monitoring
 - Create operational runbooks
@@ -46,11 +54,13 @@
 ## 🛠 Task 1: Multi-Cluster Environment Setup
 
 ### Context
+
 GlobalTech needs federated clusters for their worldwide infrastructure.
 
 ### Instructions
 
-**Step 1: Create cluster contexts (simulate 3 clusters)**
+**Step 1: Create cluster contexts (simulate 3 clusters):**
+
 ```bash
 # Create namespace-based cluster simulation
 kubectl create namespace cluster-us-east
@@ -68,7 +78,8 @@ kubectl config set-context eu-west --namespace=cluster-eu-west
 kubectl config set-context asia-pacific --namespace=cluster-asia-pacific
 ```
 
-**Step 2: Deploy cluster infrastructure components**
+**Step 2: Deploy cluster infrastructure components:**
+
 ```bash
 # Deploy regional API gateways
 for region in us-east eu-west asia-pacific; do
@@ -115,7 +126,8 @@ EOF
 done
 ```
 
-**Step 3: Configure cross-cluster networking**
+**Step 3: Configure cross-cluster networking:**
+
 ```bash
 # Create network policies for cross-cluster communication
 kubectl apply -f - <<EOF
@@ -168,6 +180,7 @@ done
 ```
 
 **Verification:**
+
 - ✅ Three cluster namespaces created with proper labels
 - ✅ Regional services deployed successfully
 - ✅ Network policies enable cross-cluster communication
@@ -178,7 +191,8 @@ done
 
 ### Instructions
 
-**Step 1: Deploy federation control plane**
+**Step 1: Deploy federation control plane:**
+
 ```bash
 # Create federation system namespace
 kubectl create namespace federation-system
@@ -236,7 +250,8 @@ subjects:
 EOF
 ```
 
-**Step 2: Register clusters with federation**
+**Step 2: Register clusters with federation:**
+
 ```bash
 # Create cluster registry
 kubectl apply -f - <<EOF
@@ -290,6 +305,7 @@ EOF
 ```
 
 **Verification:**
+
 - ✅ Federation controller deployed and running
 - ✅ Cluster registry configured with all regions
 - ✅ Cluster monitoring active
@@ -300,7 +316,8 @@ EOF
 
 ### Instructions
 
-**Step 1: Deploy federated DNS**
+**Step 1: Deploy federated DNS:**
+
 ```bash
 # Create federated DNS service
 kubectl apply -f - <<EOF
@@ -345,7 +362,8 @@ spec:
 EOF
 ```
 
-**Step 2: Test cross-cluster service discovery**
+**Step 2: Test cross-cluster service discovery:**
+
 ```bash
 # Create test pods in each region
 for region in us-east eu-west asia-pacific; do
@@ -358,6 +376,7 @@ kubectl exec -n cluster-us-east test-us-east -- nslookup api-gateway-svc.cluster
 ```
 
 **Verification:**
+
 - ✅ Federated DNS deployed across regions
 - ✅ Cross-cluster service resolution working
 
@@ -367,7 +386,8 @@ kubectl exec -n cluster-us-east test-us-east -- nslookup api-gateway-svc.cluster
 
 ### Instructions
 
-**Step 1: Deploy federated applications**
+**Step 1: Deploy federated applications:**
+
 ```bash
 # Create federated deployment
 kubectl apply -f - <<EOF
@@ -431,7 +451,8 @@ EOF
 done
 ```
 
-**Step 2: Configure global load balancer**
+**Step 2: Configure global load balancer:**
+
 ```bash
 # Create federated service
 kubectl apply -f - <<EOF
@@ -454,6 +475,7 @@ EOF
 ```
 
 **Verification:**
+
 - ✅ Applications deployed across all regions
 - ✅ Global load balancer configured
 
@@ -463,7 +485,8 @@ EOF
 
 ### Instructions
 
-**Step 1: Configure cluster failover**
+**Step 1: Configure cluster failover:**
+
 ```bash
 # Create failover policy
 kubectl apply -f - <<EOF
@@ -515,7 +538,8 @@ spec:
 EOF
 ```
 
-**Step 2: Create operational runbook**
+**Step 2: Create operational runbook:**
+
 ```bash
 kubectl apply -f - <<EOF
 apiVersion: v1
@@ -545,6 +569,7 @@ EOF
 ```
 
 **Verification:**
+
 - ✅ Failover policies configured
 - ✅ Monitoring and runbooks deployed
 
@@ -553,6 +578,7 @@ EOF
 ## 📚 Success Criteria
 
 ### Task Completion Checklist
+
 - [ ] **Task 1:** Multi-cluster environment established with proper networking
 - [ ] **Task 2:** Federation control plane deployed and cluster registry active
 - [ ] **Task 3:** Cross-cluster service discovery functional
@@ -560,6 +586,7 @@ EOF
 - [ ] **Task 5:** Disaster recovery and monitoring operational
 
 ### Production Readiness
+
 - [ ] Multi-region application deployment successful
 - [ ] Cross-cluster service communication verified
 - [ ] Failover mechanisms tested and documented

@@ -33,12 +33,14 @@ Your mission is to execute a complete disaster recovery procedure, rebuilding th
 ## 📋 Pre-Lab Setup
 
 ### Environment Requirements
+
 - Fresh Kubernetes cluster nodes (simulating new hardware)
 - Access to backup storage (simulated with local files)
 - kubectl configured for emergency access
 - Backup files provided for restoration
 
 ### Simulated Disaster State
+
 ```bash
 # The "disaster" scenario has left you with:
 # - 3 fresh nodes with basic OS
@@ -48,6 +50,7 @@ Your mission is to execute a complete disaster recovery procedure, rebuilding th
 ```
 
 ### Available Backup Assets
+
 ```bash
 # Create backup directory and simulated backup files
 mkdir -p /tmp/disaster-recovery/backups
@@ -67,15 +70,18 @@ EOF
 ## 🔧 Mission Tasks
 
 ### **Task 1: Emergency Infrastructure Assessment** ⏱️ *6-8 minutes*
+
 **Difficulty:** Advanced  
 **Objective:** Assess available resources and plan recovery sequence
 
-#### Your Mission:
+#### Your Mission
+
 Before starting recovery, you need to understand what you're working with and create a systematic recovery plan.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Assess available infrastructure:**
+
 ```bash
 # Check available nodes
 kubectl get nodes -o wide 2>/dev/null || echo "No cluster detected - complete rebuild required"
@@ -89,6 +95,7 @@ ls -la /tmp/disaster-recovery/backups/
 ```
 
 2. **Verify network connectivity and DNS:**
+
 ```bash
 # Test basic connectivity
 ping -c 3 8.8.8.8
@@ -102,6 +109,7 @@ hostname -f
 ```
 
 3. **Create recovery plan documentation:**
+
 ```bash
 # Document the recovery sequence
 cat > /tmp/disaster-recovery/recovery-plan.md << 'EOF'
@@ -127,6 +135,7 @@ cat /tmp/disaster-recovery/recovery-plan.md
 ```
 
 #### Expected Outcome:
+
 - Infrastructure capabilities documented
 - Recovery sequence planned
 - Baseline connectivity verified
@@ -134,15 +143,18 @@ cat /tmp/disaster-recovery/recovery-plan.md
 ---
 
 ### **Task 2: Control Plane Emergency Reconstruction** ⏱️ *10-12 minutes*
+
 **Difficulty:** Expert  
 **Objective:** Rebuild Kubernetes control plane with backup data restoration
 
 #### Your Mission:
+
 The control plane is the heart of your cluster. You need to rebuild it quickly while ensuring all critical configurations are restored from backups.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Initialize new control plane with specific requirements:**
+
 ```bash
 # Initialize cluster with production-ready settings
 # (In real DR, this would use your organization's specific configuration)
@@ -159,6 +171,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 2. **Verify control plane basic functionality:**
+
 ```bash
 # Check control plane pods
 kubectl get pods -n kube-system
@@ -171,6 +184,7 @@ kubectl get nodes
 ```
 
 3. **Install network plugin (required for cluster functionality):**
+
 ```bash
 # Install Flannel CNI (production would use your standard CNI)
 kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
@@ -180,6 +194,7 @@ kubectl wait --for=condition=ready pod -l app=flannel -n kube-flannel --timeout=
 ```
 
 4. **Prepare for etcd backup restoration:**
+
 ```bash
 # Stop etcd temporarily for backup restoration
 sudo systemctl stop kubelet
@@ -208,6 +223,7 @@ sudo systemctl start kubelet
 ```
 
 #### Expected Outcome:
+
 - Control plane operational
 - Basic cluster functionality restored
 - Network plugin deployed
@@ -216,15 +232,18 @@ sudo systemctl start kubelet
 ---
 
 ### **Task 3: Worker Node Recovery and Integration** ⏱️ *6-8 minutes*
+
 **Difficulty:** Advanced  
 **Objective:** Restore worker nodes and integrate them into the recovered cluster
 
 #### Your Mission:
+
 Your trading applications need compute capacity. Restore worker nodes and ensure they're properly integrated with appropriate taints, labels, and resource configurations.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Generate join tokens for worker nodes:**
+
 ```bash
 # Create new bootstrap token for worker nodes
 sudo kubeadm token create --print-join-command > /tmp/disaster-recovery/worker-join-command.txt
@@ -238,6 +257,7 @@ sudo kubeadm token create --ttl 24h --description "Database nodes"
 ```
 
 2. **Simulate worker node joining (in real scenario, run on each worker):**
+
 ```bash
 # For this simulation, we'll prepare the configuration
 # In real DR, you would execute the join command on each worker node
@@ -265,6 +285,7 @@ echo "Worker node configuration prepared for trading workloads"
 ```
 
 3. **Configure node labels and taints for workload segregation:**
+
 ```bash
 # Apply critical labels to master node for this recovery
 kubectl label node $(kubectl get nodes -o name | cut -d'/' -f2) workload-type=control-plane
@@ -293,6 +314,7 @@ chmod +x /tmp/disaster-recovery/configure-nodes.sh
 ```
 
 #### Expected Outcome:
+
 - Worker node join procedures prepared
 - Node labeling strategy implemented
 - Workload segregation configured
@@ -301,15 +323,18 @@ chmod +x /tmp/disaster-recovery/configure-nodes.sh
 ---
 
 ### **Task 4: Critical Application and Data Recovery** ⏱️ *8-10 minutes*
+
 **Difficulty:** Expert  
 **Objective:** Restore mission-critical trading applications and their persistent data
 
 #### Your Mission:
+
 Now that the infrastructure is ready, restore the trading applications with their data. This includes databases, trading engines, and compliance monitoring systems.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Create critical namespaces with proper configurations:**
+
 ```bash
 # Create production namespaces
 kubectl create namespace trading-production
@@ -325,6 +350,7 @@ kubectl label namespace monitoring compliance=operational
 ```
 
 2. **Restore persistent storage configurations:**
+
 ```bash
 # Create storage class for high-performance trading data
 cat > /tmp/disaster-recovery/trading-storage.yaml << 'EOF'
@@ -376,6 +402,7 @@ kubectl apply -f /tmp/disaster-recovery/trading-storage.yaml
 ```
 
 3. **Deploy critical database with restored data:**
+
 ```bash
 # Create database deployment with backup restoration
 cat > /tmp/disaster-recovery/trading-database.yaml << 'EOF'
@@ -473,6 +500,7 @@ kubectl apply -f /tmp/disaster-recovery/trading-database.yaml
 ```
 
 4. **Deploy trading application with high availability:**
+
 ```bash
 # Create trading engine deployment
 cat > /tmp/disaster-recovery/trading-engine.yaml << 'EOF'
@@ -552,6 +580,7 @@ kubectl apply -f /tmp/disaster-recovery/trading-engine.yaml
 ```
 
 #### Expected Outcome:
+
 - Critical namespaces created with compliance labels
 - Persistent storage restored for trading data
 - Database deployed with simulated backup restoration
@@ -560,15 +589,18 @@ kubectl apply -f /tmp/disaster-recovery/trading-engine.yaml
 ---
 
 ### **Task 5: Security and Compliance Restoration** ⏱️ *8-10 minutes*
+
 **Difficulty:** Expert  
 **Objective:** Restore security configurations, RBAC policies, and compliance monitoring
 
 #### Your Mission:
+
 Financial systems require strict security and compliance controls. Restore all security configurations and ensure audit trails are properly maintained for regulatory requirements.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Restore RBAC configurations for compliance:**
+
 ```bash
 # Create service accounts for different roles
 cat > /tmp/disaster-recovery/rbac-config.yaml << 'EOF'
@@ -639,6 +671,7 @@ kubectl apply -f /tmp/disaster-recovery/rbac-config.yaml
 ```
 
 2. **Configure network policies for security isolation:**
+
 ```bash
 # Create network policies for trading workloads
 cat > /tmp/disaster-recovery/network-policies.yaml << 'EOF'
@@ -693,6 +726,7 @@ kubectl apply -f /tmp/disaster-recovery/network-policies.yaml
 ```
 
 3. **Deploy compliance monitoring and audit logging:**
+
 ```bash
 # Create compliance monitoring deployment
 cat > /tmp/disaster-recovery/compliance-monitoring.yaml << 'EOF'
@@ -761,6 +795,7 @@ kubectl apply -f /tmp/disaster-recovery/compliance-monitoring.yaml
 ```
 
 4. **Validate security configuration and generate recovery report:**
+
 ```bash
 # Test RBAC configurations
 kubectl auth can-i get pods --as=system:serviceaccount:trading-production:trading-operator -n trading-production
@@ -811,6 +846,7 @@ cat /tmp/disaster-recovery/recovery-report.md
 ```
 
 #### Expected Outcome:
+
 - RBAC policies restored for all critical roles
 - Network security policies enforced
 - Compliance monitoring systems active
@@ -824,6 +860,7 @@ cat /tmp/disaster-recovery/recovery-report.md
 ### Common Issues and Solutions
 
 #### **Issue: "Control plane initialization fails"**
+
 ```bash
 # Reset and retry with explicit configuration
 sudo kubeadm reset -f
@@ -832,6 +869,7 @@ sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --ignore-preflight-errors=all
 ```
 
 #### **Issue: "Network plugin not ready"**
+
 ```bash
 # Reinstall CNI plugin
 kubectl delete -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
@@ -839,6 +877,7 @@ kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Doc
 ```
 
 #### **Issue: "Persistent volumes not binding"**
+
 ```bash
 # Check storage class and PV status
 kubectl get storageclass
@@ -847,6 +886,7 @@ kubectl get events | grep -i volume
 ```
 
 #### **Issue: "RBAC permissions not working"**
+
 ```bash
 # Verify service account and role binding
 kubectl get serviceaccount -n trading-production
@@ -893,6 +933,7 @@ kubectl auth can-i --list --as=system:serviceaccount:trading-production:trading-
 ## 🏆 Success Criteria
 
 ### Task Completion Checklist
+
 - [ ] **Task 1:** Infrastructure assessment completed and recovery plan documented
 - [ ] **Task 2:** Control plane rebuilt with network functionality restored
 - [ ] **Task 3:** Worker nodes configured and integrated with proper labels/taints
@@ -900,6 +941,7 @@ kubectl auth can-i --list --as=system:serviceaccount:trading-production:trading-
 - [ ] **Task 5:** Security configurations and compliance monitoring restored
 
 ### Recovery Validation
+
 - [ ] All cluster components operational
 - [ ] Trading applications accessible and functional
 - [ ] Database connectivity and data integrity confirmed
@@ -907,6 +949,7 @@ kubectl auth can-i --list --as=system:serviceaccount:trading-production:trading-
 - [ ] Recovery completed within 40-minute window
 
 ### Time Benchmarks
+
 - **Basic proficiency:** Complete in 50 minutes
 - **Intermediate:** Complete in 40 minutes  
 - **Advanced:** Complete in 35 minutes
@@ -917,18 +960,21 @@ kubectl auth can-i --list --as=system:serviceaccount:trading-production:trading-
 ## 🚀 Extensions & Real-World Applications
 
 ### Production Scenarios
+
 - **Multi-Region Failover:** Geographic disaster recovery
 - **Partial Outage Recovery:** Selective component restoration
 - **Data Corruption Recovery:** Point-in-time restoration procedures
 - **Security Breach Recovery:** Post-incident security hardening
 
 ### Advanced Techniques
+
 - **Automated Recovery Procedures:** GitOps-based disaster recovery
 - **Cross-Cloud Migration:** Cloud provider disaster scenarios
 - **Backup Strategy Optimization:** RPO/RTO optimization
 - **Compliance Automation:** Regulatory requirement automation
 
 ### Integration Points
+
 - **Backup Solutions:** Velero, etcd backup automation
 - **Monitoring Integration:** Prometheus, Grafana alerting
 - **CI/CD Integration:** Automated recovery testing

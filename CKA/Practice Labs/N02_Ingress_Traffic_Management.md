@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 **TechFlow Enterprises** is a rapidly growing SaaS company that provides multiple web applications for their 50,000+ global customers. Their Kubernetes cluster hosts 15 different microservices across development, staging, and production environments. The current setup uses basic NodePort services, creating a management nightmare with inconsistent URLs, no SSL termination, and poor load distribution.
 
 **Your Role:** Senior DevOps Engineer  
@@ -17,6 +18,7 @@
 **Urgency:** **CRITICAL** - Current infrastructure can't handle the projected 300% traffic increase during product launch
 
 ### The Challenge
+
 You must implement a comprehensive Ingress strategy that:
 - Consolidates all services under professional domain names
 - Implements SSL/TLS termination with automatic certificate management
@@ -32,6 +34,7 @@ You must implement a comprehensive Ingress strategy that:
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Design and implement enterprise-grade Ingress architecture with multiple controllers
 - [ ] **Secondary Skills:** Configure SSL/TLS termination, path-based routing, and traffic policies
 - [ ] **Real-world Application:** Manage complex multi-application traffic routing in production environments
@@ -42,12 +45,14 @@ By completing this lab, you will:
 ## 🔧 Prerequisites
 
 ### Knowledge Requirements
+
 - [ ] Understanding of Kubernetes Services (ClusterIP, NodePort, LoadBalancer)
 - [ ] Basic knowledge of HTTP/HTTPS protocols and DNS
 - [ ] Familiarity with YAML configuration and kubectl commands
 - [ ] Previous completion of N01 (Multi-Tier App Connectivity) recommended
 
 ### Environment Setup
+
 ```bash
 # Cluster requirements
 - Kubernetes cluster v1.28+ with at least 3 worker nodes
@@ -70,6 +75,7 @@ curl --version
 You arrive to find a chaotic traffic management situation:
 
 ### Current Infrastructure Problems
+
 1. **15 different NodePort services** - Customers need to remember random port numbers
 2. **No SSL termination** - All traffic is insecure HTTP
 3. **Manual load balancing** - Traffic distributed poorly across pods
@@ -78,6 +84,7 @@ You arrive to find a chaotic traffic management situation:
 6. **Staging/Prod mixing** - Risk of customers accessing test environments
 
 ### Immediate Symptoms
+
 ```bash
 # Check current service chaos
 kubectl get services --all-namespaces -o wide
@@ -92,9 +99,11 @@ kubectl get services -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.
 ## 📋 Tasks & Solutions
 
 ### Task 1: Deploy and Configure NGINX Ingress Controller
+
 **Scenario:** Set up a production-ready Ingress controller with proper resource management and monitoring.
 
 #### 🚀 Ingress Controller Installation
+
 ```bash
 # 1. Add NGINX Ingress Helm repository
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -115,6 +124,7 @@ helm install ingress-nginx ingress-nginx/ingress-nginx \
 ```
 
 #### ✅ Production Configuration
+
 ```yaml
 # Apply advanced Ingress controller configuration
 cat << 'EOF' | kubectl apply -f -
@@ -157,6 +167,7 @@ EOF
 ```
 
 #### 🔍 Verification Commands
+
 ```bash
 # Verify Ingress controller is running
 kubectl get pods -n ingress-nginx
@@ -170,9 +181,11 @@ kubectl get validatingwebhookconfigurations | grep ingress-nginx
 ```
 
 ### Task 2: Create Application Deployments for Testing
+
 **Scenario:** Deploy multiple applications that represent TechFlow's microservices architecture.
 
 #### 🏗️ Multi-Application Setup
+
 ```yaml
 # Deploy TechFlow application stack
 cat << 'EOF' | kubectl apply -f -
@@ -341,9 +354,11 @@ EOF
 ```
 
 ### Task 3: Implement Basic Ingress Configuration
+
 **Scenario:** Create your first Ingress resource with path-based routing.
 
 #### 🛣️ Path-Based Routing Implementation
+
 ```yaml
 # Create basic Ingress with path-based routing
 cat << 'EOF' | kubectl apply -f -
@@ -387,6 +402,7 @@ EOF
 ```
 
 #### 🧪 Basic Testing
+
 ```bash
 # Get Ingress controller external IP
 INGRESS_IP=$(kubectl get service -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
@@ -406,9 +422,11 @@ kubectl describe ingress techflow-basic-ingress
 ```
 
 ### Task 4: Configure SSL/TLS with Cert-Manager
+
 **Scenario:** Implement automatic SSL certificate management for secure HTTPS traffic.
 
 #### 🔐 Cert-Manager Installation
+
 ```bash
 # 1. Install cert-manager using Helm
 helm repo add jetstack https://charts.jetstack.io
@@ -424,6 +442,7 @@ helm install cert-manager jetstack/cert-manager \
 ```
 
 #### 🏭 Certificate Issuer Configuration
+
 ```yaml
 # Create ClusterIssuer for Let's Encrypt (staging and production)
 cat << 'EOF' | kubectl apply -f -
@@ -471,6 +490,7 @@ EOF
 ```
 
 #### 🛡️ HTTPS Ingress Configuration
+
 ```yaml
 # Update Ingress with SSL/TLS configuration
 cat << 'EOF' | kubectl apply -f -
@@ -522,9 +542,11 @@ EOF
 ```
 
 ### Task 5: Advanced Traffic Management and Load Balancing
+
 **Scenario:** Implement sophisticated traffic policies including rate limiting, session affinity, and custom headers.
 
 #### ⚙️ Advanced Ingress Annotations
+
 ```yaml
 # Create production-grade Ingress with advanced features
 cat << 'EOF' | kubectl apply -f -
@@ -684,9 +706,11 @@ EOF
 ```
 
 ### Task 6: Implement Traffic Splitting and Canary Deployments
+
 **Scenario:** Set up blue-green and canary deployment capabilities using Ingress traffic splitting.
 
 #### 🚥 Canary Deployment Setup
+
 ```yaml
 # Deploy canary version of the main application
 cat << 'EOF' | kubectl apply -f -
@@ -812,6 +836,7 @@ EOF
 ```
 
 #### 🎯 A/B Testing Configuration
+
 ```yaml
 # Header-based canary routing for A/B testing
 cat << 'EOF' | kubectl apply -f -
@@ -846,9 +871,11 @@ EOF
 ```
 
 ### Task 7: Monitoring and Observability
+
 **Scenario:** Implement comprehensive monitoring for your Ingress infrastructure.
 
 #### 📊 Monitoring Setup
+
 ```bash
 # Enable Ingress controller metrics
 kubectl patch deployment ingress-nginx-controller -n ingress-nginx -p '{"spec":{"template":{"spec":{"containers":[{"name":"controller","args":["--enable-metrics=true","--metrics-per-host=true"]}]}}}}'
@@ -862,6 +889,7 @@ curl http://localhost:10254/metrics | grep nginx_
 ```
 
 #### 🔍 Ingress Testing and Validation
+
 ```bash
 # Comprehensive testing script
 cat << 'EOF' > test-ingress.sh
@@ -1007,6 +1035,7 @@ kubectl get hpa 2>/dev/null || echo "No HPA configured"
 ## 💡 Key Learning Points
 
 ### Ingress Architecture Mastered
+
 1. **Controller Management:** NGINX Ingress controller with production configuration
 2. **SSL/TLS Automation:** Cert-manager integration for automatic certificate provisioning
 3. **Traffic Routing:** Path-based and host-based routing with intelligent load balancing
@@ -1015,6 +1044,7 @@ kubectl get hpa 2>/dev/null || echo "No HPA configured"
 6. **Monitoring:** Metrics exposure and health checking
 
 ### Production Best Practices Applied
+
 - **Security:** HTTPS enforcement, security headers, rate limiting
 - **Performance:** Connection pooling, buffer optimization, compression
 - **Reliability:** Health checks, graceful failover, custom error handling
@@ -1022,6 +1052,7 @@ kubectl get hpa 2>/dev/null || echo "No HPA configured"
 - **Observability:** Comprehensive logging and metrics collection
 
 ### Common Ingress Pitfalls Avoided
+
 - **Avoided:** Using insecure HTTP in production
 - **Avoided:** Single point of failure with one Ingress controller
 - **Avoided:** Missing rate limiting and security headers
@@ -1033,6 +1064,7 @@ kubectl get hpa 2>/dev/null || echo "No HPA configured"
 ## 🚀 Bonus Challenges
 
 ### Advanced Traffic Management
+
 1. **Multi-Cluster Ingress:** Implement cross-cluster traffic routing
 2. **Service Mesh Integration:** Integrate with Istio for advanced traffic policies
 3. **WAF Integration:** Add Web Application Firewall capabilities
@@ -1040,6 +1072,7 @@ kubectl get hpa 2>/dev/null || echo "No HPA configured"
 5. **Circuit Breaker:** Add circuit breaker patterns for resilience
 
 ### Enterprise Extensions
+
 1. **OAuth Integration:** Add authentication at the Ingress layer
 2. **API Gateway:** Transform Ingress into a full API gateway
 3. **Cost Optimization:** Implement traffic-based auto-scaling

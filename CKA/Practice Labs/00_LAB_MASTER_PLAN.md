@@ -18,6 +18,7 @@ To optimize AI assistance while creating comprehensive labs, we'll use a **modul
 ## 🗂️ Lab Categories by Exam Weight
 
 ### 1. 🔧 Troubleshooting Labs (30% - 8 Labs)
+
 **Priority: HIGHEST** - Most exam weight + most practical value
 
 | Lab # | Scenario | Difficulty | Integration |
@@ -32,6 +33,7 @@ To optimize AI assistance while creating comprehensive labs, we'll use a **modul
 | T08 | "Performance Degradation Hunt" | Advanced | Metrics, Optimization |
 
 ### 2. 🏗️ Cluster Architecture Labs (25% - 7 Labs)
+
 **Priority: HIGH** - Foundation knowledge + complex setups
 
 | Lab # | Scenario | Difficulty | Integration |
@@ -45,6 +47,7 @@ To optimize AI assistance while creating comprehensive labs, we'll use a **modul
 | A07 | "Disaster Recovery Simulation" | Expert | Backup, Restore |
 
 ### 3. 🌐 Services & Networking Labs (20% - 5 Labs)
+
 **Priority: HIGH** - Complex networking concepts
 
 | Lab # | Scenario | Difficulty | Integration |
@@ -56,6 +59,7 @@ To optimize AI assistance while creating comprehensive labs, we'll use a **modul
 | N05 | "Load Balancer Configuration" | Advanced | External Access, HA |
 
 ### 4. ⚙️ Workloads & Scheduling Labs (15% - 4 Labs)
+
 **Priority: MEDIUM** - Application deployment focus
 
 | Lab # | Scenario | Difficulty | Integration |
@@ -66,6 +70,7 @@ To optimize AI assistance while creating comprehensive labs, we'll use a **modul
 | W04 | "Secrets Management Pipeline" | Advanced | Security, Configuration |
 
 ### 5. 💾 Storage Labs (10% - 3 Labs)
+
 **Priority: MEDIUM** - Persistent data management
 
 | Lab # | Scenario | Difficulty | Integration |
@@ -79,19 +84,27 @@ To optimize AI assistance while creating comprehensive labs, we'll use a **modul
 ## 🎮 Lab Creation Workflow
 
 ### Phase 1: Foundation Labs (Weeks 1-2)
+
 Create basic labs from each category to establish fundamentals:
+
 - T01, A01, N01, W01, S01
 
-### Phase 2: Intermediate Labs (Weeks 3-5) 
+### Phase 2: Intermediate Labs (Weeks 3-5)
+
 Build complexity with scenario-based challenges:
+
 - T02, T04, A02, N02, W02, S02
 
 ### Phase 3: Advanced Integration (Weeks 6-7)
+
 Complex, multi-domain scenarios:
+
 - T03, T07, A03, N03, W03
 
 ### Phase 4: Expert Scenarios (Week 8)
+
 Real-world enterprise challenges:
+
 - T08, A07, N05, W04, S03
 
 ---
@@ -99,11 +112,13 @@ Real-world enterprise challenges:
 ## 🔄 Lab Execution Strategy
 
 ### Daily Practice Schedule
+
 - **Morning (30 min)**: Review previous lab solutions
 - **Evening (60 min)**: Complete 1 new lab
 - **Weekend (2 hours)**: Complex integration labs
 
 ### Progress Tracking
+
 - [ ] Completion checkboxes in each lab
 - [ ] Time tracking for exam pace training  
 - [ ] Difficulty rating feedback
@@ -114,11 +129,13 @@ Real-world enterprise challenges:
 ## 🛠️ Lab Environment Requirements
 
 ### Minimum Setup
+
 - **Local**: kind/minikube cluster
 - **Cloud**: 2-node cluster (1 control plane, 1 worker)
 - **Tools**: kubectl, helm, git
 
 ### Advanced Setup
+
 - **Multi-node**: 3+ node cluster for HA scenarios
 - **Storage**: Multiple storage classes available
 - **Networking**: CNI with NetworkPolicy support
@@ -129,16 +146,19 @@ Real-world enterprise challenges:
 ## 📈 Success Metrics
 
 ### Knowledge Retention
+
 - Complete labs within exam time constraints
 - Solve without reference documentation first
 - Explain solution steps clearly
 
 ### Practical Skills
+
 - Debug efficiently using kubectl
 - Apply security best practices
 - Implement production-ready solutions
 
 ### Exam Readiness
+
 - Complete full lab scenarios in 15-20 minutes
 - Handle multi-step troubleshooting calmly
 - Navigate between different problem domains quickly

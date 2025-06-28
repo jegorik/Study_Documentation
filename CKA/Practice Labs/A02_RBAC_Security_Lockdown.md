@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 **SecureTech Financial** is a fintech company that just experienced a security audit revealing critical RBAC vulnerabilities. The audit found that developers have excessive cluster permissions, service accounts are poorly configured, and there's no proper separation of duties between teams. The company's Kubernetes cluster hosts critical financial applications processing millions of transactions daily.
 
 **Your Role:** Senior Platform Security Engineer  
@@ -17,7 +18,9 @@
 **Urgency:** **HIGH** - Must implement proper access controls within 24 hours to pass regulatory compliance audit
 
 ### The Challenge
+
 You must implement a comprehensive RBAC security model that:
+
 - Removes excessive permissions from developers
 - Creates proper role separation between Dev, QA, and Ops teams
 - Secures service accounts with minimal required permissions
@@ -31,6 +34,7 @@ You must implement a comprehensive RBAC security model that:
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Design and implement comprehensive RBAC policies for multi-team environments
 - [ ] **Secondary Skills:** Configure service accounts, roles, role bindings, and security contexts
 - [ ] **Real-world Application:** Secure production Kubernetes clusters meeting enterprise compliance requirements
@@ -41,12 +45,14 @@ By completing this lab, you will:
 ## 🔧 Prerequisites
 
 ### Knowledge Requirements
+
 - [ ] Understanding of Kubernetes authentication and authorization concepts
 - [ ] Basic knowledge of RBAC components (Roles, ClusterRoles, RoleBindings, ClusterRoleBindings)
 - [ ] Familiarity with service accounts and security contexts
 - [ ] Previous completion of A01 (Bare Metal Cluster Bootstrap) recommended
 
 ### Environment Setup
+
 ```bash
 # Cluster requirements
 - Kubernetes cluster v1.28+ with RBAC enabled
@@ -68,6 +74,7 @@ kubectl get ns
 You arrive to find a cluster with dangerously permissive access controls:
 
 ### Current Security Issues
+
 1. **Developers have cluster-admin access** - Can delete entire namespaces
 2. **Service accounts use default permissions** - Overly broad access
 3. **No namespace isolation** - Teams can access each other's resources
@@ -75,6 +82,7 @@ You arrive to find a cluster with dangerously permissive access controls:
 5. **Excessive ClusterRoleBindings** - Too many users with cluster-wide access
 
 ### Immediate Symptoms
+
 ```bash
 # Check current overly permissive setup
 kubectl get clusterrolebindings -o wide
@@ -87,9 +95,11 @@ kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.names
 ## 📋 Tasks & Solutions
 
 ### Task 1: Audit Current RBAC Configuration
+
 **Scenario:** First, understand what security vulnerabilities exist in the current setup.
 
 #### 🔍 Investigation Steps
+
 ```bash
 # 1. Check who has cluster-admin access
 kubectl get clusterrolebindings -o json | jq -r '.items[] | select(.roleRef.name=="cluster-admin") | "\(.metadata.name): \(.subjects)"'
@@ -106,6 +116,7 @@ kubectl get pods --all-namespaces -o jsonpath='{range .items[*]}{.metadata.names
 ```
 
 #### ✅ Solution Details
+
 ```bash
 # Create audit script for comprehensive RBAC assessment
 cat << 'EOF' > rbac-audit.sh
@@ -141,9 +152,11 @@ chmod +x rbac-audit.sh
 ```
 
 ### Task 2: Create Team-Based Namespace Structure
+
 **Scenario:** Implement proper namespace isolation for Dev, QA, and Operations teams.
 
 #### 🔧 Implementation Steps
+
 ```bash
 # 1. Create team namespaces with proper labels
 kubectl create namespace dev-team
@@ -162,6 +175,7 @@ kubectl get namespaces --show-labels
 ```
 
 #### ✅ Solution Details
+
 ```yaml
 # Apply comprehensive namespace configuration
 cat << 'EOF' | kubectl apply -f -
@@ -232,9 +246,11 @@ EOF
 ```
 
 ### Task 3: Design Role-Based Access Control Matrix
+
 **Scenario:** Create specific roles for each team with minimum required permissions.
 
 #### 🎯 Role Design Strategy
+
 ```bash
 # Developer Role: Limited to their namespace, read-only cluster info
 # QA Role: Read access to dev namespace, full access to qa namespace
@@ -243,6 +259,7 @@ EOF
 ```
 
 #### ✅ Solution Implementation
+
 ```yaml
 # Create team-specific roles and service accounts
 cat << 'EOF' | kubectl apply -f -
@@ -331,9 +348,11 @@ EOF
 ```
 
 ### Task 4: Create and Bind Team Users
+
 **Scenario:** Set up user certificates and bind them to appropriate roles.
 
 #### 🔐 User Certificate Creation
+
 ```bash
 # 1. Create private keys for team users
 openssl genrsa -out dev-user.key 2048
@@ -363,6 +382,7 @@ done
 ```
 
 #### ✅ User Binding Solution
+
 ```yaml
 # Create RoleBindings for team users
 cat << 'EOF' | kubectl apply -f -
@@ -443,9 +463,11 @@ EOF
 ```
 
 ### Task 5: Implement Pod Security Standards
+
 **Scenario:** Configure security contexts and pod security policies to prevent privilege escalation.
 
 #### 🛡️ Security Context Implementation
+
 ```yaml
 # Deploy test applications with proper security contexts
 cat << 'EOF' | kubectl apply -f -
@@ -542,9 +564,11 @@ EOF
 ```
 
 ### Task 6: Test and Validate RBAC Implementation
+
 **Scenario:** Verify that the RBAC configuration works as intended and prevents unauthorized access.
 
 #### 🧪 Comprehensive Testing Strategy
+
 ```bash
 # 1. Test developer permissions
 echo "=== Testing Developer Access ==="
@@ -571,6 +595,7 @@ kubectl auth can-i create pods --as=system:serviceaccount:dev-team:app-service-a
 ```
 
 #### ✅ Validation Script
+
 ```bash
 # Create comprehensive RBAC validation script
 cat << 'EOF' > validate-rbac.sh
@@ -675,6 +700,7 @@ kubectl describe networkpolicy deny-cross-namespace -n dev-team
 ## 💡 Key Learning Points
 
 ### RBAC Best Practices Mastered
+
 1. **Principle of Least Privilege:** Each user and service account has only the minimum permissions needed
 2. **Namespace Isolation:** Teams are properly separated with network policies enforcing boundaries
 3. **Role Separation:** Clear distinction between Dev, QA, and Ops responsibilities
@@ -682,6 +708,7 @@ kubectl describe networkpolicy deny-cross-namespace -n dev-team
 5. **Service Account Security:** Applications use dedicated service accounts with minimal permissions
 
 ### Common RBAC Pitfalls Avoided
+
 - **Avoided:** Giving developers cluster-admin access for convenience
 - **Avoided:** Using the default service account for applications
 - **Avoided:** Overly broad ClusterRoleBindings that grant unnecessary cluster-wide access
@@ -689,6 +716,7 @@ kubectl describe networkpolicy deny-cross-namespace -n dev-team
 - **Avoided:** Cross-namespace access without proper network policies
 
 ### Enterprise Security Considerations
+
 - **Compliance:** RBAC model meets SOC2 and PCI DSS requirements
 - **Auditing:** All access is properly logged and attributable to specific users
 - **Scalability:** Role model can easily extend to additional teams and namespaces
@@ -699,6 +727,7 @@ kubectl describe networkpolicy deny-cross-namespace -n dev-team
 ## 🚀 Bonus Challenges
 
 ### Advanced Security Hardening
+
 1. **Pod Security Standards:** Implement Pod Security Standards admission controller
 2. **OPA Gatekeeper:** Add policy-as-code validation for additional security rules
 3. **Admission Controllers:** Configure custom admission controllers for advanced validation
@@ -706,6 +735,7 @@ kubectl describe networkpolicy deny-cross-namespace -n dev-team
 5. **Certificate Rotation:** Implement automatic certificate rotation for user access
 
 ### Real-World Extensions
+
 1. **Multi-Cluster RBAC:** Extend this model across multiple Kubernetes clusters
 2. **Integration Testing:** Create automated tests to validate RBAC changes
 3. **Monitoring Integration:** Set up alerts for unauthorized access attempts

@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 You're the Lead Platform Engineer at **CloudNative Corp**, managing a critical production Kubernetes cluster running 200+ microservices for a financial trading platform. The cluster is currently on Kubernetes v1.26.0, but security vulnerabilities and new feature requirements mandate an urgent upgrade to v1.28.2. The platform processes $50M in transactions daily, requiring zero-downtime upgrade execution.
 
 **Your Role:** Lead Platform Engineer (Cluster Operations)  
@@ -17,6 +18,7 @@ You're the Lead Platform Engineer at **CloudNative Corp**, managing a critical p
 **Urgency:** Security compliance deadline in 48 hours, trading cannot be interrupted  
 
 ### The Challenge
+
 Execute a production-grade cluster upgrade across control plane and worker nodes while maintaining service availability, data integrity, and rollback capability. You must handle upgrade complications, validate cluster health, and ensure business continuity.
 
 ---
@@ -24,6 +26,7 @@ Execute a production-grade cluster upgrade across control plane and worker nodes
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Master production Kubernetes cluster upgrade procedures
 - [ ] **Secondary Skills:** Control plane upgrade, worker node management, rollback strategies
 - [ ] **Real-world Application:** Zero-downtime upgrade execution and risk mitigation
@@ -34,6 +37,7 @@ By completing this lab, you will:
 ## 🏗️ Lab Environment Setup
 
 ### Initial Cluster State
+
 ```bash
 # CURRENT - Kubernetes v1.26.0 cluster requiring upgrade
 CLUSTER INFO:
@@ -67,14 +71,17 @@ BUSINESS CONSTRAINTS:
 ## 🔍 Task 1: Pre-Upgrade Assessment & Planning (7 minutes)
 
 ### Objective
+
 Conduct comprehensive pre-upgrade assessment, create backup strategy, and validate upgrade readiness.
 
 ### Your Mission
+
 Assess cluster health, backup critical components, and prepare upgrade execution plan.
 
 ### Step-by-Step Instructions
 
 #### 1.1 Current Cluster Health Assessment
+
 ```bash
 # Check current cluster version and health
 kubectl version --short
@@ -95,6 +102,7 @@ kubectl top pods -A | head -20
 ```
 
 #### 1.2 Critical Workload Inventory
+
 ```bash
 # Identify critical workloads and their distribution
 kubectl get deployments -A -o wide
@@ -110,6 +118,7 @@ kubectl get ingress -A
 ```
 
 #### 1.3 Backup Critical Components
+
 ```bash
 # Backup etcd data
 sudo mkdir -p /opt/etcd-backup/$(date +%Y%m%d-%H%M%S)
@@ -128,6 +137,7 @@ kubectl get pv,pvc -A -o yaml > /tmp/storage-backup-$(date +%Y%m%d-%H%M%S).yaml
 ```
 
 #### 1.4 Upgrade Planning and Validation
+
 ```bash
 # Check available kubeadm versions
 sudo apt update
@@ -146,6 +156,7 @@ kubectl get pods -n kube-system -o yaml | grep image: | sort | uniq
 ### Lab Environment Setup
 
 #### Create Critical Workloads for Testing
+
 ```yaml
 # critical-workloads.yaml
 apiVersion: v1
@@ -242,14 +253,17 @@ kubectl get pdb -A
 ## 🔧 Task 2: Control Plane Upgrade (1st Node) (8 minutes)
 
 ### Objective
+
 Upgrade the first control plane node while maintaining cluster availability through HA configuration.
 
 ### Your Mission
+
 Execute control plane upgrade on primary node with health monitoring and rollback readiness.
 
 ### Step-by-Step Instructions
 
 #### 2.1 Prepare Control Plane for Upgrade
+
 ```bash
 # Identify control plane nodes
 kubectl get nodes -l node-role.kubernetes.io/control-plane
@@ -266,6 +280,7 @@ kubectl get pods -n kube-system | grep -E "(api|etcd|scheduler|controller)"
 ```
 
 #### 2.2 Upgrade kubeadm and kubelet on Control Plane
+
 ```bash
 # Update package repository
 sudo apt update
@@ -284,6 +299,7 @@ sudo kubeadm upgrade plan v${TARGET_VERSION}
 ```
 
 #### 2.3 Execute Control Plane Upgrade
+
 ```bash
 # Apply the upgrade to first control plane node
 sudo kubeadm upgrade apply v${TARGET_VERSION} --yes
@@ -306,6 +322,7 @@ sudo systemctl status kubelet
 ```
 
 #### 2.4 Validate First Control Plane Upgrade
+
 ```bash
 # Uncordon the control plane node
 kubectl uncordon $CONTROL_PLANE_1
@@ -329,14 +346,17 @@ kubectl delete deployment test-upgrade
 ## 🏗️ Task 3: Control Plane HA Upgrade (6 minutes)
 
 ### Objective
+
 Complete the remaining control plane nodes upgrade while maintaining high availability.
 
 ### Your Mission
+
 Upgrade remaining control plane nodes in rolling fashion with continuous availability validation.
 
 ### Step-by-Step Instructions
 
 #### 3.1 Upgrade Additional Control Plane Nodes
+
 ```bash
 # Get list of remaining control plane nodes
 CONTROL_PLANE_NODES=$(kubectl get nodes -l node-role.kubernetes.io/control-plane -o jsonpath='{.items[*].metadata.name}')
@@ -360,6 +380,7 @@ done
 ```
 
 #### 3.2 Validate Control Plane Cluster Health
+
 ```bash
 # Check all control plane nodes are upgraded
 kubectl get nodes -l node-role.kubernetes.io/control-plane -o wide
@@ -378,6 +399,7 @@ kubectl get --raw /healthz
 ```
 
 #### 3.3 Critical Workload Health Check
+
 ```bash
 # Verify critical workloads are still running
 kubectl get pods -n trading-platform
@@ -397,14 +419,17 @@ kubectl get nodes | grep Ready | wc -l
 ## 🖥️ Task 4: Worker Node Rolling Upgrade (8 minutes)
 
 ### Objective
+
 Perform rolling upgrade of worker nodes while maintaining workload availability through proper draining and scheduling.
 
 ### Your Mission
+
 Upgrade worker nodes in controlled manner with workload redistribution and health validation.
 
 ### Step-by-Step Instructions
 
 #### 4.1 Prepare Worker Node Upgrade Strategy
+
 ```bash
 # List all worker nodes
 kubectl get nodes -l '!node-role.kubernetes.io/control-plane'
@@ -417,6 +442,7 @@ kubectl get pdb -A
 ```
 
 #### 4.2 Rolling Worker Node Upgrade
+
 ```bash
 # Upgrade worker nodes one by one
 WORKER_NODES=$(kubectl get nodes -l '!node-role.kubernetes.io/control-plane' -o jsonpath='{.items[*].metadata.name}')
@@ -459,6 +485,7 @@ done
 ```
 
 #### 4.3 Verify Worker Node Upgrades
+
 ```bash
 # Check all nodes are on target version
 kubectl get nodes -o wide
@@ -479,14 +506,17 @@ kubectl get statefulsets -n payment-service
 ## ✅ Task 5: Post-Upgrade Validation & Monitoring (6 minutes)
 
 ### Objective
+
 Comprehensive post-upgrade validation, performance testing, and monitoring setup for the upgraded cluster.
 
 ### Your Mission
+
 Validate cluster functionality, test critical workflows, and establish ongoing monitoring.
 
 ### Step-by-Step Instructions
 
 #### 5.1 Comprehensive Cluster Validation
+
 ```bash
 # Verify cluster version upgrade
 kubectl version --short
@@ -503,6 +533,7 @@ kubectl get --raw /readyz
 ```
 
 #### 5.2 Workload Functionality Testing
+
 ```bash
 # Test deployment operations
 kubectl create deployment upgrade-test --image=nginx:alpine --replicas=3
@@ -522,6 +553,7 @@ kubectl delete service upgrade-test
 ```
 
 #### 5.3 Critical Business Workload Validation
+
 ```bash
 # Test trading platform functionality
 kubectl get pods -n trading-platform -o wide
@@ -537,6 +569,7 @@ kubectl describe pvc -A | grep -A 3 -B 3 "Bound"
 ```
 
 #### 5.4 Performance and Security Validation
+
 ```bash
 # Check resource utilization post-upgrade
 kubectl top nodes
@@ -555,6 +588,7 @@ kubectl get services -A | grep LoadBalancer
 ```
 
 #### 5.5 Monitoring and Alerting Setup
+
 ```bash
 # Create upgrade monitoring script
 cat << 'EOF' | tee /tmp/post-upgrade-monitor.sh
@@ -598,6 +632,7 @@ echo "Consider adding to crontab: */15 * * * * /tmp/post-upgrade-monitor.sh >> /
 ## 🎯 Expected Outcomes
 
 Upon completion, you should have:
+
 - ✅ Cluster successfully upgraded from v1.26.0 to v1.27.4
 - ✅ All control plane nodes running target version
 - ✅ All worker nodes running target version
@@ -610,6 +645,7 @@ Upon completion, you should have:
 ## 🚨 Emergency Rollback Procedures
 
 ### If Upgrade Fails on Control Plane
+
 ```bash
 # Restore etcd from backup
 sudo systemctl stop kubelet
@@ -623,6 +659,7 @@ sudo systemctl start kubelet
 ```
 
 ### If Worker Node Upgrade Fails
+
 ```bash
 # Isolate failed node
 kubectl cordon [failed-node]
@@ -637,11 +674,13 @@ kubectl drain [failed-node] --ignore-daemonsets --force
 ## 📚 Knowledge Check
 
 ### Critical Understanding Questions
+
 1. **Upgrade Strategy:** Why is a staged upgrade approach recommended?
 2. **High Availability:** How does HA control plane ensure zero downtime?
 3. **Rollback Planning:** What components need backup before upgrade?
 
 ### Advanced Scenarios
+
 - How would you handle custom resource definitions during upgrade?
 - What's the strategy for upgrading clusters with custom CNI plugins?
 - How do you validate addon compatibility with new Kubernetes versions?
@@ -651,6 +690,7 @@ kubectl drain [failed-node] --ignore-daemonsets --force
 ## 🔄 Production Best Practices
 
 ### Upgrade Automation Pipeline
+
 ```bash
 # Consider implementing automated upgrade pipeline
 echo "Best practices for production:"

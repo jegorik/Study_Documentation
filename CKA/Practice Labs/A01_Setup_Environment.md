@@ -5,6 +5,7 @@ This file contains setup instructions and scripts for creating the infrastructur
 ## 🚀 Environment Options
 
 ### Option 1: Local VMs (Recommended for Learning)
+
 ```bash
 # Using Vagrant for local VMs
 cat > Vagrantfile << 'EOF'
@@ -45,6 +46,7 @@ vagrant ssh worker-2
 ```
 
 ### Option 2: Cloud VMs (AWS Example)
+
 ```bash
 # Create security group
 aws ec2 create-security-group \
@@ -87,6 +89,7 @@ aws ec2 run-instances \
 ```
 
 ### Option 3: Container-based Testing (kind)
+
 ```bash
 # Alternative: Use kind for quick testing (not true bare metal but good for command practice)
 cat > kind-config.yaml << 'EOF'
@@ -104,6 +107,7 @@ kind create cluster --config kind-config.yaml --name bootstrap-lab
 ## 🔧 Pre-Lab Setup Script
 
 ### Automated Infrastructure Preparation
+
 ```bash
 #!/bin/bash
 # save as: setup-node.sh
@@ -182,6 +186,7 @@ echo "Ready for kubeadm cluster initialization!"
 ## 🎯 Lab Exercise Environment
 
 ### Quick Verification Checklist
+
 ```bash
 # Run on each node before starting lab
 echo "=== Pre-Lab Verification ==="
@@ -210,6 +215,7 @@ echo "=== Ready to start A01 lab! ==="
 ```
 
 ### Lab Environment Variables
+
 ```bash
 # Set these on each node for consistency
 export CONTROL_PLANE_IP="192.168.56.10"
@@ -222,16 +228,19 @@ export K8S_VERSION="1.30.0"
 ## 🧪 Alternative Practice Scenarios
 
 ### Scenario A: Fresh Installation
+
 - Start with clean Ubuntu 22.04 systems
 - Follow complete setup process
 - Practice troubleshooting common issues
 
 ### Scenario B: Cluster Expansion
+
 - Start with single-node cluster
 - Practice adding worker nodes
 - Verify scheduling across all nodes
 
 ### Scenario C: Version-specific Setup
+
 - Practice with specific Kubernetes versions
 - Test compatibility between components
 - Handle version upgrade scenarios
@@ -239,6 +248,7 @@ export K8S_VERSION="1.30.0"
 ## 🔧 Common Setup Issues & Fixes
 
 ### Issue 1: Container Runtime Not Ready
+
 ```bash
 # Symptoms: kubelet fails to start
 # Fix: Check containerd configuration
@@ -251,6 +261,7 @@ sudo systemctl restart containerd
 ```
 
 ### Issue 2: Network Connectivity Problems
+
 ```bash
 # Symptoms: kubeadm join fails with connection timeout
 # Fix: Check firewall and network configuration
@@ -262,6 +273,7 @@ ip route show
 ```
 
 ### Issue 3: Token Expiration
+
 ```bash
 # Symptoms: "token not found" during join
 # Fix: Generate new token on control plane
@@ -271,6 +283,7 @@ sudo kubeadm token create --print-join-command
 ## 🧹 Cleanup Instructions
 
 ### Complete Environment Cleanup
+
 ```bash
 # Reset Kubernetes cluster
 sudo kubeadm reset -f
@@ -289,6 +302,7 @@ vagrant destroy -f
 ```
 
 ### Partial Reset (Keep Infrastructure)
+
 ```bash
 # Just reset cluster configuration
 sudo kubeadm reset -f
@@ -299,6 +313,7 @@ sudo systemctl restart kubelet
 ## 📝 Lab Validation Notes
 
 This setup environment provides:
+
 - ✅ Multiple infrastructure options (VMs, cloud, containers)
 - ✅ Automated setup scripts for quick preparation
 - ✅ Comprehensive verification procedures

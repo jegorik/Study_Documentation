@@ -39,12 +39,14 @@ The marketing team has spent millions on advertising driving traffic to the site
 ## 📋 Pre-Lab Setup
 
 ### Environment Requirements
+
 - Kubernetes cluster (v1.26+)
 - Ingress controller capability (NGINX/Traefik)
 - kubectl configured and functional
 - MetalLB or cloud load balancer support
 
 ### Initial Infrastructure State
+
 ```bash
 # Create the ecommerce namespace for our application
 kubectl create namespace ecommerce
@@ -58,15 +60,18 @@ kubectl label namespace ecommerce app=megashop environment=production
 ## 🔧 Mission Tasks
 
 ### **Task 1: Multi-Tier Application Deployment** ⏱️ *6-8 minutes*
+
 **Difficulty:** Intermediate  
 **Objective:** Deploy a complete e-commerce application stack requiring different load balancing strategies
 
-#### Your Mission:
+#### Your Mission
+
 Deploy the core e-commerce components: frontend web servers, API gateways, product catalog service, and checkout service. Each tier requires different load balancing approaches.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Deploy the frontend web server tier:**
+
 ```bash
 # Create frontend deployment with multiple replicas
 cat > /tmp/frontend-deployment.yaml << 'EOF'
@@ -148,6 +153,7 @@ kubectl apply -f /tmp/frontend-deployment.yaml
 ```
 
 2. **Deploy the API gateway tier:**
+
 ```bash
 # Create API gateway with session affinity requirements
 cat > /tmp/api-gateway-deployment.yaml << 'EOF'
@@ -236,6 +242,7 @@ kubectl apply -f /tmp/api-gateway-deployment.yaml
 ```
 
 3. **Deploy the checkout service with specific load balancing needs:**
+
 ```bash
 # Create checkout service requiring sticky sessions
 cat > /tmp/checkout-deployment.yaml << 'EOF'
@@ -325,6 +332,7 @@ kubectl apply -f /tmp/checkout-deployment.yaml
 ```
 
 4. **Verify all deployments are ready:**
+
 ```bash
 # Check deployment status
 kubectl get deployments -n ecommerce
@@ -337,6 +345,7 @@ kubectl wait --for=condition=ready pod -l app=checkout -n ecommerce --timeout=12
 ```
 
 #### Expected Outcome:
+
 - Frontend web tier deployed with 4 replicas
 - API gateway tier deployed with 3 replicas
 - Checkout service deployed with 5 replicas
@@ -345,15 +354,18 @@ kubectl wait --for=condition=ready pod -l app=checkout -n ecommerce --timeout=12
 ---
 
 ### **Task 2: Basic Load Balancer Service Configuration** ⏱️ *5-7 minutes*
+
 **Difficulty:** Intermediate  
 **Objective:** Configure different service types with appropriate load balancing methods
 
-#### Your Mission:
+#### Your Mission
+
 Create services for each application tier using the most appropriate service type and load balancing configuration for their specific requirements.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Create LoadBalancer service for frontend (public access):**
+
 ```bash
 # Create external-facing LoadBalancer for frontend
 cat > /tmp/frontend-service.yaml << 'EOF'
@@ -387,6 +399,7 @@ kubectl apply -f /tmp/frontend-service.yaml
 ```
 
 2. **Create ClusterIP service for API gateway (internal with session affinity):**
+
 ```bash
 # Create internal service with session affinity for API gateway
 cat > /tmp/api-gateway-service.yaml << 'EOF'
@@ -418,6 +431,7 @@ kubectl apply -f /tmp/api-gateway-service.yaml
 ```
 
 3. **Create NodePort service for checkout (with specific node access):**
+
 ```bash
 # Create NodePort service for checkout with sticky sessions
 cat > /tmp/checkout-service.yaml << 'EOF'
@@ -453,6 +467,7 @@ kubectl apply -f /tmp/checkout-service.yaml
 ```
 
 4. **Create headless service for direct pod access (monitoring/debugging):**
+
 ```bash
 # Create headless service for direct pod communication
 cat > /tmp/headless-service.yaml << 'EOF'
@@ -481,6 +496,7 @@ kubectl apply -f /tmp/headless-service.yaml
 ```
 
 5. **Verify service configurations:**
+
 ```bash
 # Check all services
 kubectl get services -n ecommerce -o wide
@@ -495,6 +511,7 @@ kubectl get endpoints -n ecommerce
 ```
 
 #### Expected Outcome:
+
 - LoadBalancer service configured for external frontend access
 - ClusterIP service with session affinity for API gateway
 - NodePort service with local traffic policy for checkout
@@ -504,15 +521,18 @@ kubectl get endpoints -n ecommerce
 ---
 
 ### **Task 3: Advanced Ingress Controller Configuration** ⏱️ *7-9 minutes*
+
 **Difficulty:** Advanced  
 **Objective:** Implement sophisticated ingress routing with multiple backends and advanced features
 
-#### Your Mission:
+#### Your Mission
+
 Configure an ingress controller with advanced routing rules, SSL termination, rate limiting, and weighted traffic distribution for A/B testing scenarios.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Install NGINX Ingress Controller (if not present):**
+
 ```bash
 # Install NGINX ingress controller
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml
@@ -525,6 +545,7 @@ kubectl wait --namespace ingress-nginx \
 ```
 
 2. **Create TLS secret for HTTPS termination:**
+
 ```bash
 # Create self-signed certificate for demonstration
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
@@ -540,6 +561,7 @@ kubectl create secret tls megashop-tls \
 ```
 
 3. **Configure main ingress with path-based routing:**
+
 ```bash
 # Create comprehensive ingress configuration
 cat > /tmp/main-ingress.yaml << 'EOF'
@@ -602,6 +624,7 @@ kubectl apply -f /tmp/main-ingress.yaml
 ```
 
 4. **Create weighted ingress for A/B testing:**
+
 ```bash
 # Deploy canary version of frontend for A/B testing
 cat > /tmp/frontend-canary.yaml << 'EOF'
@@ -714,6 +737,7 @@ kubectl apply -f /tmp/canary-ingress.yaml
 ```
 
 5. **Verify ingress configurations:**
+
 ```bash
 # Check ingress resources
 kubectl get ingress -n ecommerce
@@ -727,6 +751,7 @@ kubectl logs -n ingress-nginx deployment/ingress-nginx-controller --tail=20
 ```
 
 #### Expected Outcome:
+
 - NGINX ingress controller deployed and operational
 - TLS certificates configured for HTTPS termination
 - Path-based routing configured for different services
@@ -736,15 +761,18 @@ kubectl logs -n ingress-nginx deployment/ingress-nginx-controller --tail=20
 ---
 
 ### **Task 4: Advanced Load Balancing with Health Checks** ⏱️ *5-7 minutes*
+
 **Difficulty:** Advanced  
 **Objective:** Implement sophisticated health checking and traffic distribution policies
 
-#### Your Mission:
+#### Your Mission
+
 Configure advanced health checking mechanisms and implement custom load balancing algorithms to ensure optimal traffic distribution and automatic failover.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Configure advanced health checks with custom probe endpoints:**
+
 ```bash
 # Create health check monitoring deployment
 cat > /tmp/health-monitor.yaml << 'EOF'
@@ -853,6 +881,7 @@ kubectl apply -f /tmp/health-monitor.yaml
 ```
 
 2. **Implement custom load balancing with EndpointSlices:**
+
 ```bash
 # Create custom endpoint slice for advanced load balancing
 cat > /tmp/custom-endpoints.yaml << 'EOF'
@@ -917,6 +946,7 @@ kubectl apply -f /tmp/custom-endpoints.yaml
 ```
 
 3. **Configure service mesh-style load balancing with annotations:**
+
 ```bash
 # Create service with advanced load balancing annotations
 cat > /tmp/advanced-lb-service.yaml << 'EOF'
@@ -961,6 +991,7 @@ kubectl apply -f /tmp/advanced-lb-service.yaml
 ```
 
 4. **Verify health check and load balancing configurations:**
+
 ```bash
 # Test health check endpoints
 kubectl get pods -n ecommerce -l app=health-monitor
@@ -976,6 +1007,7 @@ kubectl get endpoints -n ecommerce -o yaml | grep -A10 -B5 addresses
 ```
 
 #### Expected Outcome:
+
 - Advanced health monitoring system deployed
 - Custom endpoint slices configured for weighted routing
 - Service mesh-style load balancing annotations applied
@@ -984,15 +1016,18 @@ kubectl get endpoints -n ecommerce -o yaml | grep -A10 -B5 addresses
 ---
 
 ### **Task 5: Auto-scaling Integration and Performance Validation** ⏱️ *6-8 minutes*
+
 **Difficulty:** Expert  
 **Objective:** Integrate load balancers with auto-scaling and validate performance under load
 
-#### Your Mission:
+#### Your Mission
+
 Connect your load balancing infrastructure with Horizontal Pod Autoscaler and Vertical Pod Autoscaler to handle dynamic traffic patterns. Validate the entire system under simulated load conditions.
 
-#### Step-by-Step Instructions:
+#### Step-by-Step Instructions
 
 1. **Configure Horizontal Pod Autoscaler for all tiers:**
+
 ```bash
 # Create HPA for frontend tier
 kubectl autoscale deployment frontend-web -n ecommerce \
@@ -1062,6 +1097,7 @@ kubectl apply -f /tmp/advanced-hpa.yaml
 ```
 
 2. **Create load testing deployment to validate scaling:**
+
 ```bash
 # Deploy load testing tool
 cat > /tmp/load-tester.yaml << 'EOF'
@@ -1124,6 +1160,7 @@ kubectl apply -f /tmp/load-tester.yaml
 ```
 
 3. **Monitor auto-scaling behavior:**
+
 ```bash
 # Watch HPA scaling in real-time
 kubectl get hpa -n ecommerce --watch &
@@ -1142,6 +1179,7 @@ kill $HPA_WATCH_PID $POD_WATCH_PID 2>/dev/null || true
 ```
 
 4. **Validate load balancer performance and distribution:**
+
 ```bash
 # Create performance validation script
 cat > /tmp/validate-lb.sh << 'EOF'
@@ -1176,6 +1214,7 @@ chmod +x /tmp/validate-lb.sh
 ```
 
 5. **Generate comprehensive load balancing report:**
+
 ```bash
 # Create final validation report
 cat > /tmp/lb-configuration-report.md << 'EOF'
@@ -1228,6 +1267,7 @@ cat /tmp/lb-configuration-report.md
 ```
 
 #### Expected Outcome:
+
 - HPA configured for all application tiers
 - Load testing deployment generating realistic traffic
 - Auto-scaling behavior validated under load
@@ -1241,6 +1281,7 @@ cat /tmp/lb-configuration-report.md
 ### Common Issues and Solutions
 
 #### **Issue: "Ingress controller not ready"**
+
 ```bash
 # Check ingress controller status
 kubectl get pods -n ingress-nginx
@@ -1251,6 +1292,7 @@ kubectl rollout restart deployment/ingress-nginx-controller -n ingress-nginx
 ```
 
 #### **Issue: "LoadBalancer service pending"**
+
 ```bash
 # Check cloud provider configuration
 kubectl describe service frontend-loadbalancer -n ecommerce
@@ -1260,6 +1302,7 @@ kubectl port-forward service/frontend-loadbalancer 8080:80 -n ecommerce
 ```
 
 #### **Issue: "Session affinity not working"**
+
 ```bash
 # Verify service configuration
 kubectl get service api-gateway-service -n ecommerce -o yaml | grep -A5 sessionAffinity
@@ -1269,6 +1312,7 @@ kubectl exec -n ecommerce deployment/load-tester -- wget -v --header="Cookie: te
 ```
 
 #### **Issue: "HPA not scaling"**
+
 ```bash
 # Check metrics server
 kubectl top nodes
@@ -1318,6 +1362,7 @@ kubectl get events -n ecommerce | grep -i hpa
 ## 🏆 Success Criteria
 
 ### Task Completion Checklist
+
 - [ ] **Task 1:** Multi-tier application deployed with appropriate configurations
 - [ ] **Task 2:** Different service types configured with correct load balancing
 - [ ] **Task 3:** Advanced ingress routing with TLS and canary deployment
@@ -1325,6 +1370,7 @@ kubectl get events -n ecommerce | grep -i hpa
 - [ ] **Task 5:** Auto-scaling integration validated under load
 
 ### Load Balancing Validation
+
 - [ ] All service types functioning correctly
 - [ ] Session affinity working for stateful services
 - [ ] Ingress routing traffic appropriately
@@ -1332,6 +1378,7 @@ kubectl get events -n ecommerce | grep -i hpa
 - [ ] Auto-scaling responding to load changes
 
 ### Time Benchmarks
+
 - **Basic proficiency:** Complete in 35 minutes
 - **Intermediate:** Complete in 30 minutes  
 - **Advanced:** Complete in 25 minutes
@@ -1342,18 +1389,21 @@ kubectl get events -n ecommerce | grep -i hpa
 ## 🚀 Extensions & Real-World Applications
 
 ### Production Scenarios
+
 - **Multi-Region Load Balancing:** Geographic traffic distribution
 - **Blue-Green Deployments:** Zero-downtime deployment strategies
 - **Circuit Breaker Patterns:** Fault tolerance and graceful degradation
 - **Rate Limiting:** DDoS protection and API throttling
 
 ### Advanced Techniques
+
 - **Service Mesh Integration:** Istio/Linkerd load balancing
 - **Custom Load Balancers:** MetalLB configuration
 - **CDN Integration:** CloudFlare/CloudFront integration
 - **Performance Optimization:** Connection pooling and keep-alive tuning
 
 ### Integration Points
+
 - **Monitoring:** Prometheus metrics and Grafana dashboards
 - **Logging:** Centralized load balancer log analysis
 - **Security:** WAF integration and SSL/TLS management

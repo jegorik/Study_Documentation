@@ -20,6 +20,7 @@ curl -sSL https://raw.githubusercontent.com/cka-labs/setups/main/A02-setup.sh | 
 ## 📋 Manual Environment Setup
 
 ### Step 1: Create Overly Permissive Users
+
 ```bash
 # Create users with excessive permissions (simulating current state)
 kubectl create clusterrolebinding dangerous-dev-binding \
@@ -38,6 +39,7 @@ kubectl create clusterrolebinding default-app-binding \
 ```
 
 ### Step 2: Deploy Insecure Applications
+
 ```yaml
 # Create applications running with poor security practices
 cat << 'EOF' | kubectl apply -f -
@@ -100,6 +102,7 @@ EOF
 ```
 
 ### Step 3: Create Secrets and ConfigMaps with Excessive Access
+
 ```bash
 # Create sensitive data that shouldn't be widely accessible
 kubectl create secret generic financial-secrets \
@@ -119,6 +122,7 @@ kubectl create rolebinding default-secret-access \
 ```
 
 ### Step 4: Create Multiple Namespaces Without Proper Isolation
+
 ```bash
 # Create namespaces that will need proper RBAC
 kubectl create namespace development
@@ -133,6 +137,7 @@ kubectl create deployment critical-app --image=nginx:1.21 --namespace=production
 ```
 
 ### Step 5: Verify Vulnerable State
+
 ```bash
 # Confirm the environment has security issues
 echo "=== Checking Security Vulnerabilities ==="
@@ -164,6 +169,7 @@ kubectl auth can-i get secrets --as=system:serviceaccount:default:default
 Before starting the lab, verify these conditions exist:
 
 ### Expected Vulnerabilities ✅
+
 - [ ] Multiple users have cluster-admin access
 - [ ] Applications running as root (UID 0)
 - [ ] Privileged containers with host access
@@ -173,6 +179,7 @@ Before starting the lab, verify these conditions exist:
 - [ ] No pod security standards enforcement
 
 ### Quick Validation Script
+
 ```bash
 cat << 'EOF' > check-vulnerable-state.sh
 #!/bin/bash
@@ -248,6 +255,7 @@ echo "✅ A02 environment cleanup complete"
 ### Common Setup Issues
 
 **Issue:** "cluster-admin clusterrole not found"
+
 ```bash
 # Solution: Verify RBAC is enabled
 kubectl auth can-i '*' '*' --all-namespaces
@@ -255,6 +263,7 @@ kubectl get clusterroles | grep cluster-admin
 ```
 
 **Issue:** "jq command not found"
+
 ```bash
 # Install jq for JSON processing
 # Ubuntu/Debian:
@@ -268,12 +277,14 @@ brew install jq
 ```
 
 **Issue:** "Cannot create clusterrolebinding"
+
 ```bash
 # Ensure you have cluster-admin access
 kubectl auth can-i create clusterrolebindings
 ```
 
 ### Verification Commands
+
 ```bash
 # Check cluster RBAC status
 kubectl get clusterroles | wc -l
@@ -292,13 +303,16 @@ kubectl get configmaps
 ## 📝 Notes for Lab Facilitators
 
 ### Setup Time: ~5 minutes
+
 ### Prerequisites:
+
 - Kubernetes cluster with RBAC enabled
 - kubectl with cluster-admin permissions
 - jq installed for JSON processing
 - openssl for certificate operations
 
 ### Learning Objectives Alignment:
+
 This setup creates the exact security vulnerabilities that the A02 lab is designed to fix, providing realistic context for learning enterprise RBAC management.
 
 **🎯 Ready to start A02 - RBAC Security Lockdown!**

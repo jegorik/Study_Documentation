@@ -10,6 +10,7 @@
 ## 🎬 Real-World Scenario
 
 ### Background Context
+
 You're a DevOps Engineer at **ModernCommerce**, a digital marketplace that's launching their new microservices-based e-commerce platform. The development team has containerized their application into three tiers: frontend (React), backend API (Node.js), and database (PostgreSQL). They need these services to communicate securely within the Kubernetes cluster while exposing the frontend to external users.
 
 **Your Role:** Platform Engineer responsible for application networking and service discovery  
@@ -17,9 +18,11 @@ You're a DevOps Engineer at **ModernCommerce**, a digital marketplace that's lau
 **Urgency:** **MEDIUM PRIORITY** - Demo for investors scheduled in 2 days, application must be accessible and functional
 
 ### The Challenge
+
 The development team has deployed their containers but they're struggling with service-to-service communication. The frontend can't reach the backend API, and the backend can't connect to the database. Additionally, they need the frontend accessible from outside the cluster while keeping the backend and database internal-only.
 
 **Critical Business Requirements:**
+
 - 💰 **Investor Demo:** Application must work end-to-end for investor showcase
 - 🔒 **Security:** Database should not be accessible from outside the cluster
 - 🌐 **External Access:** Frontend needs to be reachable by external users
@@ -30,6 +33,7 @@ The development team has deployed their containers but they're struggling with s
 ## 🎯 Learning Objectives
 
 By completing this lab, you will:
+
 - [ ] **Primary Skill:** Master Kubernetes service types (ClusterIP, NodePort, LoadBalancer) and their use cases
 - [ ] **Secondary Skills:** Configure pod-to-pod communication, implement service discovery, expose applications externally
 - [ ] **Real-world Application:** Design networking for multi-tier applications with security considerations
@@ -40,11 +44,13 @@ By completing this lab, you will:
 ## 🔧 Prerequisites
 
 ### Knowledge Requirements
+
 - [ ] Basic understanding of Kubernetes pods and deployments
 - [ ] Familiarity with networking concepts (IP addressing, ports, DNS)
 - [ ] Understanding of multi-tier application architecture
 
 ### Environment Setup
+
 ```bash
 # Cluster requirements
 - Working Kubernetes cluster (from A01 or managed service)
@@ -62,6 +68,7 @@ kubectl get pods -n kube-system | grep -E "(coredns|calico|flannel|weave)"
 ## 📚 Quick Reference
 
 ### Key Commands for This Lab
+
 ```bash
 kubectl expose deployment <name> --type=<type> --port=<port>  # Create service
 kubectl get services -o wide                                  # List services with details
@@ -71,6 +78,7 @@ kubectl port-forward service/<name> <local-port>:<service-port>  # Test connecti
 ```
 
 ### Important Concepts
+
 - **ClusterIP:** Internal-only service, default type for inter-cluster communication
 - **NodePort:** Exposes service on each node's IP at a static port (30000-32767)
 - **LoadBalancer:** Cloud provider external load balancer (if supported)
@@ -81,6 +89,7 @@ kubectl port-forward service/<name> <local-port>:<service-port>  # Test connecti
 ## 🚀 Lab Tasks
 
 ### Task 1: Deploy the Three-Tier Application
+
 **Objective:** Create deployments for frontend, backend, and database components
 
 **Your Mission:**
@@ -90,6 +99,7 @@ Deploy the three application tiers using the provided YAML manifests. Verify tha
 Three deployments running with healthy pods: frontend (React app), backend (API server), and database (PostgreSQL).
 
 **Hints:**
+
 - 💡 Start by deploying all three tiers without services to see the connectivity problem
 - 💡 Check pod logs to see connection failures between tiers
 - 💡 Note the labels on each deployment - you'll need them for service selectors
@@ -97,6 +107,7 @@ Three deployments running with healthy pods: frontend (React app), backend (API 
 ---
 
 ### Task 2: Configure Internal Service Communication
+
 **Objective:** Create ClusterIP services for backend and database to enable internal communication
 
 **Your Mission:**
@@ -106,6 +117,7 @@ Create ClusterIP services for the backend API and database. Configure the backen
 Backend can successfully connect to database using service DNS name, database is only accessible within the cluster.
 
 **Hints:**
+
 - 💡 ClusterIP is the default service type for internal communication
 - 💡 Service DNS follows the pattern: `<service-name>.<namespace>.svc.cluster.local`
 - 💡 Check backend logs to confirm database connection success
@@ -113,6 +125,7 @@ Backend can successfully connect to database using service DNS name, database is
 ---
 
 ### Task 3: Expose Frontend Externally with NodePort
+
 **Objective:** Create a NodePort service to make the frontend accessible from outside the cluster
 
 **Your Mission:**
@@ -122,6 +135,7 @@ Create a NodePort service for the frontend application. Configure the frontend t
 Frontend is accessible from outside the cluster via NodePort, and can successfully communicate with the backend API internally.
 
 **Hints:**
+
 - 💡 NodePort automatically allocates a port in the 30000-32767 range
 - 💡 You can specify a specific NodePort if needed
 - 💡 Test access using `curl http://<node-ip>:<nodeport>`
@@ -129,6 +143,7 @@ Frontend is accessible from outside the cluster via NodePort, and can successful
 ---
 
 ### Task 4: Verify End-to-End Connectivity and Service Discovery
+
 **Objective:** Test complete application flow and verify service discovery is working properly
 
 **Your Mission:**
@@ -138,6 +153,7 @@ Verify that the complete application flow works: external user → frontend → 
 Complete three-tier application working end-to-end with proper service discovery and security boundaries.
 
 **Hints:**
+
 - 💡 Use `kubectl exec` to test DNS resolution from within pods
 - 💡 Check service endpoints to ensure they point to the correct pods
 - 💡 Verify that database is not accessible from outside the cluster
@@ -147,6 +163,7 @@ Complete three-tier application working end-to-end with proper service discovery
 ## ⏰ Time Management
 
 **Exam Pace Training:**
+
 - [ ] Task 1: 3 minutes (Deploy applications)
 - [ ] Task 2: 5 minutes (Internal services)
 - [ ] Task 3: 4 minutes (External access)
@@ -163,7 +180,9 @@ Complete three-tier application working end-to-end with proper service discovery
 <summary><strong>📖 Click to reveal detailed solution (try solving first!)</strong></summary>
 
 ### Step 1: Deploy Three-Tier Application
+
 **Command/Action:**
+
 ```bash
 # Create namespace for the application
 kubectl create namespace ecommerce
@@ -295,7 +314,8 @@ kubectl get pods -n ecommerce
 We deploy three separate deployments representing each tier of our application. Each has specific labels that we'll use for service selectors. The environment variables show how applications would reference each other.
 
 **Expected Output:**
-```
+
+```bash
 NAME       READY   UP-TO-DATE   AVAILABLE   AGE
 database   1/1     1            1           2m
 backend    2/2     2            2           2m
@@ -305,7 +325,9 @@ frontend   3/3     3            3           2m
 ---
 
 ### Step 2: Create Internal Services (ClusterIP)
+
 **Command/Action:**
+
 ```bash
 # Create ClusterIP service for database (internal only)
 kubectl expose deployment database \
@@ -333,7 +355,8 @@ kubectl describe service database -n ecommerce
 ClusterIP services provide internal DNS names and load balancing for pod-to-pod communication. The database service makes PostgreSQL accessible at `database.ecommerce.svc.cluster.local:5432`, while the backend is available at `backend.ecommerce.svc.cluster.local:8080`.
 
 **Expected Output:**
-```
+
+```bash
 NAME       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
 database   ClusterIP   10.96.100.123    <none>        5432/TCP   1m
 backend    ClusterIP   10.96.200.234    <none>        8080/TCP   1m
@@ -346,7 +369,9 @@ backend    192.168.1.11:80,192.168.1.12:80        1m
 ---
 
 ### Step 3: Expose Frontend with NodePort
+
 **Command/Action:**
+
 ```bash
 # Create NodePort service for frontend (external access)
 kubectl expose deployment frontend \
@@ -372,7 +397,8 @@ curl -I http://$NODE_IP:$NODE_PORT
 NodePort service exposes the frontend on every node's IP at a high port (30000-32767). This allows external users to access the application while keeping internal services secure.
 
 **Expected Output:**
-```
+
+```bash
 NAME       TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
 frontend   NodePort   10.96.300.345   <none>        80:31234/TCP   1m
 
@@ -383,7 +409,9 @@ HTTP/1.1 200 OK
 ---
 
 ### Step 4: Verify End-to-End Connectivity
+
 **Command/Action:**
+
 ```bash
 # Test service discovery from frontend pod
 FRONTEND_POD=$(kubectl get pods -n ecommerce -l app=frontend -o jsonpath='{.items[0].metadata.name}')
@@ -414,7 +442,8 @@ echo "Database (Internal): database.ecommerce.svc.cluster.local:5432"
 We verify that DNS resolution works for service discovery, internal communication is functional, and external access is properly controlled. The database should only be accessible internally.
 
 **Expected Output:**
-```
+
+```bash
 Name:	backend.ecommerce.svc.cluster.local
 Address: 10.96.200.234
 
@@ -430,6 +459,7 @@ frontend   NodePort    10.96.300.345   <none>        80:31234/TCP   3m
 ```
 
 **Success Indicators:**
+
 - [ ] All services have healthy endpoints
 - [ ] Frontend accessible via NodePort from external network
 - [ ] Backend accessible internally via service DNS
@@ -443,12 +473,14 @@ frontend   NodePort    10.96.300.345   <none>        80:31234/TCP   3m
 ## 🎓 Knowledge Check
 
 ### Understanding Questions
+
 1. **Service Types:** When would you use ClusterIP vs NodePort vs LoadBalancer service types?
 2. **DNS Resolution:** How does Kubernetes service discovery work, and what's the DNS naming pattern?
 3. **Security Boundaries:** Why is it important to use ClusterIP for internal services like databases?
 4. **Load Balancing:** How do services distribute traffic across multiple pod replicas?
 
 ### Hands-On Challenges
+
 - [ ] **Variation 1:** Convert the NodePort to LoadBalancer (if on cloud provider)
 - [ ] **Variation 2:** Add Ingress controller for path-based routing
 - [ ] **Integration:** Configure network policies to restrict database access
@@ -458,6 +490,7 @@ frontend   NodePort    10.96.300.345   <none>        80:31234/TCP   3m
 ## 🔍 Common Pitfalls & Troubleshooting
 
 ### Frequent Mistakes
+
 1. **Wrong Service Selector**
    - **Symptom:** Service has no endpoints or wrong endpoints
    - **Cause:** Service selector doesn't match pod labels
@@ -474,6 +507,7 @@ frontend   NodePort    10.96.300.345   <none>        80:31234/TCP   3m
    - **Fix:** Use full DNS name: `<service>.<namespace>.svc.cluster.local`
 
 ### Debug Commands
+
 ```bash
 # Essential debugging commands for service connectivity
 kubectl get services -o wide                         # List all services
@@ -488,12 +522,14 @@ kubectl port-forward service/<name> <port>          # Local testing
 ## 🌟 Real-World Applications
 
 ### Enterprise Scenarios
+
 - **Microservices Architecture:** Service-to-service communication patterns
 - **Security Compliance:** Internal-only services with external-facing frontends
 - **Multi-Environment Deployments:** Consistent networking across dev/staging/prod
 - **Traffic Management:** Load balancing and service discovery at scale
 
 ### Best Practices Learned
+
 - 🏆 **Security First:** Use ClusterIP for internal services, NodePort/LoadBalancer only when needed
 - 🏆 **Service Discovery:** Leverage DNS names for loose coupling between services
 - 🏆 **Port Management:** Use consistent port naming and documentation
@@ -504,12 +540,14 @@ kubectl port-forward service/<name> <port>          # Local testing
 ## 📚 Additional Resources
 
 ### Related CKA Topics
+
 - Understand connectivity between Pods
 - Use ClusterIP, NodePort, LoadBalancer service types and endpoints
 - Know how to use Ingress controllers and Ingress resources
 - Understand and use CoreDNS
 
 ### Extended Learning
+
 - [ ] Explore Ingress controllers for advanced routing
 - [ ] Study Network Policies for micro-segmentation
 - [ ] Learn about service mesh solutions (Istio, Linkerd)
@@ -519,6 +557,7 @@ kubectl port-forward service/<name> <port>          # Local testing
 ## 📝 Lab Completion
 
 ### Self-Assessment
+
 - [ ] I can complete this lab within 15 minutes
 - [ ] I understand the differences between service types
 - [ ] I can configure service discovery and internal communication
@@ -526,11 +565,13 @@ kubectl port-forward service/<name> <port>          # Local testing
 - [ ] I'm confident with multi-tier application networking
 
 ### Notes & Reflections
+
 *Record insights about service architecture decisions, security considerations, or networking patterns you discovered.*
 
 ---
 
 ### 🏁 Lab Status
+
 - [ ] **Started:** ___________
 - [ ] **Completed:** ___________  
 - [ ] **Reviewed:** ___________
