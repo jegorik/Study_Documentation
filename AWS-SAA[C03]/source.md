@@ -3810,7 +3810,7 @@ Equally distribute load to instances across AZs
 - ASG defines **WHEN** and **WHERE**. LT defines **WHAT**
 - **Auto Scaling Default Termination Policy:** ❗
     1. AZ with the most running instances
-    2. Instance that was launched from the oldest launch template
+    2. Instance that was launched from the oldest launch template unless there is an instance that uses a launch configuration.
     3. Instance closest to the next billing hour and terminates
 
 ## ASG Scaling Policies
